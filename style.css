@@ -1,0 +1,63 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 50px;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    width: 0;
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+.dna-sequence {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.electron {
+    width: 20px;
+    height: 20px;
+    background-color: #ff5722;
+    border-radius: 50%;
+    position: relative;
+    animation: moveElectron 1s infinite alternate;
+}
+
+@keyframes moveElectron {
+    0% { left: 0px; }
+    100% { left: 200px; }
+}
+
+.next-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.next-btn:hover {
+    background-color: #45a049;
+}
