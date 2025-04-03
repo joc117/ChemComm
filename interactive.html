@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Games</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+
+    .sidebar-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    }
+
+    .sidebar-toggle:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    }
+
+    .sidebar-toggle-icon {
+    font-size: 20px;
+    color: #333;
+    }
+
+    /* Style for when sidebar is expanded */
+    .sidebar-expanded .sidebar-toggle {
+    left: 260px; /* Adjust this value based on your sidebar width */
+    transform: rotate(90deg);
+    }
+
+    /* Add this if you want the icon to be visible when hovering over blank space */
+    body:not(.sidebar-expanded) .sidebar-toggle {
+    opacity: 0.3;
+    }
+
+    body:not(.sidebar-expanded):hover .sidebar-toggle {
+    opacity: 1;
+    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            background: #1a2980;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sub-links {
+            list-style: none;
+            margin-left: 20px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .sub-links.active {
+            display: block;
+        }
+
+        .sub-links a {
+            padding: 8px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* Main content styles */
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .interactive-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .interactive-section h2 {
+            color: #1a2980;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a2980;
+        }
+
+        /* DNA Alkylation Section */
+        #dna-alkylation {
+            margin-top: 40px;
+        }
+
+        .mechanism-view {
+            position: relative;
+            height: 500px;
+            background: #f5f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* DNA Replication Section */
+        #dna-replication {
+            margin-top: 40px;
+        }
+
+        .replication-view {
+            position: relative;
+            height: 400px;
+            background: #f5f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Drug Mechanism Section */
+        #drug-mechanism {
+            margin-top: 40px;
+        }
+
+        .drug-view {
+            position: relative;
+            height: 500px;
+            background: #f5f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Common styles for all sections */
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #1a2980;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #26d0ce;
+        }
+
+        .info-panel {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            border-left: 4px solid #1a2980;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-toggle">
+        <div class="sidebar-toggle-icon">☰</div>
+      </div>
+      
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="has-submenu">
+                <a href="interactive.html">Interactive Games</a>
+                <ul class="sub-links">
+                    <li><a href="interactive.html#dna-alkylation">DNA Alkylation</a></li>
+                    <li><a href="interactive.html#dna-replication">DNA Replication</a></li>
+                    <li><a href="interactive.html#drug-mechanism">Drug Mechanism</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="interactive-section" id="dna-alkylation">
+            <h2>DNA Alkylation Process</h2>
+            <div class="mechanism-view">
+                <div class="molecule-container">
+                    <div id="reactant" class="molecule"></div>
+                    <div class="label">Reactant</div>
+                </div>
+                <div class="molecule-container">
+                    <div id="intermediate" class="molecule"></div>
+                    <div class="label">Intermediate</div>
+                </div>
+                <div class="molecule-container">
+                    <div id="product" class="molecule"></div>
+                    <div class="label">Product</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn" data-agent="nitrogen">Nitrogen Mustard</button>
+                <button class="control-btn" data-agent="nitrosourea">Nitrosourea</button>
+                <button class="control-btn" data-agent="alkylsulfonate">Alkyl Sulfonate</button>
+            </div>
+            <div class="info-panel">
+                <h4>Mechanism Description</h4>
+                <p id="mechanism-description">Select an alkylating agent to begin</p>
+            </div>
+            <div class="step-controls">
+                <button class="control-btn" id="prev-step">Previous</button>
+                <button class="control-btn" id="next-step">Next</button>
+                <button class="control-btn" id="reset">Reset</button>
+            </div>
+        </div>
+
+        <div class="interactive-section" id="dna-replication">
+            <h2>DNA Replication Process</h2>
+            <div class="replication-view">
+                <!-- DNA replication visualization will be added here -->
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="start-replication">Start Replication</button>
+                <button class="control-btn" id="add-crosslink">Add Cross-Link</button>
+                <button class="control-btn" id="reset-replication">Reset</button>
+            </div>
+            <div class="info-panel">
+                <h4>Replication Description</h4>
+                <p id="replication-description">Click 'Start Replication' to begin the visualization</p>
+            </div>
+        </div>
+
+        <div class="interactive-section" id="drug-mechanism">
+            <h2>Drug Mechanism Comparison</h2>
+            <div class="drug-view">
+                <!-- Drug mechanism comparison will be added here -->
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="compare-mechanisms">Compare Mechanisms</button>
+            </div>
+            <div class="info-panel">
+                <h4>Mechanism Comparison</h4>
+                <p id="comparison-description">Click 'Compare Mechanisms' to see how different drugs work</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle sidebar submenu
+            const submenuLinks = document.querySelectorAll('.has-submenu');
+            submenuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const submenu = link.querySelector('.sub-links');
+                    link.classList.toggle('active');
+                    submenu.classList.toggle('active');
+                });
+            });
+
+            // Add your existing interactive game JavaScript here
+            // This will include the code from mechanism.html, replication.html, and drug-mechanism.html
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar'); // Adjust selector to match your sidebar
+        
+        toggle.addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-expanded');
+            
+            // Optional: Save state to localStorage
+            localStorage.setItem('sidebarExpanded', document.body.classList.contains('sidebar-expanded'));
+        });
+        
+        // Optional: Load saved state
+        if (localStorage.getItem('sidebarExpanded') === 'true') {
+            document.body.classList.add('sidebar-expanded');
+        }
+        });
+    </script>
+</body>
+</html> 
