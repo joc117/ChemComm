@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Learning</title>
+    <style>
+    .sidebar-toggle {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a2980;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-toggle:hover {
+        background-color: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+    }
+
+    .sidebar-toggle-icon {
+        font-size: 20px;
+        color: white;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background: white;
+        color: #333;
+        padding: 20px;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 999;
+        left: -250px; /* Initially hidden */
+        top: 0;
+        transition: left 0.3s ease-in-out;
+    }
+
+    .sidebar.active {
+        left: 0; /* Show sidebar */
+    }
+
+    /* Remove the margin-left adjustment from main content */
+    .main-content {
+        padding: 20px;
+        width: 100%;
+        transition: none; /* Remove transition */
+    }
+
+    .sidebar h2 {
+        color: #1a2980;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        font-size: 1.5rem;
+    }
+
+    .nav-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .nav-links li {
+        margin-bottom: 10px;
+    }
+
+    .nav-links a {
+        color: #555;
+        text-decoration: none;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    .sub-links {
+        list-style: none;
+        margin-left: 20px;
+        margin-top: 5px;
+        display: none;
+        padding: 0;
+    }
+
+    .sub-links.active {
+        display: block;
+    }
+
+    .sub-links a {
+        padding: 8px;
+        font-size: 0.9em;
+        opacity: 0.8;
+    }
+
+    .has-submenu {
+        position: relative;
+    }
+
+    .has-submenu::after {
+        content: '▼';
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8em;
+        transition: transform 0.3s ease;
+    }
+
+    .has-submenu.active::after {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* Scene styles */
+    .scene {
+        min-height: 100vh;
+        padding: 80px 40px;
+        margin-bottom: 40px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        max-width: 1000px;
+        margin: 60px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    .scene::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: linear-gradient(90deg, #26d0ce, #1a2980);
+    }
+    
+    .scene h2 {
+        color: #1a2980;
+        border-bottom: 3px solid #26d0ce;
+        padding-bottom: 15px;
+        margin-top: 0;
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .scene h2::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 100px;
+        height: 3px;
+        background: #1a2980;
+    }
+
+    /* Base styles */
+    html, body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        line-height: 1.6;
+        scroll-behavior: smooth;
+        background: #f5f7fa;
+        margin: 0;
+    }
+
+    /* Interactive Learning Styles */
+    .interactive-module {
+        margin: 40px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .module-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* DNA Alkylation Visualization Styles */
+    .dna-alkylation-visualization {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .dna-molecule {
+        flex: 1;
+        height: 200px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .backbone {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #333;
+        transform: translateY(-50%);
+    }
+
+    .base-pairs {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 40px;
+    }
+
+    .base {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        background: #4CAF50;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        transition: all 0.5s ease;
+    }
+
+    .guanine {
+        background: #4CAF50;
+    }
+
+    .cytosine {
+        background: #2196F3;
+    }
+
+    .n7-position, .o6-position {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #FF5722;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+    }
+
+    .n7-position {
+        top: 10px;
+        right: 10px;
+    }
+
+    .o6-position {
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .alkylating-agent {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: #9C27B0;
+        border-radius: 50%;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        transition: all 1s ease;
+        z-index: 10;
+    }
+
+    .cross-link {
+        position: absolute;
+        width: 10px;
+        height: 80px;
+        background: #FF5722;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scaleY(0);
+        transform-origin: center;
+        transition: transform 0.5s ease;
+    }
+
+    .process-steps {
+        flex: 1;
+    }
+
+    .step {
+        display: none;
+        padding: 15px;
+        background: #f5f7fa;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .step.active {
+        display: block;
+    }
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .control-btn {
+        padding: 10px 20px;
+        background: #1a2980;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+        background: #26d0ce;
+    }
+
+    /* Drug Comparison Styles */
+    .drug-comparison {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .drug-selector {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .drug-btn {
+        padding: 10px 15px;
+        background: #f5f7fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .drug-btn.active {
+        background: #1a2980;
+        color: white;
+    }
+
+    .drug-icon {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .mechanism-visualization {
+        height: 300px;
+        background: #f5f7fa;
+        border-radius: 10px;
+        padding: 20px;
+        position: relative;
+    }
+
+    .drug-molecule {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: #9C27B0;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.5s ease;
+    }
+
+    .mechanism-info {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+    }
+
+    /* Replication Visualization Styles */
+    .replication-visualization {
+        display: flex;
+        gap: 20px;
+    }
+
+    .replication-fork {
+        flex: 1;
+        height: 200px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parent-strand {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #333;
+        transform: translateY(-50%);
+    }
+
+    .helicase {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background: #FF9800;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: all 0.5s ease;
+    }
+
+    .rna-primer {
+        position: absolute;
+        width: 20px;
+        height: 40px;
+        background: #8BC34A;
+        top: 50%;
+        left: 60%;
+        transform: translateY(-50%) scaleX(0);
+        transform-origin: left;
+        transition: all 0.5s ease;
+    }
+
+    .dna-polymerase {
+        position: absolute;
+        width: 50px;
+        height: 30px;
+        background: #3F51B5;
+        border-radius: 5px;
+        top: 30%;
+        left: 70%;
+        transform: scale(0);
+        transition: all 0.5s ease;
+    }
+
+    .okazaki-fragment {
+        position: absolute;
+        width: 30px;
+        height: 60px;
+        background: #009688;
+        top: 50%;
+        left: 75%;
+        transform: translateY(-50%) scaleX(0);
+        transform-origin: left;
+        transition: all 0.5s ease;
+    }
+
+    .cross-link-block {
+        position: absolute;
+        width: 15px;
+        height: 80px;
+        background: #F44336;
+        top: 50%;
+        left: 40%;
+        transform: translateY(-50%) scaleY(0);
+        transform-origin: center;
+        transition: transform 0.5s ease;
+    }
+
+    .replication-info {
+        flex: 1;
+    }
+
+    .info-panel {
+        padding: 15px;
+        background: #f5f7fa;
+        border-radius: 8px;
+        height: 100%;
+    }
+
+    /* Tooltip styles */
+    [data-tooltip] {
+        position: relative;
+    }
+
+    [data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    [data-tooltip]:hover::after {
+        opacity: 1;
+        visibility: visible;
+    }
+    </style>
+</head>
+<body>
+    <div class="sidebar-toggle">
+        <span class="sidebar-toggle-icon">☰</span>
+    </div>
+
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="has-submenu">
+                <a href="interactive.html">Interactive Games</a>
+                <ul class="sub-links">
+                    <li><a href="interactive.html#dna-alkylation">DNA Alkylation</a></li>
+                    <li><a href="interactive.html#dna-replication">DNA Replication</a></li>
+                    <li><a href="interactive.html#drug-mechanism">Drug Mechanism</a></li>
+                </ul>
+            </li>
+            <li><a href="learning.html">Interactive Learning</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="scene" id="interactive-learning">
+            <h2>Interactive Learning</h2>
+            
+            <div class="interactive-module">
+                <h3>DNA Alkylation Process</h3>
+                <div class="module-content">
+                    <div class="dna-alkylation-visualization">
+                        <div class="dna-molecule">
+                            <div class="backbone"></div>
+                            <div class="alkylating-agent"></div>
+                            <div class="cross-link"></div>
+                            <div class="base-pairs">
+                                <div class="base guanine">G</div>
+                                <div class="base cytosine">C</div>
+                            </div>
+                        </div>
+                        <div class="process-steps">
+                            <div class="step active" data-step="1">
+                                <h4>Step 1: Initial Binding</h4>
+                                <p>The alkylating agent approaches the DNA molecule, targeting the N7 position of guanine.</p>
+                            </div>
+                            <div class="step" data-step="2">
+                                <h4>Step 2: Aziridinium Formation</h4>
+                                <p>The agent forms a reactive aziridinium ion intermediate.</p>
+                            </div>
+                            <div class="step" data-step="3">
+                                <h4>Step 3: Alkylation</h4>
+                                <p>The aziridinium ion alkylates the N7 position of guanine.</p>
+                            </div>
+                            <div class="step" data-step="4">
+                                <h4>Step 4: Cross-Linking</h4>
+                                <p>Cross-links form between DNA strands, preventing replication.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn" id="prev-step">Previous</button>
+                        <button class="control-btn" id="next-step">Next</button>
+                        <button class="control-btn" id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-module">
+                <h3>DNA Replication and Cross-Link Effects</h3>
+                <div class="module-content">
+                    <div class="replication-visualization">
+                        <div class="replication-fork">
+                            <div class="parent-strand"></div>
+                            <div class="helicase" data-tooltip="Helicase: Unwinds DNA"></div>
+                            <div class="rna-primer" data-tooltip="RNA Primer: Initiates DNA synthesis"></div>
+                            <div class="dna-polymerase" data-tooltip="DNA Polymerase: Synthesizes new DNA"></div>
+                            <div class="okazaki-fragment" data-tooltip="Okazaki Fragment: Short DNA fragment"></div>
+                            <div class="cross-link-block" data-tooltip="Cross-Link: Blocks replication"></div>
+                        </div>
+                        <div class="replication-info">
+                            <div class="info-panel">
+                                <h4>Current Process</h4>
+                                <p class="process-description">Click 'Start' to begin the replication process</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn" id="start-replication">Start</button>
+                        <button class="control-btn" id="pause-replication">Pause</button>
+                        <button class="control-btn" id="reset-replication">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-module">
+                <h3>Alkylating Agent Mechanisms</h3>
+                <div class="module-content">
+                    <div class="drug-comparison">
+                        <div class="drug-selector">
+                            <button class="drug-btn active" data-drug="nitrogen-mustard">
+                                <span class="drug-icon">N</span>
+                                <span class="drug-name">Nitrogen Mustard</span>
+                            </button>
+                            <button class="drug-btn" data-drug="nitrosourea">
+                                <span class="drug-icon">N</span>
+                                <span class="drug-name">Nitrosourea</span>
+                            </button>
+                            <button class="drug-btn" data-drug="alkyl-sulfonate">
+                                <span class="drug-icon">S</span>
+                                <span class="drug-name">Alkyl Sulfonate</span>
+                            </button>
+                        </div>
+                        <div class="mechanism-visualization">
+                            <div class="drug-molecule"></div>
+                            <div class="mechanism-info">
+                                <h4>Mechanism Details</h4>
+                                <p class="mechanism-description">Select a drug to view its mechanism of action</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle functionality
+            const toggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            
+            toggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+            });
+            
+            // Load saved state
+            if (localStorage.getItem('sidebarExpanded') === 'true') {
+                sidebar.classList.add('active');
+            }
+
+            // Handle submenu toggling
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu > a');
+            hasSubmenuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parent = this.parentElement;
+                    parent.classList.toggle('active');
+                    const subLinks = parent.querySelector('.sub-links');
+                    if (subLinks) {
+                        subLinks.classList.toggle('active');
+                    }
+                });
+            });
+
+            // Step navigation functionality for DNA Alkylation
+            const steps = document.querySelectorAll('.step');
+            const prevBtn = document.getElementById('prev-step');
+            const nextBtn = document.getElementById('next-step');
+            const resetBtn = document.getElementById('reset');
+            
+            // DNA Alkylation animation elements
+            const alkylatingAgent = document.querySelector('.alkylating-agent');
+            const guanineBase = document.querySelector('.guanine');
+            const crossLink = document.querySelector('.cross-link');
+            const cytosineBase = document.querySelector('.cytosine');
+            
+            let currentStep = 1;
+            
+            function updateSteps() {
+                steps.forEach(step => {
+                    step.classList.remove('active');
+                    if (parseInt(step.dataset.step) === currentStep) {
+                        step.classList.add('active');
+                    }
+                });
+                
+                prevBtn.disabled = currentStep === 1;
+                nextBtn.disabled = currentStep === steps.length;
+                
+                // Update animations based on current step
+                updateDNAAnimation();
+            }
+            
+            function updateDNAAnimation() {
+                // Reset all animations first
+                alkylatingAgent.style.left = '20px';
+                alkylatingAgent.style.transform = 'translateY(-50%)';
+                alkylatingAgent.style.backgroundColor = '#9C27B0';
+                alkylatingAgent.style.width = '30px';
+                alkylatingAgent.style.height = '30px';
+                
+                guanineBase.style.backgroundColor = '#4CAF50';
+                crossLink.style.transform = 'translate(-50%, -50%) scaleY(0)';
+                
+                // Apply animations based on current step
+                switch(currentStep) {
+                    case 1:
+                        // Initial binding - agent moves toward DNA
+                        alkylatingAgent.style.left = '40%';
+                        break;
+                    case 2:
+                        // Aziridinium formation - agent changes shape and color
+                        alkylatingAgent.style.left = '50%';
+                        alkylatingAgent.style.backgroundColor = '#E91E63';
+                        alkylatingAgent.style.width = '40px';
+                        alkylatingAgent.style.height = '20px';
+                        break;
+                    case 3:
+                        // Alkylation - guanine changes color
+                        alkylatingAgent.style.left = '60%';
+                        guanineBase.style.backgroundColor = '#F44336';
+                        break;
+                    case 4:
+                        // Cross-linking - show cross-link between bases
+                        alkylatingAgent.style.left = '80%';
+                        guanineBase.style.backgroundColor = '#F44336';
+                        cytosineBase.style.backgroundColor = '#F44336';
+                        crossLink.style.transform = 'translate(-50%, -50%) scaleY(1)';
+                        break;
+                }
+            }
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < steps.length) {
+                    currentStep++;
+                    updateSteps();
+                }
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateSteps();
+                }
+            });
+            
+            resetBtn.addEventListener('click', () => {
+                currentStep = 1;
+                updateSteps();
+            });
+            
+            // DNA Replication functionality
+            const startReplicationBtn = document.getElementById('start-replication');
+            const pauseReplicationBtn = document.getElementById('pause-replication');
+            const resetReplicationBtn = document.getElementById('reset-replication');
+            const processDescription = document.querySelector('.process-description');
+            
+            // Replication animation elements
+            const helicase = document.querySelector('.helicase');
+            const rnaPrimer = document.querySelector('.rna-primer');
+            const dnaPolymerase = document.querySelector('.dna-polymerase');
+            const okazakiFragment = document.querySelector('.okazaki-fragment');
+            const crossLinkBlock = document.querySelector('.cross-link-block');
+            
+            let replicationInterval;
+            let replicationStep = 0;
+            const replicationSteps = [
+                {desc: "Helicase enzyme begins to unwind the DNA double helix", action: () => {
+                    helicase.style.transform = 'translate(-50%, -50%) scale(1)';
+                }},
+                {desc: "RNA primer is synthesized to initiate DNA replication", action: () => {
+                    rnaPrimer.style.transform = 'translateY(-50%) scaleX(1)';
+                }},
+                {desc: "DNA polymerase begins synthesizing the new DNA strand", action: () => {
+                    dnaPolymerase.style.transform = 'scale(1)';
+                }},
+                {desc: "Okazaki fragments are formed on the lagging strand", action: () => {
+                    okazakiFragment.style.transform = 'translateY(-50%) scaleX(1)';
+                }},
+                {desc: "DNA polymerase encounters a cross-link and replication stalls", action: () => {
+                    crossLinkBlock.style.transform = 'translateY(-50%) scaleY(1)';
+                    dnaPolymerase.style.left = '40%';
+                }},
+                {desc: "Replication fork collapses due to unrepaired cross-link", action: () => {
+                    helicase.style.transform = 'translate(-50%, -50%) scale(0)';
+                    rnaPrimer.style.transform = 'translateY(-50%) scaleX(0)';
+                    dnaPolymerase.style.transform = 'scale(0)';
+                    okazakiFragment.style.transform = 'translateY(-50%) scaleX(0)';
+                }}
+            ];
+            
+            startReplicationBtn.addEventListener('click', () => {
+                if (replicationInterval) clearInterval(replicationInterval);
+                
+                replicationInterval = setInterval(() => {
+                    if (replicationStep < replicationSteps.length) {
+                        processDescription.textContent = replicationSteps[replicationStep].desc;
+                        replicationSteps[replicationStep].action();
+                        replicationStep++;
+                    } else {
+                        clearInterval(replicationInterval);
+                    }
+                }, 2000);
+            });
+            
+            pauseReplicationBtn.addEventListener('click', () => {
+                clearInterval(replicationInterval);
+            });
+            
+            resetReplicationBtn.addEventListener('click', () => {
+                clearInterval(replicationInterval);
+                replicationStep = 0;
+                processDescription.textContent = "Click 'Start' to begin the replication process";
+                
+                // Reset all animations
+                helicase.style.transform = 'translate(-50%, -50%) scale(0)';
+                rnaPrimer.style.transform = 'translateY(-50%) scaleX(0)';
+                dnaPolymerase.style.transform = 'scale(0)';
+                okazakiFragment.style.transform = 'translateY(-50%) scaleX(0)';
+                crossLinkBlock.style.transform = 'translateY(-50%) scaleY(0)';
+                dnaPolymerase.style.left = '70%';
+            });
+            
+            // Drug comparison functionality
+            const drugBtns = document.querySelectorAll('.drug-btn');
+            const drugMolecule = document.querySelector('.drug-molecule');
+            const mechanismDesc = document.querySelector('.mechanism-description');
+            
+            const drugInfo = {
+                'nitrogen-mustard': {
+                    desc: "Nitrogen mustards form reactive aziridinium ions that alkylate DNA at the N7 position of guanine, causing cross-linking between DNA strands.",
+                    color: "#9C27B0"
+                },
+                'nitrosourea': {
+                    desc: "Nitrosoureas can cross the blood-brain barrier and alkylate DNA after decomposition to form reactive isocyanates and diazohydroxides.",
+                    color: "#2196F3"
+                },
+                'alkyl-sulfonate': {
+                    desc: "Alkyl sulfonates like busulfan preferentially alkylate DNA at the N7 position of guanine, leading to interstrand cross-links.",
+                    color: "#4CAF50"
+                }
+            };
+            
+            drugBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    drugBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const drug = btn.dataset.drug;
+                    const info = drugInfo[drug];
+                    
+                    drugMolecule.style.backgroundColor = info.color;
+                    mechanismDesc.textContent = info.desc;
+                });
+            });
+            
+            // Initialize
+            updateSteps();
+        });
+    </script>
+</body>
+</html>
