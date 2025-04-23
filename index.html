@@ -1128,6 +1128,7 @@
                 background: rgba(0,0,0,0.5);
                 z-index: 998;
             }
+        }
 
         @media (max-width: 576px) {
             .header {
@@ -2352,13 +2353,13 @@
                 </div>
             </div>
             <div class="chemical-structure">
-    
-                <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Sulfur-mustard-2D-skeletal.svg/1600px-Sulfur-mustard-2D-skeletal.svg.png" 
-                alt = "Chemical structure of Sulfur Mustard"
-                width = "350"
-                height = "100">
-
-            <figcaption>  Chemical structure of Sulfur Mustard</figcaption>
+                <figure>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Sulfur-mustard-2D-skeletal.svg/1600px-Sulfur-mustard-2D-skeletal.svg.png" 
+                         alt="Chemical structure of Sulfur Mustard"
+                         width="350"
+                         height="100">
+                    <figcaption>Chemical structure of Sulfur Mustard</figcaption>
+                </figure>
             </div>
             <p>Chemical Warfare, first implemented in WW1 by the German army, uses the chemical properties of certain chemical agents to inflict harm and incapacitate opposing troops. One of the most notable examples of chemical warfare agents is Mustard Gas or Sulfur Mustard (C₄H₈Cl₂S), which is a cellular poison, mutagen, and ironically enough a recognized human carcinogen. In addition, autopsies performed on 75 soldiers who had died of mustard agent during World War I reported decreased counts of white blood cells, which motivated scientists to further research its possible applications to treating hematologic cancers, which are characterized by their abnormal white blood cell proliferation.</p>
             </div>
@@ -2391,12 +2392,14 @@
                                 </div>
                             </div>
                             <div class="chemical-structure">
-                                <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ethyl-S.svg/400px-Ethyl-S.svg.png" 
-                                alt = "Chemical structure of Nitrogen Mustard"
-                                width = "200"
-                                height = "100">
-
-                            <figcaption> Chemical structure of Nitrogen Mustard</figcaption>
+                                <figure>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ethyl-S.svg/400px-Ethyl-S.svg.png" 
+                                         alt="Chemical structure of Nitrogen Mustard"
+                                         width="200"
+                                         height="100">
+                                    <figcaption>Chemical structure of Nitrogen Mustard</figcaption>
+                                </figure>
+                            </div>
                             
 
                             </div>
@@ -3614,33 +3617,36 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const sidebar = document.querySelector('.sidebar');
-    
-    // Toggle sidebar
-    sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('active');
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sidebar toggle with existence check
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
         
-        // Save state to localStorage
-        localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-    });
-    
-    // Load saved state
-    if (localStorage.getItem('sidebarExpanded') === 'true') {
-        sidebar.classList.add('active');
-    }
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+            });
+            
+            if (localStorage.getItem('sidebarExpanded') === 'true') {
+                sidebar.classList.add('active');
+            }
+        }
 
-    // Handle submenu toggling
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            item.classList.toggle('active');
+        // Submenu handling with existence check
+        const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+        if (hasSubmenuItems.length) {
+            hasSubmenuItems.forEach(item => {
+                const link = item.querySelector('a');
+                if (link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        item.classList.toggle('active');
+                    });
+                }
+            });
+        }
         });
-    });
-});
     </script>
 </body>
 </html>
