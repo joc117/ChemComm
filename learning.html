@@ -16,10 +16,11 @@
         }
 
         /* Sidebar styles */
+        /* Sidebar styles */
         .sidebar-toggle {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 20px;
+            left: 20px;
             z-index: 1000;
             cursor: pointer;
             width: 40px;
@@ -31,27 +32,33 @@
             border-radius: 50%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            color: white;
+            /*color: white;*/
         }
 
         .sidebar-toggle:hover {
-            background-color: #26d0ce;
+            background-color: rgba(255, 255, 255, 1);
             transform: scale(1.1);
         }
 
+        .sidebar-toggle-icon {
+            font-size: 20px;
+            color: white;
+        }
+
         .sidebar {
-            width: 250px;
+            width: 280px;
             background: white;
             color: #333;
-            padding: 20px;
+            padding: 30px 20px;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 999;
-            left: -250px;
+            left: -280px;
             top: 0;
-            transition: left 0.3s ease-in-out;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #eee;
         }
 
         .sidebar.active {
@@ -88,44 +95,64 @@
             background: rgba(26, 41, 128, 0.1);
         }
 
-        .nav-links {
+        /* SUBMENU STYLES */
+        .sub-links {
             list-style: none;
-            padding: 0;
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
-
-        .nav-links li {
-            margin-bottom: 10px;
+        
+        .has-submenu.active .sub-links {
+            max-height: 500px;
         }
-
-        .nav-links a {
-            color: #555;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+        
+        .sub-links a {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            color: #666;
         }
-
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.1);
+        
+        .sub-links a:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .has-submenu {
+        position: relative;
         }
 
         .sub-links {
             list-style: none;
-            margin-left: 20px;
-            margin-top: 5px;
-            display: none;
-            padding: 0;
+            padding-left: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
-        .sub-links.active {
-            display: block;
+        .has-submenu.active .sub-links {
+            max-height: 200px;
         }
 
         .sub-links a {
-            padding: 8px;
-            font-size: 0.9em;
-            opacity: 0.8;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+        }
+
+       
+        .has-submenu::after {
+            content: '▸';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #999;
+            transition: transform 0.3s ease;
+        }
+        
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(90deg);
         }
 
         /* Main content styles */
@@ -457,15 +484,20 @@
     <div class="sidebar-toggle">☰</div>
 
     <div class="sidebar">
-        <h2>Navigation</h2>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li class="has-submenu">
-                <a href="interactive.html">Interactive Games</a>
-            </li>
-            <li><a href="learning.html">Interactive Learning</a></li>
-        </ul>
-    </div>
+            <h2>Navigation</h2>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="has-submenu">
+                    <a href="interactive.html">Interactive Games</a>
+                    <ul class="sub-links">
+                        <li><a href="interactive.html#dna-alkylation">DNA Alkylation</a></li>
+                        <li><a href="interactive.html#dna-replication">DNA Replication</a></li>
+                        <li><a href="interactive.html#drug-mechanism">Drug Mechanism</a></li>
+                    </ul>
+                </li>
+                <li><a href="learning.html">Interactive Learning</a></li>
+            </ul>
+        </div>
 
     <div class="main-content">
         <div class="scene" id="interactive-learning">
