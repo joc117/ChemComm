@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Learning</title>
+    <style>
+        /* Base styles */
+        html, body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        line-height: 1.6;
+        scroll-behavior: smooth;
+        background: #f5f7fa;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* Remove margin that might cause extra scrolling */
+        body {
+            margin: 0;
+        }
+
+        /* Sidebar styles */
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a2980;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            /*color: white;*/
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle-icon {
+            font-size: 20px;
+            color: white;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            color: #333;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 999;
+            left: -280px;
+            top: 0;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #eee;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar h2 {
+            color: #1a2980;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(26, 41, 128, 0.1);
+        }
+
+        /* SUBMENU STYLES */
+        .sub-links {
+            list-style: none;
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .has-submenu.active .sub-links {
+            max-height: 500px;
+        }
+        
+        .sub-links a {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .sub-links a:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .has-submenu {
+        position: relative;
+        }
+
+        .sub-links {
+            list-style: none;
+            padding-left: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .has-submenu.active .sub-links {
+            max-height: 200px;
+        }
+
+        .sub-links a {
+            font-size: 0.9rem;
+            padding: 8px 15px;
+        }
+
+       
+        .has-submenu::after {
+            content: '▸';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #999;
+            transition: transform 0.3s ease;
+        }
+        
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main content styles */
+        .main-content {
+            padding: 20px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .scene {
+            min-height: 50vh;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .scene::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #26d0ce, #1a2980);
+        }
+
+        .scene h2 {
+            color: #1a2980;
+            border-bottom: 3px solid #26d0ce;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .scene h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: #1a2980;
+        }
+
+        /* Interactive module styles */
+        .interactive-module {
+            margin: 20px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .module-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* DNA Alkylation Visualization Styles */
+        .dna-alkylation-container {
+            position: relative;
+            height: 500px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .dna-alkylation-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .backbone {
+            stroke-width: 3;
+            fill: none;
+        }
+        .backbone1 { stroke: #0066cc; }
+        .backbone2 { stroke: #cc3300; }
+        .base-pair {
+            stroke-width: 2;
+            transition: all 1.5s ease-in-out;
+        }
+        .unwound-strand {
+            stroke-width: 2;
+            fill: none;
+            opacity: 0;
+            transition: all 2s ease-in-out;
+        }
+        .unwound1 { stroke: #0066cc; }
+        .unwound2 { stroke: #cc3300; }
+        .base-text {
+            font-size: 8px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .helicase, .alkylating-agent, .polymerase {
+            opacity: 0;
+            transition: all 2s ease-in-out;
+        }
+        .adenine { stroke: #FF6B6B; }
+        .thymine { stroke: #FFD166; }
+        .cytosine { stroke: #06D6A0; }
+        .guanine { stroke: #118AB2; }
+        .alkylated {
+            stroke: #c0392b;
+            stroke-width: 3;
+            animation: pulse 1s infinite alternate;
+        }
+        .cross-link {
+            stroke: #c0392b;
+            stroke-width: 2;
+            stroke-dasharray: 5,3;
+            opacity: 0;
+            transition: all 1s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { stroke-width: 3; }
+            100% { stroke-width: 4; }
+        }
+        @keyframes agent-move {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(40px,80px); }
+        }
+        .fade-in { opacity: 1; }
+        .show-text { opacity: 1; }
+
+        /* Explanation box */
+        .explanation-box {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #1a2980;
+        }
+
+        /* Step indicator and controls */
+        .step-indicator {
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .step-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: #1a2980;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #26d0ce;
+        }
+
+        /* DNA Replication Visualization */
+        .replication-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        .replication-visualization {
+            display: flex;
+            height: 100%;
+        }
+
+        .replication-fork-vis {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Alkylating Agent Mechanisms */
+        .drug-comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .drug-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .drug-btn {
+            padding: 10px 15px;
+            background: #f5f7fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .drug-btn.active {
+            background: #1a2980;
+            color: white;
+        }
+
+        .mechanism-visualization {
+            height: 500px;
+            background: #f5f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .molecule-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Guanine N7 highlight */
+        .n7-highlight {
+            fill: #c0392b;
+            animation: highlight-pulse 1.5s infinite alternate;
+        }
+
+        @keyframes highlight-pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Blood-brain barrier animation */
+        .bbb-animation {
+            stroke: #1a2980;
+            stroke-width: 3;
+            stroke-dasharray: 5,3;
+            animation: bbb-move 3s linear infinite;
+        }
+
+        @keyframes bbb-move {
+            0% { stroke-dashoffset: 10; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .sub-links {
+            list-style: none;
+            padding-left: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .sidebar-expanded .main-content {
+                position: fixed;
+                left: 250px;
+                width: 100%;
+            }
+            
+            .sidebar-expanded::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 250px;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 998;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <span class="sidebar-toggle-icon">☰</span>
+    </div>
+    
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <ul class="nav-links">
+            <li><a href="overview.html">Overview</a></li>
+            <li><a href="historical.html">Historical content</a></li>
+            <li><a href="mechanism.html">Mechanism</a></li>
+            <li><a href="agents.html">Alkylating Agents</a></li>
+            <li><a href="references.html">References</a></li>
+        </ul>
+    </div>
+        
+
+    <div class="main-content">
+        <div class="scene" id="interactive-learning">
+            <h2>Mechanism: How does Mustard Gas destroy humans' body? </h2>
+            
+            <!-- DNA Alkylation Process -->
+            <div class="interactive-module">
+                <h3>DNA Alkylation Process</h3>
+                <div class="module-content">
+                    <div class="step-indicator" id="stepIndicator">Step 1: Normal DNA Structure</div>
+                    <div class="dna-alkylation-container">
+                        <svg viewBox="0 0 300 600">
+                            <!-- DNA Double Helix -->
+                            <g id="double-helix">
+                                <path class="backbone backbone1" id="backbone1" d="M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370" />
+                                <path class="backbone backbone2" id="backbone2" d="M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370" />
+                                
+                                <!-- Base Pairs -->
+                                <g class="base-pair" id="bp1">
+                                    <line x1="120" y1="20" x2="160" y2="20" class="adenine" transform="rotate(-5,140,20)"/>
+                                    <text x="135" y="18" class="base-text adenine">A</text>
+                                    <text x="145" y="22" class="base-text thymine">T</text>
+                                </g>
+                                <g class="base-pair" id="bp2">
+                                    <line x1="120" y1="55" x2="160" y2="55" class="cytosine" transform="rotate(8,140,55)"/>
+                                    <text x="135" y="53" class="base-text cytosine">C</text>
+                                    <text x="145" y="57" class="base-text guanine">G</text>
+                                </g>
+                                <g class="base-pair" id="bp3">
+                                    <line x1="120" y1="90" x2="160" y2="90" class="guanine" transform="rotate(-3,140,90)"/>
+                                    <text x="135" y="88" class="base-text guanine">G</text>
+                                    <text x="145" y="92" class="base-text cytosine">C</text>
+                                </g>
+                                <g class="base-pair" id="bp4">
+                                    <line x1="120" y1="125" x2="160" y2="125" class="thymine" transform="rotate(7,140,125)"/>
+                                    <text x="135" y="123" class="base-text thymine">T</text>
+                                    <text x="145" y="127" class="base-text adenine">A</text>
+                                </g>
+                                <g class="base-pair" id="bp5">
+                                    <line x1="120" y1="160" x2="160" y2="160" class="adenine" transform="rotate(-4,140,160)"/>
+                                    <text x="135" y="158" class="base-text adenine">A</text>
+                                    <text x="145" y="162" class="base-text thymine">T</text>
+                                </g>
+                                <g class="base-pair" id="bp6">
+                                    <line x1="120" y1="195" x2="160" y2="195" class="cytosine" transform="rotate(6,140,195)"/>
+                                    <text x="135" y="193" class="base-text cytosine">C</text>
+                                    <text x="145" y="197" class="base-text guanine">G</text>
+                                </g>
+                                <g class="base-pair" id="bp7">
+                                    <line x1="120" y1="230" x2="160" y2="230" class="guanine" transform="rotate(-2,140,230)"/>
+                                    <text x="135" y="228" class="base-text guanine">G</text>
+                                    <text x="145" y="232" class="base-text cytosine">C</text>
+                                </g>
+                                <g class="base-pair" id="bp8">
+                                    <line x1="120" y1="265" x2="160" y2="265" class="thymine" transform="rotate(5,140,265)"/>
+                                    <text x="135" y="263" class="base-text thymine">T</text>
+                                    <text x="145" y="267" class="base-text adenine">A</text>
+                                </g>
+                                <g class="base-pair" id="bp9">
+                                    <line x1="120" y1="300" x2="160" y2="300" class="adenine" transform="rotate(-3,140,300)"/>
+                                    <text x="135" y="298" class="base-text adenine">A</text>
+                                    <text x="145" y="302" class="base-text thymine">T</text>
+                                </g>
+                                <g class="base-pair" id="bp10">
+                                    <line x1="120" y1="335" x2="160" y2="335" class="cytosine" transform="rotate(4,140,335)"/>
+                                    <text x="135" y="333" class="base-text cytosine">C</text>
+                                    <text x="145" y="337" class="base-text guanine">G</text>
+                                </g>
+                            </g>
+                            
+                            <!-- Helicase with hover tooltip -->
+                            <g class="helicase" id="helicase" transform="translate(140,200)">
+                                <path d="M0,0 Q-10,-10 0,-20 Q10,-10 0,0 Z" fill="#FF9F1C"/>
+                                <path d="M0,0 Q-10,10 0,20 Q10,10 0,0 Z" fill="#FF9F1C"/>
+                                <circle cx="0" cy="0" r="10" fill="#FF9F1C" opacity="0.9"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">H
+                                    <title>Helicase</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Alkylating Agent with hover tooltip -->
+                            <g class="alkylating-agent" id="alkylatingAgent" transform="translate(100,100)">
+                                <circle cx="0" cy="0" r="12" fill="#c0392b"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">A
+                                    <title>Alkylating Agent</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Polymerase with hover tooltip -->
+                            <g class="polymerase" id="polymerase" transform="translate(160,400)">
+                                <rect x="-15" y="-10" width="30" height="20" rx="3" fill="#9b59b6"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">POL
+                                    <title>DNA Polymerase</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Cross-link -->
+                            <line class="cross-link" id="crossLink" x1="140" y1="350" x2="140" y2="400"/>
+                            
+                            <!-- Unwound section -->
+                            <g id="unwound-section">
+                                <path class="unwound-strand unwound1" id="unwound1" d="M120,370 L110,390 L100,430 L95,470 L90,510 L85,550" />
+                                <path class="unwound-strand unwound2" id="unwound2" d="M160,370 L170,390 L180,430 L185,470 L190,510 L195,550" />
+                                <g class="base-pair" id="unwound-bp1">
+                                    <line x1="100" y1="430" x2="180" y2="430" class="guanine"/>
+                                    <text x="135" y="428" class="base-text guanine">G</text>
+                                    <text x="145" y="432" class="base-text cytosine">C</text>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <!-- Explanation box -->
+                    <div class="explanation-box" id="alkylationExplanation">
+                        <h4>Normal DNA Structure</h4>
+                        <p>The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G).</p>
+                    </div>
+                    
+                    <div class="step-navigation">
+                        <button class="control-btn" id="prev-step">Previous</button>
+                        <button class="control-btn" id="next-step">Next</button>
+                        <button class="control-btn" id="reset-alkylation">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DNA Replication and Cross-Link Effects -->
+            <div class="interactive-module">
+                <h3>DNA Replication and Cross-Link Effects</h3>
+                <div class="module-content">
+                    <div class="step-indicator" id="replicationStepIndicator">Step 1: Replication Initiation</div>
+                    <div class="replication-container">
+                        <svg viewBox="0 0 600 600" id="replication-svg">
+                            <!-- Parent DNA strands -->
+                            <path class="backbone backbone1" id="rep-backbone1" d="M100,100 L300,100" />
+                            <path class="backbone backbone2" id="rep-backbone2" d="M100,150 L300,150" />
+                            
+                            <!-- Base pairs -->
+                            <g class="base-pair" id="rep-bp1">
+                                <line x1="100" y1="100" x2="100" y2="150" class="adenine"/>
+                                <text x="95" y="125" class="base-text adenine">A</text>
+                                <text x="105" y="125" class="base-text thymine">T</text>
+                            </g>
+                            <g class="base-pair" id="rep-bp2">
+                                <line x1="150" y1="100" x2="150" y2="150" class="cytosine"/>
+                                <text x="145" y="125" class="base-text cytosine">C</text>
+                                <text x="155" y="125" class="base-text guanine">G</text>
+                            </g>
+                            <g class="base-pair" id="rep-bp3">
+                                <line x1="200" y1="100" x2="200" y2="150" class="guanine"/>
+                                <text x="195" y="125" class="base-text guanine">G</text>
+                                <text x="205" y="125" class="base-text cytosine">C</text>
+                            </g>
+                            <g class="base-pair" id="rep-bp4">
+                                <line x1="250" y1="100" x2="250" y2="150" class="thymine"/>
+                                <text x="245" y="125" class="base-text thymine">T</text>
+                                <text x="255" y="125" class="base-text adenine">A</text>
+                            </g>
+                            <g class="base-pair" id="rep-bp5">
+                                <line x1="300" y1="100" x2="300" y2="150" class="adenine"/>
+                                <text x="295" y="125" class="base-text adenine">A</text>
+                                <text x="305" y="125" class="base-text thymine">T</text>
+                            </g>
+                            
+                            <!-- Replication fork -->
+                            <g class="replication-fork" id="replicationFork" transform="translate(200,125)">
+                                <path d="M0,-25 L50,0 L0,25 Z" fill="#FF9F1C" opacity="0" />
+                            </g>
+                            
+                            <!-- Helicase -->
+                            <g class="helicase-rep" id="helicaseRep" transform="translate(200,125)" opacity="0">
+                                <circle cx="0" cy="0" r="15" fill="#FF9F1C"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">H
+                                    <title>Helicase: Unwinds DNA</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Polymerase -->
+                            <g class="polymerase-rep" id="polymeraseRep" transform="translate(250,100)" opacity="0">
+                                <rect x="-15" y="-10" width="30" height="20" rx="3" fill="#9b59b6"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">POL
+                                    <title>DNA Polymerase: Synthesizes new DNA</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Leading strand -->
+                            <path class="new-strand" id="leadingStrand" d="M200,100 L250,100" stroke="#0066cc" stroke-width="3" fill="none" stroke-dasharray="5,2" opacity="0"/>
+                            
+                            <!-- Lagging strand -->
+                            <path class="new-strand" id="laggingStrand" d="M200,150 L250,150" stroke="#cc3300" stroke-width="3" fill="none" stroke-dasharray="5,2" opacity="0"/>
+                            
+                            <!-- Okazaki fragments -->
+                            <g class="okazaki-fragment" id="okazaki1" opacity="0" transform="translate(225,150)">
+                                <rect x="-20" y="-5" width="40" height="10" fill="#FFD166" rx="2"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="8" fill="black" dy="3">Okazaki</text>
+                            </g>
+                            
+                            <!-- Alkylating agent -->
+                            <g class="alkylating-agent-rep" id="alkylatingAgentRep" transform="translate(350,125)" opacity="0">
+                                <circle cx="0" cy="0" r="12" fill="#c0392b"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">A
+                                    <title>Alkylating Agent</title>
+                                </text>
+                            </g>
+                            
+                            <!-- Cross-link -->
+                            <line class="cross-link-rep" id="crossLinkRep" x1="200" y1="125" x2="200" y2="175" opacity="0"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Explanation box -->
+                    <div class="explanation-box" id="replicationExplanation">
+                        <h4>Replication Initiation</h4>
+                        <p>DNA replication begins at specific origins where the DNA double helix is unwound by helicase.</p>
+                    </div>
+                    
+                    <div class="step-navigation">
+                        <button class="control-btn" id="prev-replication">Previous</button>
+                        <button class="control-btn" id="next-replication">Next</button>
+                        <button class="control-btn" id="reset-replication">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alkylating Agent Mechanisms -->
+            <div class="interactive-module">
+                <h3>Alkylating Agent Mechanisms</h3>
+                <div class="module-content">
+                    <div class="step-indicator" id="mechanismStepIndicator">Nitrogen Mustard Mechanism</div>
+                    <div class="drug-selector">
+                        <button class="drug-btn active" data-drug="nitrogen-mustard">
+                            <span class="drug-icon">NM</span>
+                            <span class="drug-name">Nitrogen Mustard</span>
+                        </button>
+                        <button class="drug-btn" data-drug="nitrosourea">
+                            <span class="drug-icon">NU</span>
+                            <span class="drug-name">Nitrosourea</span>
+                        </button>
+                        <button class="drug-btn" data-drug="alkyl-sulfonate">
+                            <span class="drug-icon">AS</span>
+                            <span class="drug-name">Alkyl Sulfonate</span>
+                        </button>
+                    </div>
+                    <div class="mechanism-visualization">
+                        <div class="molecule-container" id="mechanismAnimation">
+                            <!-- Content will be dynamically generated -->
+                        </div>
+                        
+                        <!-- Explanation box -->
+                        <div class="explanation-box" id="mechanismExplanation">
+                            <h4>Nitrogen Mustard Mechanism</h4>
+                            <p>Nitrogen mustards form reactive aziridinium ions that alkylate DNA at the N7 position of guanine, causing cross-linking between DNA strands.</p>
+                        </div>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="control-btn" id="prev-mechanism">Previous</button>
+                        <button class="control-btn" id="next-mechanism">Next</button>
+                        <button class="control-btn" id="reset-mechanism">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Declare svgNS once
+            const svgNS = "http://www.w3.org/2000/svg";
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            
+            // Toggle sidebar
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+            });
+            
+            // Load saved state
+            if (localStorage.getItem('sidebarExpanded') === 'true') {
+                sidebar.classList.add('active');
+            }
+
+            // Handle submenu toggling
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+            hasSubmenuItems.forEach(item => {
+                const link = item.querySelector('a');
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    item.classList.toggle('active');
+                });
+            });
+            // DNA Alkylation Visualization
+            const stepIndicator = document.getElementById('stepIndicator');
+            const explanationBox = document.getElementById('alkylationExplanation');
+            let currentStep = 1;
+            const alkylationSteps = 6;
+            const alkylationExplanations = [
+                {
+                    title: "Normal DNA Structure",
+                    content: "The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G)."
+                },
+                {
+                    title: "Replication Fork Formation",
+                    content: "During replication, the DNA double helix begins to unwind, forming a Y-shaped replication fork where new DNA will be synthesized."
+                },
+                {
+                    title: "Helicase Unwinds DNA",
+                    content: "The helicase enzyme (H) breaks hydrogen bonds between base pairs, separating the DNA strands to create a single-stranded template."
+                },
+                {
+                    title: "Alkylating Agent Approaches",
+                    content: "Alkylating agents (A) are reactive compounds that can form covalent bonds with DNA, particularly targeting the N7 position of guanine."
+                },
+                {
+                    title: "DNA Alkylation Occurs",
+                    content: "The alkylating agent forms a covalent bond with guanine (red highlight), creating a bulky lesion that distorts the DNA structure."
+                },
+                {
+                    title: "Replication Blocked by Cross-Link",
+                    content: "The alkylated guanine prevents DNA polymerase (POL) from replicating past the lesion, leading to replication fork stalling and potential DNA breaks."
+                }
+            ];
+
+            function updateAlkylationVisualization() {
+                // Reset all elements
+                document.querySelectorAll('.base-text').forEach(t => t.classList.remove('show-text'));
+                document.querySelectorAll('.base-pair').forEach(bp => bp.style.opacity = '1');
+                document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '0');
+                document.getElementById('unwound-bp1').style.opacity = '0';
+                helicase.style.opacity = '0';
+                alkylatingAgent.style.opacity = '0';
+                alkylatingAgent.style.animation = 'none';
+                polymerase.style.opacity = '0';
+                crossLink.style.opacity = '0';
+                document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370');
+                document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370');
+                document.querySelector('#unwound-bp1 line').classList.remove('alkylated');
+
+                // Show base letters
+                document.querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+
+                // Update visualization based on current step
+                switch(currentStep) {
+                    case 1:
+                        stepIndicator.textContent = "Step 1: Normal DNA Structure";
+                        break;
+                    case 2:
+                        stepIndicator.textContent = "Step 2: Replication Fork Forms";
+                        ['bp7', 'bp8', 'bp9', 'bp10'].forEach(id => document.getElementById(id).style.opacity = '0.3');
+                        break;
+                    case 3:
+                        stepIndicator.textContent = "Step 3: Helicase Unwinds DNA";
+                        helicase.style.opacity = '1';
+                        document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
+                        document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 L120,370');
+                        document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 L160,370');
+                        break;
+                    case 4:
+                        stepIndicator.textContent = "Step 4: Alkylating Agent Approaches";
+                        helicase.style.opacity = '1';
+                        document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
+                        alkylatingAgent.style.opacity = '1';
+                        alkylatingAgent.style.animation = 'agent-move 2s forwards';
+                        document.getElementById('unwound-bp1').style.opacity = '1';
+                        document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                        break;
+                    case 5:
+                        stepIndicator.textContent = "Step 5: DNA Alkylation Occurs";
+                        helicase.style.opacity = '1';
+                        alkylatingAgent.style.opacity = '1';
+                        document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
+                        document.getElementById('unwound-bp1').style.opacity = '1';
+                        document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                        document.querySelector('#unwound-bp1 line').classList.add('alkylated');
+                        crossLink.style.opacity = '1';
+                        break;
+                    case 6:
+                        stepIndicator.textContent = "Step 6: Replication Blocked by Cross-Link";
+                        helicase.style.opacity = '1';
+                        alkylatingAgent.style.opacity = '1';
+                        polymerase.style.opacity = '1';
+                        document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
+                        document.getElementById('unwound-bp1').style.opacity = '1';
+                        document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                        document.querySelector('#unwound-bp1 line').classList.add('alkylated');
+                        crossLink.style.opacity = '1';
+                        break;
+                }
+
+                // Update explanation
+                const explanation = alkylationExplanations[currentStep - 1];
+                explanationBox.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
+            }
+
+            // DNA Replication Visualization
+            const replicationStepIndicator = document.getElementById('replicationStepIndicator');
+            const replicationExplanation = document.getElementById('replicationExplanation');
+            let currentReplicationStep = 1;
+            const replicationSteps = 6;
+            const replicationExplanations = [
+                {
+                    title: "Replication Initiation",
+                    content: "DNA replication begins at specific origins where the DNA double helix is unwound by helicase."
+                },
+                {
+                    title: "Replication Fork Formation",
+                    content: "The helicase enzyme (H) separates the DNA strands, creating a replication fork where new DNA will be synthesized."
+                },
+                {
+                    title: "Leading Strand Synthesis",
+                    content: "DNA polymerase (POL) synthesizes the leading strand continuously in the 5' to 3' direction."
+                },
+                {
+                    title: "Lagging Strand Synthesis",
+                    content: "The lagging strand is synthesized discontinuously as Okazaki fragments, each initiated by an RNA primer."
+                },
+                {
+                    title: "Alkylating Agent Attack",
+                    content: "An alkylating agent (A) forms a covalent bond with guanine, creating a DNA lesion (red highlight)."
+                },
+                {
+                    title: "Replication Block",
+                    content: "The DNA lesion blocks polymerase progression, causing replication fork collapse and potential DNA breaks."
+                }
+            ];
+
+            function updateReplicationVisualization() {
+                // Reset all elements
+                document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '0');
+                document.getElementById('helicaseRep').setAttribute('opacity', '0');
+                document.getElementById('polymeraseRep').setAttribute('opacity', '0');
+                document.getElementById('leadingStrand').setAttribute('opacity', '0');
+                document.getElementById('laggingStrand').setAttribute('opacity', '0');
+                document.getElementById('okazaki1').setAttribute('opacity', '0');
+                document.getElementById('alkylatingAgentRep').setAttribute('opacity', '0');
+                document.getElementById('crossLinkRep').setAttribute('opacity', '0');
+                document.querySelectorAll('.base-pair line').forEach(line => line.classList.remove('alkylated'));
+
+                // Update visualization based on current step
+                switch(currentReplicationStep) {
+                    case 1:
+                        replicationStepIndicator.textContent = "Step 1: Replication Initiation";
+                        break;
+                    case 2:
+                        replicationStepIndicator.textContent = "Step 2: Replication Fork Formation";
+                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
+                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
+                        break;
+                    case 3:
+                        replicationStepIndicator.textContent = "Step 3: Leading Strand Synthesis";
+                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
+                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
+                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
+                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
+                        break;
+                    case 4:
+                        replicationStepIndicator.textContent = "Step 4: Lagging Strand Synthesis";
+                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
+                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
+                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
+                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
+                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
+                        document.getElementById('okazaki1').setAttribute('opacity', '1');
+                        break;
+                    case 5:
+                        replicationStepIndicator.textContent = "Step 5: Alkylating Agent Attack";
+                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
+                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
+                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
+                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
+                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
+                        document.getElementById('okazaki1').setAttribute('opacity', '1');
+                        document.getElementById('alkylatingAgentRep').setAttribute('opacity', '1');
+                        document.getElementById('rep-bp3').querySelector('line').classList.add('alkylated');
+                        break;
+                    case 6:
+                        replicationStepIndicator.textContent = "Step 6: Replication Block";
+                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
+                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
+                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
+                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
+                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
+                        document.getElementById('okazaki1').setAttribute('opacity', '1');
+                        document.getElementById('alkylatingAgentRep').setAttribute('opacity', '1');
+                        document.getElementById('crossLinkRep').setAttribute('opacity', '1');
+                        document.getElementById('rep-bp3').querySelector('line').classList.add('alkylated');
+                        break;
+                }
+
+                // Update explanation
+                const explanation = replicationExplanations[currentReplicationStep - 1];
+                replicationExplanation.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
+            }
+
+            // Add 5' and 3' labels to the DNA strands
+            const replicationSvg = document.getElementById('replication-svg');
+
+            const label5Prime = document.createElementNS(svgNS, "text");
+            label5Prime.setAttribute("x", "90");
+            label5Prime.setAttribute("y", "90");
+            label5Prime.setAttribute("fill", "#333");
+            label5Prime.setAttribute("font-size", "12");
+            label5Prime.textContent = "5'";
+            replicationSvg.appendChild(label5Prime);
+
+            const label3Prime = document.createElementNS(svgNS, "text");
+            label3Prime.setAttribute("x", "310");
+            label3Prime.setAttribute("y", "90");
+            label3Prime.setAttribute("fill", "#333");
+            label3Prime.setAttribute("font-size", "12");
+            label3Prime.textContent = "3'";
+            replicationSvg.appendChild(label3Prime);
+
+            // Navigation controls
+            document.getElementById('prev-replication').addEventListener('click', () => {
+                if (currentReplicationStep > 1) {
+                    currentReplicationStep--;
+                    updateReplicationVisualization();
+                }
+            });
+
+            document.getElementById('next-replication').addEventListener('click', () => {
+                if (currentReplicationStep < replicationSteps) {
+                    currentReplicationStep++;
+                    updateReplicationVisualization();
+                }
+            });
+
+            document.getElementById('reset-replication').addEventListener('click', () => {
+                currentReplicationStep = 1;
+                updateReplicationVisualization();
+            });
+
+            // Alkylating Agent Mechanisms
+            const mechanismStepIndicator = document.getElementById('mechanismStepIndicator');
+            const mechanismAnimation = document.getElementById('mechanismAnimation');
+            const mechanismExplanation = document.getElementById('mechanismExplanation');
+            let currentMechanism = 'nitrogen-mustard';
+            let currentMechanismStep = 1;
+            const mechanismSteps = {
+                'nitrogen-mustard': 3,
+                'nitrosourea': 3,
+                'alkyl-sulfonate': 3
+            };
+            const mechanismExplanations = {
+                'nitrogen-mustard': [
+                    {
+                        title: "Nitrogen Mustard Structure",
+                        content: "Nitrogen mustards contain two reactive chloroethyl groups that can form aziridinium ions."
+                    },
+                    {
+                        title: "Guanine N7 Alkylation",
+                        content: "The aziridinium ion reacts with the N7 position of guanine (highlighted in red), forming a covalent bond."
+                    },
+                    {
+                        title: "DNA Cross-Linking",
+                        content: "The bifunctional nature of nitrogen mustards allows them to form interstrand cross-links between guanines on opposite DNA strands."
+                    }
+                ],
+                'nitrosourea': [
+                    {
+                        title: "Nitrosourea Structure",
+                        content: "Nitrosoureas contain a reactive nitroso group that decomposes to form alkylating species."
+                    },
+                    {
+                        title: "Blood-Brain Barrier Penetration",
+                        content: "Nitrosoureas are lipophilic and can cross the blood-brain barrier (blue dashed line), making them effective against brain tumors."
+                    },
+                    {
+                        title: "DNA Alkylation",
+                        content: "The reactive species alkylates DNA at multiple sites, including the O6 position of guanine, which is particularly mutagenic."
+                    }
+                ],
+                'alkyl-sulfonate': [
+                    {
+                        title: "Alkyl Sulfonate Structure",
+                        content: "Alkyl sulfonates like busulfan contain reactive sulfonate ester groups that can transfer alkyl groups."
+                    },
+                    {
+                        title: "Guanine N7 Alkylation",
+                        content: "The compound reacts preferentially with the N7 position of guanine (highlighted in red), similar to nitrogen mustards."
+                    },
+                    {
+                        title: "Cell Cycle Specificity",
+                        content: "Alkyl sulfonates are particularly effective against cells in the G1 phase of the cell cycle."
+                    }
+                ]
+            };
+
+            function updateMechanismVisualization() {
+                // Clear previous animation
+                mechanismAnimation.innerHTML = '';
+                
+                // Create SVG container
+                const svgNS = "http://www.w3.org/2000/svg";
+                const svg = document.createElementNS(svgNS, "svg");
+                svg.setAttribute("viewBox", "0 0 600 300");
+                svg.setAttribute("width", "100%");
+                svg.setAttribute("height", "100%");
+                
+                // Add content based on current mechanism and step
+                switch(currentMechanism) {
+                    case 'nitrogen-mustard':
+                        mechanismStepIndicator.textContent = `Nitrogen Mustard: Step ${currentMechanismStep}`;
+                        
+                        if (currentMechanismStep === 1) {
+                            // Show nitrogen mustard structure
+                            const molecule = document.createElementNS(svgNS, "g");
+                            molecule.setAttribute("transform", "translate(300,150)");
+                            
+                            // Central nitrogen
+                            const nitrogen = document.createElementNS(svgNS, "circle");
+                            nitrogen.setAttribute("cx", "0");
+                            nitrogen.setAttribute("cy", "0");
+                            nitrogen.setAttribute("r", "20");
+                            nitrogen.setAttribute("fill", "#9C27B0");
+                            molecule.appendChild(nitrogen);
+                            
+                            const nText = document.createElementNS(svgNS, "text");
+                            nText.setAttribute("x", "0");
+                            nText.setAttribute("y", "0");
+                            nText.setAttribute("text-anchor", "middle");
+                            nText.setAttribute("dy", "5");
+                            nText.setAttribute("fill", "white");
+                            nText.setAttribute("font-size", "12");
+                            nText.textContent = "N";
+                            molecule.appendChild(nText);
+                            
+                            // Chloroethyl groups
+                            for (let i = 0; i < 2; i++) {
+                                const angle = i * Math.PI;
+                                const x = 40 * Math.cos(angle);
+                                const y = 40 * Math.sin(angle);
+                                
+                                const bond = document.createElementNS(svgNS, "line");
+                                bond.setAttribute("x1", "0");
+                                bond.setAttribute("y1", "0");
+                                bond.setAttribute("x2", x);
+                                bond.setAttribute("y2", y);
+                                bond.setAttribute("stroke", "#9C27B0");
+                                bond.setAttribute("stroke-width", "3");
+                                molecule.appendChild(bond);
+                                
+                                const ch2 = document.createElementNS(svgNS, "circle");
+                                ch2.setAttribute("cx", x);
+                                ch2.setAttribute("cy", y);
+                                ch2.setAttribute("r", "15");
+                                ch2.setAttribute("fill", "#9C27B0");
+                                molecule.appendChild(ch2);
+                                
+                                const ch2Text = document.createElementNS(svgNS, "text");
+                                ch2Text.setAttribute("x", x);
+                                ch2Text.setAttribute("y", y);
+                                ch2Text.setAttribute("text-anchor", "middle");
+                                ch2Text.setAttribute("dy", "5");
+                                ch2Text.setAttribute("fill", "white");
+                                ch2Text.setAttribute("font-size", "10");
+                                ch2Text.textContent = "CH₂Cl";
+                                molecule.appendChild(ch2Text);
+                            }
+                            
+                            svg.appendChild(molecule);
+                        }
+                        else if (currentMechanismStep === 2) {
+                            // Show guanine with highlighted N7
+                            const dna = document.createElementNS(svgNS, "g");
+                            dna.setAttribute("transform", "translate(150,150)");
+                            
+                            // Guanine structure
+                            const guanine = document.createElementNS(svgNS, "path");
+                            guanine.setAttribute("d", "M0,0 L30,0 L40,20 L30,40 L0,40 L-10,20 Z");
+                            guanine.setAttribute("fill", "#118AB2");
+                            guanine.setAttribute("stroke", "#118AB2");
+                            guanine.setAttribute("stroke-width", "2");
+                            dna.appendChild(guanine);
+                            
+                            // N7 position
+                            const n7 = document.createElementNS(svgNS, "circle");
+                            n7.setAttribute("cx", "25");
+                            n7.setAttribute("cy", "15");
+                            n7.setAttribute("r", "8");
+                            n7.setAttribute("class", "n7-highlight");
+                            dna.appendChild(n7);
+                            
+                            const n7Text = document.createElementNS(svgNS, "text");
+                            n7Text.setAttribute("x", "25");
+                            n7Text.setAttribute("y", "15");
+                            n7Text.setAttribute("text-anchor", "middle");
+                            n7Text.setAttribute("dy", "3");
+                            n7Text.setAttribute("fill", "white");
+                            n7Text.setAttribute("font-size", "8");
+                            n7Text.setAttribute("font-weight", "bold");
+                            n7Text.textContent = "N7";
+                            dna.appendChild(n7Text);
+                            
+                            // Guanine label
+                            const gText = document.createElementNS(svgNS, "text");
+                            gText.setAttribute("x", "15");
+                            gText.setAttribute("y", "60");
+                            gText.setAttribute("text-anchor", "middle");
+                            gText.setAttribute("fill", "#118AB2");
+                            gText.setAttribute("font-size", "16");
+                            gText.setAttribute("font-weight", "bold");
+                            gText.textContent = "Guanine";
+                            dna.appendChild(gText);
+                            
+                            // Aziridinium ion
+                            const aziridinium = document.createElementNS(svgNS, "g");
+                            aziridinium.setAttribute("transform", "translate(350,150)");
+                            
+                            const ring = document.createElementNS(svgNS, "circle");
+                            ring.setAttribute("cx", "0");
+                            ring.setAttribute("cy", "0");
+                            ring.setAttribute("r", "20");
+                            ring.setAttribute("fill", "#9C27B0");
+                            aziridinium.appendChild(ring);
+                            
+                            const aText = document.createElementNS(svgNS, "text");
+                            aText.setAttribute("x", "0");
+                            aText.setAttribute("y", "0");
+                            aText.setAttribute("text-anchor", "middle");
+                            aText.setAttribute("dy", "5");
+                            aText.setAttribute("fill", "white");
+                            aText.setAttribute("font-size", "12");
+                            aText.textContent = "Azi";
+                            aziridinium.appendChild(aText);
+                            
+                            svg.appendChild(dna);
+                            svg.appendChild(aziridinium);
+                            
+                            // Arrow between them
+                            const arrow = document.createElementNS(svgNS, "path");
+                            arrow.setAttribute("d", "M180,150 L320,150");
+                            arrow.setAttribute("stroke", "#333");
+                            arrow.setAttribute("stroke-width", "2");
+                            arrow.setAttribute("fill", "none");
+                            arrow.setAttribute("marker-end", "url(#arrowhead)");
+                            svg.appendChild(arrow);
+                        }
+                        else if (currentMechanismStep === 3) {
+                            // Show cross-linked DNA
+                            const dna1 = document.createElementNS(svgNS, "g");
+                            dna1.setAttribute("transform", "translate(150,100)");
+                            
+                            // DNA strand 1
+                            const backbone1 = document.createElementNS(svgNS, "path");
+                            backbone1.setAttribute("d", "M0,0 L200,0");
+                            backbone1.setAttribute("stroke", "#0066cc");
+                            backbone1.setAttribute("stroke-width", "3");
+                            backbone1.setAttribute("fill", "none");
+                            dna1.appendChild(backbone1);
+                            
+                            // Guanine with alkylation
+                            const g1 = document.createElementNS(svgNS, "path");
+                            g1.setAttribute("d", "M100,-20 L120,-20 L130,0 L120,20 L100,20 L90,0 Z");
+                            g1.setAttribute("fill", "#c0392b");
+                            g1.setAttribute("stroke", "#c0392b");
+                            g1.setAttribute("stroke-width", "2");
+                            dna1.appendChild(g1);
+                            
+                            const g1Text = document.createElementNS(svgNS, "text");
+                            g1Text.setAttribute("x", "110");
+                            g1Text.setAttribute("y", "0");
+                            g1Text.setAttribute("text-anchor", "middle");
+                            g1Text.setAttribute("dy", "3");
+                            g1Text.setAttribute("fill", "white");
+                            g1Text.setAttribute("font-size", "8");
+                            g1Text.textContent = "G";
+                            dna1.appendChild(g1Text);
+                            
+                            // DNA strand 2
+                            const dna2 = document.createElementNS(svgNS, "g");
+                            dna2.setAttribute("transform", "translate(150,200)");
+                            
+                            const backbone2 = document.createElementNS(svgNS, "path");
+                            backbone2.setAttribute("d", "M0,0 L200,0");
+                            backbone2.setAttribute("stroke", "#cc3300");
+                            backbone2.setAttribute("stroke-width", "3");
+                            backbone2.setAttribute("fill", "none");
+                            dna2.appendChild(backbone2);
+                            
+                            // Guanine with alkylation
+                            const g2 = document.createElementNS(svgNS, "path");
+                            g2.setAttribute("d", "M100,-20 L120,-20 L130,0 L120,20 L100,20 L90,0 Z");
+                            g2.setAttribute("fill", "#c0392b");
+                            g2.setAttribute("stroke", "#c0392b");
+                            g2.setAttribute("stroke-width", "2");
+                            dna2.appendChild(g2);
+                            
+                            const g2Text = document.createElementNS(svgNS, "text");
+                            g2Text.setAttribute("x", "110");
+                            g2Text.setAttribute("y", "0");
+                            g2Text.setAttribute("text-anchor", "middle");
+                            g2Text.setAttribute("dy", "3");
+                            g2Text.setAttribute("fill", "white");
+                            g2Text.setAttribute("font-size", "8");
+                            g2Text.textContent = "G";
+                            dna2.appendChild(g2Text);
+                            
+                            // Cross-link
+                            const crossLink = document.createElementNS(svgNS, "line");
+                            crossLink.setAttribute("x1", "250");
+                            crossLink.setAttribute("y1", "100");
+                            crossLink.setAttribute("x2", "250");
+                            crossLink.setAttribute("y2", "200");
+                            crossLink.setAttribute("stroke", "#c0392b");
+                            crossLink.setAttribute("stroke-width", "2");
+                            crossLink.setAttribute("stroke-dasharray", "5,3");
+                            svg.appendChild(crossLink);
+                            
+                            svg.appendChild(dna1);
+                            svg.appendChild(dna2);
+                            
+                            // Polymerase blocked
+                            const pol = document.createElementNS(svgNS, "g");
+                            pol.setAttribute("transform", "translate(350,150)");
+                            
+                            const polRect = document.createElementNS(svgNS, "rect");
+                            polRect.setAttribute("x", "-20");
+                            polRect.setAttribute("y", "-15");
+                            polRect.setAttribute("width", "40");
+                            polRect.setAttribute("height", "30");
+                            polRect.setAttribute("rx", "3");
+                            polRect.setAttribute("fill", "#9b59b6");
+                            pol.appendChild(polRect);
+                            
+                            const polText = document.createElementNS(svgNS, "text");
+                            polText.setAttribute("x", "0");
+                            polText.setAttribute("y", "0");
+                            polText.setAttribute("text-anchor", "middle");
+                            polText.setAttribute("dy", "5");
+                            polText.setAttribute("fill", "white");
+                            polText.setAttribute("font-size", "10");
+                            polText.textContent = "POL";
+                            pol.appendChild(polText);
+                            
+                            svg.appendChild(pol);
+                            
+                            // Stop sign
+                            const stop = document.createElementNS(svgNS, "path");
+                            stop.setAttribute("d", "M400,120 L440,120 L460,150 L440,180 L400,180 L380,150 Z");
+                            stop.setAttribute("fill", "#c0392b");
+                            stop.setAttribute("stroke", "#c0392b");
+                            stop.setAttribute("stroke-width", "2");
+                            svg.appendChild(stop);
+                            
+                            const stopText = document.createElementNS(svgNS, "text");
+                            stopText.setAttribute("x", "420");
+                            stopText.setAttribute("y", "150");
+                            stopText.setAttribute("text-anchor", "middle");
+                            stopText.setAttribute("dy", "5");
+                            stopText.setAttribute("fill", "white");
+                            stopText.setAttribute("font-size", "12");
+                            stopText.setAttribute("font-weight", "bold");
+                            stopText.textContent = "STOP";
+                            svg.appendChild(stopText);
+                        }
+                        break;
+                    case 'nitrosourea':
+                        mechanismStepIndicator.textContent = `Nitrosourea: Step ${currentMechanismStep}`;
+                        
+                        if (currentMechanismStep === 1) {
+                            // Show nitrosourea structure
+                            const molecule = document.createElementNS(svgNS, "g");
+                            molecule.setAttribute("transform", "translate(300,150)");
+                            
+                            // Urea core
+                            const urea = document.createElementNS(svgNS, "path");
+                            urea.setAttribute("d", "M-30,-20 L30,-20 L40,0 L30,20 L-30,20 L-40,0 Z");
+                            urea.setAttribute("fill", "#2196F3");
+                            urea.setAttribute("stroke", "#2196F3");
+                            urea.setAttribute("stroke-width", "2");
+                            molecule.appendChild(urea);
+                            
+                            const ureaText = document.createElementNS(svgNS, "text");
+                            ureaText.setAttribute("x", "0");
+                            ureaText.setAttribute("y", "0");
+                            ureaText.setAttribute("text-anchor", "middle");
+                            ureaText.setAttribute("dy", "5");
+                            ureaText.setAttribute("fill", "white");
+                            ureaText.setAttribute("font-size", "10");
+                            ureaText.textContent = "Urea";
+                            molecule.appendChild(ureaText);
+                            
+                            // Nitroso group
+                            const nitroso = document.createElementNS(svgNS, "circle");
+                            nitroso.setAttribute("cx", "0");
+                            nitroso.setAttribute("cy", "-40");
+                            nitroso.setAttribute("r", "15");
+                            nitroso.setAttribute("fill", "#2196F3");
+                            molecule.appendChild(nitroso);
+                            
+                            const nitrosoText = document.createElementNS(svgNS, "text");
+                            nitrosoText.setAttribute("x", "0");
+                            nitrosoText.setAttribute("y", "-40");
+                            nitrosoText.setAttribute("text-anchor", "middle");
+                            nitrosoText.setAttribute("dy", "5");
+                            nitrosoText.setAttribute("fill", "white");
+                            nitrosoText.setAttribute("font-size", "8");
+                            nitrosoText.textContent = "NO";
+                            molecule.appendChild(nitrosoText);
+                            
+                            // Chloroethyl group
+                            const chloroethyl = document.createElementNS(svgNS, "circle");
+                            chloroethyl.setAttribute("cx", "0");
+                            chloroethyl.setAttribute("cy", "40");
+                            chloroethyl.setAttribute("r", "15");
+                            chloroethyl.setAttribute("fill", "#2196F3");
+                            molecule.appendChild(chloroethyl);
+                            
+                            const ceText = document.createElementNS(svgNS, "text");
+                            ceText.setAttribute("x", "0");
+                            ceText.setAttribute("y", "40");
+                            ceText.setAttribute("text-anchor", "middle");
+                            ceText.setAttribute("dy", "5");
+                            ceText.setAttribute("fill", "white");
+                            ceText.setAttribute("font-size", "8");
+                            ceText.textContent = "CH₂Cl";
+                            molecule.appendChild(ceText);
+                            
+                            // Bonds
+                            const bond1 = document.createElementNS(svgNS, "line");
+                            bond1.setAttribute("x1", "0");
+                            bond1.setAttribute("y1", "-20");
+                            bond1.setAttribute("x2", "0");
+                            bond1.setAttribute("y2", "-25");
+                            bond1.setAttribute("stroke", "#2196F3");
+                            bond1.setAttribute("stroke-width", "3");
+                            molecule.appendChild(bond1);
+                            
+                            const bond2 = document.createElementNS(svgNS, "line");
+                            bond2.setAttribute("x1", "0");
+                            bond2.setAttribute("y1", "20");
+                            bond2.setAttribute("x2", "0");
+                            bond2.setAttribute("y2", "25");
+                            bond2.setAttribute("stroke", "#2196F3");
+                            bond2.setAttribute("stroke-width", "3");
+                            molecule.appendChild(bond2);
+                            
+                            svg.appendChild(molecule);
+                        }
+                        else if (currentMechanismStep === 2) {
+                            // Show blood-brain barrier penetration
+                            const bbb = document.createElementNS(svgNS, "path");
+                            bbb.setAttribute("d", "M50,150 L550,150");
+                            bbb.setAttribute("class", "bbb-animation");
+                            bbb.setAttribute("fill", "none");
+                            svg.appendChild(bbb);
+                            
+                            const bbbText = document.createElementNS(svgNS, "text");
+                            bbbText.setAttribute("x", "300");
+                            bbbText.setAttribute("y", "130");
+                            bbbText.setAttribute("text-anchor", "middle");
+                            bbbText.setAttribute("fill", "#1a2980");
+                            bbbText.setAttribute("font-size", "14");
+                            bbbText.setAttribute("font-weight", "bold");
+                            bbbText.textContent = "Blood-Brain Barrier";
+                            svg.appendChild(bbbText);
+                            
+                            // Nitrosourea molecule crossing
+                            const molecule = document.createElementNS(svgNS, "g");
+                            molecule.setAttribute("transform", "translate(300,150)");
+                            
+                            const urea = document.createElementNS(svgNS, "circle");
+                            urea.setAttribute("cx", "0");
+                            urea.setAttribute("cy", "0");
+                            urea.setAttribute("r", "20");
+                            urea.setAttribute("fill", "#2196F3");
+                            molecule.appendChild(urea);
+                            
+                            const ureaText = document.createElementNS(svgNS, "text");
+                            ureaText.setAttribute("x", "0");
+                            ureaText.setAttribute("y", "0");
+                            ureaText.setAttribute("text-anchor", "middle");
+                            ureaText.setAttribute("dy", "5");
+                            ureaText.setAttribute("fill", "white");
+                            ureaText.setAttribute("font-size", "10");
+                            ureaText.textContent = "NU";
+                            molecule.appendChild(ureaText);
+                            
+                            if (currentMechanismStep === 2) {
+                                molecule.setAttribute("transform", "translate(300,100)");
+                                const anim = document.createElementNS(svgNS, "animateTransform");
+                                anim.setAttribute("attributeName", "transform");
+                                anim.setAttribute("type", "translate");
+                                anim.setAttribute("from", "300,100");
+                                anim.setAttribute("to", "300,200");
+                                anim.setAttribute("dur", "3s");
+                                anim.setAttribute("repeatCount", "indefinite");
+                                molecule.appendChild(anim);
+                            }
+                            
+                            svg.appendChild(molecule);
+                            
+                            // Brain illustration
+                            const brain = document.createElementNS(svgNS, "path");
+                            brain.setAttribute("d", "M400,50 Q450,30 500,50 Q550,80 500,120 Q450,150 400,120 Q350,150 300,120 Q250,150 200,120 Q150,150 100,120 Q50,80 100,50 Q150,30 200,50");
+                            brain.setAttribute("fill", "none");
+                            brain.setAttribute("stroke", "#9b59b6");
+                            brain.setAttribute("stroke-width", "3");
+                            svg.appendChild(brain);
+                            
+                            const brainText = document.createElementNS(svgNS, "text");
+                            brainText.setAttribute("x", "300");
+                            brainText.setAttribute("y", "80");
+                            brainText.setAttribute("text-anchor", "middle");
+                            brainText.setAttribute("fill", "#9b59b6");
+                            brainText.setAttribute("font-size", "14");
+                            brainText.setAttribute("font-weight", "bold");
+                            brainText.textContent = "Brain";
+                            svg.appendChild(brainText);
+                        }
+                        else if (currentMechanismStep === 3) {
+                            // Show DNA alkylation
+                            const dna = document.createElementNS(svgNS, "g");
+                            dna.setAttribute("transform", "translate(150,150)");
+                            
+                            // Guanine structure
+                            const guanine = document.createElementNS(svgNS, "path");
+                            guanine.setAttribute("d", "M0,0 L30,0 L40,20 L30,40 L0,40 L-10,20 Z");
+                            guanine.setAttribute("fill", "#118AB2");
+                            guanine.setAttribute("stroke", "#118AB2");
+                            guanine.setAttribute("stroke-width", "2");
+                            dna.appendChild(guanine);
+                            
+                            // O6 position
+                            const o6 = document.createElementNS(svgNS, "circle");
+                            o6.setAttribute("cx", "5");
+                            o6.setAttribute("cy", "5");
+                            o6.setAttribute("r", "8");
+                            o6.setAttribute("class", "n7-highlight");
+                            dna.appendChild(o6);
+                            
+                            const o6Text = document.createElementNS(svgNS, "text");
+                            o6Text.setAttribute("x", "5");
+                            o6Text.setAttribute("y", "5");
+                            o6Text.setAttribute("text-anchor", "middle");
+                            o6Text.setAttribute("dy", "3");
+                            o6Text.setAttribute("fill", "white");
+                            o6Text.setAttribute("font-size", "8");
+                            o6Text.setAttribute("font-weight", "bold");
+                            o6Text.textContent = "O6";
+                            dna.appendChild(o6Text);
+                            
+                            // Guanine label
+                            const gText = document.createElementNS(svgNS, "text");
+                            gText.setAttribute("x", "15");
+                            gText.setAttribute("y", "60");
+                            gText.setAttribute("text-anchor", "middle");
+                            gText.setAttribute("fill", "#118AB2");
+                            gText.setAttribute("font-size", "16");
+                            gText.setAttribute("font-weight", "bold");
+                            gText.textContent = "Guanine";
+                            dna.appendChild(gText);
+                            
+                            // Alkylation product
+                            const alkyl = document.createElementNS(svgNS, "g");
+                            alkyl.setAttribute("transform", "translate(350,150)");
+                            
+                            const alkylGuanine = document.createElementNS(svgNS, "path");
+                            alkylGuanine.setAttribute("d", "M0,0 L30,0 L40,20 L30,40 L0,40 L-10,20 Z");
+                            alkylGuanine.setAttribute("fill", "#c0392b");
+                            alkylGuanine.setAttribute("stroke", "#c0392b");
+                            alkylGuanine.setAttribute("stroke-width", "2");
+                            alkyl.appendChild(alkylGuanine);
+                            
+                            const alkylGroup = document.createElementNS(svgNS, "circle");
+                            alkylGroup.setAttribute("cx", "5");
+                            alkylGroup.setAttribute("cy", "5");
+                            alkylGroup.setAttribute("r", "10");
+                            alkylGroup.setAttribute("fill", "#2196F3");
+                            alkyl.appendChild(alkylGroup);
+                            
+                            const alkylText = document.createElementNS(svgNS, "text");
+                            alkylText.setAttribute("x", "5");
+                            alkylText.setAttribute("y", "5");
+                            alkylText.setAttribute("text-anchor", "middle");
+                            alkylText.setAttribute("dy", "3");
+                            alkylText.setAttribute("fill", "white");
+                            alkylText.setAttribute("font-size", "8");
+                            alkylText.textContent = "Alkyl";
+                            alkyl.appendChild(alkylText);
+                            
+                            const alkylLabel = document.createElementNS(svgNS, "text");
+                            alkylLabel.setAttribute("x", "15");
+                            alkylLabel.setAttribute("y", "60");
+                            alkylLabel.setAttribute("text-anchor", "middle");
+                            alkylLabel.setAttribute("fill", "#c0392b");
+                            alkylLabel.setAttribute("font-size", "16");
+                            alkylLabel.setAttribute("font-weight", "bold");
+                            alkylLabel.textContent = "O6-Alkyl-G";
+                            alkyl.appendChild(alkylLabel);
+                            
+                            svg.appendChild(dna);
+                            svg.appendChild(alkyl);
+                            
+                            // Arrow between them
+                            const arrow = document.createElementNS(svgNS, "path");
+                            arrow.setAttribute("d", "M180,150 L320,150");
+                            arrow.setAttribute("stroke", "#333");
+                            arrow.setAttribute("stroke-width", "2");
+                            arrow.setAttribute("fill", "none");
+                            arrow.setAttribute("marker-end", "url(#arrowhead)");
+                            svg.appendChild(arrow);
+                            
+                            // Mismatch illustration
+                            const mismatch = document.createElementNS(svgNS, "g");
+                            mismatch.setAttribute("transform", "translate(450,150)");
+                            
+                            const dnaStrand = document.createElementNS(svgNS, "path");
+                            dnaStrand.setAttribute("d", "M0,-20 L100,-20 L110,0 L100,20 L0,20 L-10,0 Z");
+                            dnaStrand.setAttribute("fill", "#f5f7fa");
+                            dnaStrand.setAttribute("stroke", "#333");
+                            dnaStrand.setAttribute("stroke-width", "1");
+                            mismatch.appendChild(dnaStrand);
+                            
+                            const alkylG = document.createElementNS(svgNS, "path");
+                            alkylG.setAttribute("d", "M40,-15 L60,-15 L65,0 L60,15 L40,15 L35,0 Z");
+                            alkylG.setAttribute("fill", "#c0392b");
+                            alkylG.setAttribute("stroke", "#c0392b");
+                            alkylG.setAttribute("stroke-width", "1");
+                            mismatch.appendChild(alkylG);
+                            
+                            const tBase = document.createElementNS(svgNS, "path");
+                            tBase.setAttribute("d", "M40,5 L60,5 L65,20 L60,35 L40,35 L35,20 Z");
+                            tBase.setAttribute("fill", "#FFD166");
+                            tBase.setAttribute("stroke", "#FFD166");
+                            tBase.setAttribute("stroke-width", "1");
+                            mismatch.appendChild(tBase);
+                            
+                            const gText2 = document.createElementNS(svgNS, "text");
+                            gText2.setAttribute("x", "50");
+                            gText2.setAttribute("y", "0");
+                            gText2.setAttribute("text-anchor", "middle");
+                            gText2.setAttribute("dy", "3");
+                            gText2.setAttribute("fill", "white");
+                            gText2.setAttribute("font-size", "8");
+                            gText2.textContent = "G";
+                            mismatch.appendChild(gText2);
+                            
+                            const tText = document.createElementNS(svgNS, "text");
+                            tText.setAttribute("x", "50");
+                            tText.setAttribute("y", "20");
+                            tText.setAttribute("text-anchor", "middle");
+                            tText.setAttribute("dy", "3");
+                            tText.setAttribute("fill", "black");
+                            tText.setAttribute("font-size", "8");
+                            tText.textContent = "T";
+                            mismatch.appendChild(tText);
+                            
+                            const mismatchText = document.createElementNS(svgNS, "text");
+                            mismatchText.setAttribute("x", "50");
+                            mismatchText.setAttribute("y", "50");
+                            mismatchText.setAttribute("text-anchor", "middle");
+                            mismatchText.setAttribute("fill", "#333");
+                            mismatchText.setAttribute("font-size", "10");
+                            mismatchText.textContent = "G-T Mismatch";
+                            mismatch.appendChild(mismatchText);
+                            
+                            svg.appendChild(mismatch);
+                        }
+                        break;
+                    case 'alkyl-sulfonate':
+                        mechanismStepIndicator.textContent = `Alkyl Sulfonate: Step ${currentMechanismStep}`;
+                        
+                        if (currentMechanismStep === 1) {
+                            // Show alkyl sulfonate structure
+                            const molecule = document.createElementNS(svgNS, "g");
+                            molecule.setAttribute("transform", "translate(300,150)");
+                            
+                            // Sulfonate core
+                            const sulfonate = document.createElementNS(svgNS, "circle");
+                            sulfonate.setAttribute("cx", "0");
+                            sulfonate.setAttribute("cy", "0");
+                            sulfonate.setAttribute("r", "20");
+                            sulfonate.setAttribute("fill", "#4CAF50");
+                            molecule.appendChild(sulfonate);
+                            
+                            const sulfonateText = document.createElementNS(svgNS, "text");
+                            sulfonateText.setAttribute("x", "0");
+                            sulfonateText.setAttribute("y", "0");
+                            sulfonateText.setAttribute("text-anchor", "middle");
+                            sulfonateText.setAttribute("dy", "5");
+                            sulfonateText.setAttribute("fill", "white");
+                            sulfonateText.setAttribute("font-size", "10");
+                            sulfonateText.textContent = "SO₃";
+                            molecule.appendChild(sulfonateText);
+                            
+                            // Alkyl groups
+                            for (let i = 0; i < 2; i++) {
+                                const angle = i * Math.PI;
+                                const x = 40 * Math.cos(angle);
+                                const y = 40 * Math.sin(angle);
+                                
+                                const bond = document.createElementNS(svgNS, "line");
+                                bond.setAttribute("x1", "0");
+                                bond.setAttribute("y1", "0");
+                                bond.setAttribute("x2", x);
+                                bond.setAttribute("y2", y);
+                                bond.setAttribute("stroke", "#4CAF50");
+                                bond.setAttribute("stroke-width", "3");
+                                molecule.appendChild(bond);
+                                
+                                const alkyl = document.createElementNS(svgNS, "circle");
+                                alkyl.setAttribute("cx", x);
+                                alkyl.setAttribute("cy", y);
+                                alkyl.setAttribute("r", "15");
+                                alkyl.setAttribute("fill", "#4CAF50");
+                                molecule.appendChild(alkyl);
+                                
+                                const alkylText = document.createElementNS(svgNS, "text");
+                                alkylText.setAttribute("x", x);
+                                alkylText.setAttribute("y", y);
+                                alkylText.setAttribute("text-anchor", "middle");
+                                alkylText.setAttribute("dy", "5");
+                                alkylText.setAttribute("fill", "white");
+                                alkylText.setAttribute("font-size", "8");
+                                alkylText.textContent = "CH₂";
+                                molecule.appendChild(alkylText);
+                            }
+                            
+                            svg.appendChild(molecule);
+                        }
+                        else if (currentMechanismStep === 2) {
+                            // Show guanine with highlighted N7
+                            const dna = document.createElementNS(svgNS, "g");
+                            dna.setAttribute("transform", "translate(150,150)");
+                            
+                            // Guanine structure
+                            const guanine = document.createElementNS(svgNS, "path");
+                            guanine.setAttribute("d", "M0,0 L30,0 L40,20 L30,40 L0,40 L-10,20 Z");
+                            guanine.setAttribute("fill", "#118AB2");
+                            guanine.setAttribute("stroke", "#118AB2");
+                            guanine.setAttribute("stroke-width", "2");
+                            dna.appendChild(guanine);
+                            
+                            // N7 position
+                            const n7 = document.createElementNS(svgNS, "circle");
+                            n7.setAttribute("cx", "25");
+                            n7.setAttribute("cy", "15");
+                            n7.setAttribute("r", "8");
+                            n7.setAttribute("class", "n7-highlight");
+                            dna.appendChild(n7);
+                            
+                            const n7Text = document.createElementNS(svgNS, "text");
+                            n7Text.setAttribute("x", "25");
+                            n7Text.setAttribute("y", "15");
+                            n7Text.setAttribute("text-anchor", "middle");
+                            n7Text.setAttribute("dy", "3");
+                            n7Text.setAttribute("fill", "white");
+                            n7Text.setAttribute("font-size", "8");
+                            n7Text.setAttribute("font-weight", "bold");
+                            n7Text.textContent = "N7";
+                            dna.appendChild(n7Text);
+                            
+                            // Guanine label
+                            const gText = document.createElementNS(svgNS, "text");
+                            gText.setAttribute("x", "15");
+                            gText.setAttribute("y", "60");
+                            gText.setAttribute("text-anchor", "middle");
+                            gText.setAttribute("fill", "#118AB2");
+                            gText.setAttribute("font-size", "16");
+                            gText.setAttribute("font-weight", "bold");
+                            gText.textContent = "Guanine";
+                            dna.appendChild(gText);
+                            
+                            // Alkylating agent
+                            const agent = document.createElementNS(svgNS, "g");
+                            agent.setAttribute("transform", "translate(350,150)");
+                            
+                            const agentCore = document.createElementNS(svgNS, "circle");
+                            agentCore.setAttribute("cx", "0");
+                            agentCore.setAttribute("cy", "0");
+                            agentCore.setAttribute("r", "20");
+                            agentCore.setAttribute("fill", "#4CAF50");
+                            agent.appendChild(agentCore);
+                            
+                            const agentText = document.createElementNS(svgNS, "text");
+                            agentText.setAttribute("x", "0");
+                            agentText.setAttribute("y", "0");
+                            agentText.setAttribute("text-anchor", "middle");
+                            agentText.setAttribute("dy", "5");
+                            agentText.setAttribute("fill", "white");
+                            agentText.setAttribute("font-size", "10");
+                            agentText.textContent = "AS";
+                            agent.appendChild(agentText);
+                            
+                            svg.appendChild(dna);
+                            svg.appendChild(agent);
+                            
+                            // Arrow between them
+                            const arrow = document.createElementNS(svgNS, "path");
+                            arrow.setAttribute("d", "M180,150 L320,150");
+                            arrow.setAttribute("stroke", "#333");
+                            arrow.setAttribute("stroke-width", "2");
+                            arrow.setAttribute("fill", "none");
+                            arrow.setAttribute("marker-end", "url(#arrowhead)");
+                            svg.appendChild(arrow);
+                        }
+                        else if (currentMechanismStep === 3) {
+                            // Show cell cycle specificity
+                            const cellCycle = document.createElementNS(svgNS, "g");
+                            cellCycle.setAttribute("transform", "translate(300,150)");
+                            
+                            // Cell cycle circle
+                            const cycle = document.createElementNS(svgNS, "circle");
+                            cycle.setAttribute("cx", "0");
+                            cycle.setAttribute("cy", "0");
+                            cycle.setAttribute("r", "100");
+                            cycle.setAttribute("fill", "none");
+                            cycle.setAttribute("stroke", "#333");
+                            cycle.setAttribute("stroke-width", "3");
+                            cellCycle.appendChild(cycle);
+                            
+                            // Phases
+                            const phases = [
+                                { name: "G1", start: 0, end: 0.4, color: "#FF6B6B" },
+                                { name: "S", start: 0.4, end: 0.6, color: "#FFD166" },
+                                { name: "G2", start: 0.6, end: 0.8, color: "#06D6A0" },
+                                { name: "M", start: 0.8, end: 1, color: "#118AB2" }
+                            ];
+                            
+                            phases.forEach(phase => {
+                                const arc = document.createElementNS(svgNS, "path");
+                                const startAngle = phase.start * 2 * Math.PI;
+                                const endAngle = phase.end * 2 * Math.PI;
+                                const x1 = 100 * Math.cos(startAngle);
+                                const y1 = 100 * Math.sin(startAngle);
+                                const x2 = 100 * Math.cos(endAngle);
+                                const y2 = 100 * Math.sin(endAngle);
+                                
+                                arc.setAttribute("d", `M0,0 L${x1},${y1} A100,100 0 ${endAngle - startAngle > Math.PI ? 1 : 0},1 ${x2},${y2} Z`);
+                                arc.setAttribute("fill", phase.color);
+                                arc.setAttribute("opacity", "0.5");
+                                cellCycle.appendChild(arc);
+                                
+                                const labelAngle = (phase.start + phase.end) / 2 * 2 * Math.PI;
+                                const labelX = 70 * Math.cos(labelAngle);
+                                const labelY = 70 * Math.sin(labelAngle);
+                                
+                                const label = document.createElementNS(svgNS, "text");
+                                label.setAttribute("x", labelX);
+                                label.setAttribute("y", labelY);
+                                label.setAttribute("text-anchor", "middle");
+                                label.setAttribute("dy", "5");
+                                label.setAttribute("fill", phase.color);
+                                label.setAttribute("font-size", "12");
+                                label.setAttribute("font-weight", "bold");
+                                label.textContent = phase.name;
+                                cellCycle.appendChild(label);
+                            });
+                            
+                            // Highlight G1 phase
+                            const g1Arc = document.createElementNS(svgNS, "path");
+                            const g1Start = 0 * 2 * Math.PI;
+                            const g1End = 0.4 * 2 * Math.PI;
+                            const g1x1 = 100 * Math.cos(g1Start);
+                            const g1y1 = 100 * Math.sin(g1Start);
+                            const g1x2 = 100 * Math.cos(g1End);
+                            const g1y2 = 100 * Math.sin(g1End);
+                            
+                            g1Arc.setAttribute("d", `M0,0 L${g1x1},${g1y1} A100,100 0 ${g1End - g1Start > Math.PI ? 1 : 0},1 ${g1x2},${g1y2} Z`);
+                            g1Arc.setAttribute("fill", "#FF6B6B");
+                            g1Arc.setAttribute("stroke", "#FF6B6B");
+                            g1Arc.setAttribute("stroke-width", "3");
+                            cellCycle.appendChild(g1Arc);
+                            
+                            const g1Label = document.createElementNS(svgNS, "text");
+                            g1Label.setAttribute("x", "0");
+                            g1Label.setAttribute("y", "0");
+                            g1Label.setAttribute("text-anchor", "middle");
+                            g1Label.setAttribute("dy", "5");
+                            g1Label.setAttribute("fill", "#FF6B6B");
+                            g1Label.setAttribute("font-size", "14");
+                            g1Label.setAttribute("font-weight", "bold");
+                            g1Label.textContent = "Alkyl Sulfonate Target";
+                            cellCycle.appendChild(g1Label);
+                            
+                            svg.appendChild(cellCycle);
+                            
+                            // Drug molecule
+                            const drug = document.createElementNS(svgNS, "g");
+                            drug.setAttribute("transform", "translate(100,150)");
+                            
+                            const drugCircle = document.createElementNS(svgNS, "circle");
+                            drugCircle.setAttribute("cx", "0");
+                            drugCircle.setAttribute("cy", "0");
+                            drugCircle.setAttribute("r", "20");
+                            drugCircle.setAttribute("fill", "#4CAF50");
+                            drug.appendChild(drugCircle);
+                            
+                            const drugText = document.createElementNS(svgNS, "text");
+                            drugText.setAttribute("x", "0");
+                            drugText.setAttribute("y", "0");
+                            drugText.setAttribute("text-anchor", "middle");
+                            drugText.setAttribute("dy", "5");
+                            drugText.setAttribute("fill", "white");
+                            drugText.setAttribute("font-size", "10");
+                            drugText.textContent = "AS";
+                            drug.appendChild(drugText);
+                            
+                            svg.appendChild(drug);
+                            
+                            // Arrow to G1 phase
+                            const arrow = document.createElementNS(svgNS, "path");
+                            arrow.setAttribute("d", "M120,150 Q200,100 250,50");
+                            arrow.setAttribute("stroke", "#4CAF50");
+                            arrow.setAttribute("stroke-width", "2");
+                            arrow.setAttribute("fill", "none");
+                            arrow.setAttribute("marker-end", "url(#arrowhead)");
+                            svg.appendChild(arrow);
+                        }
+                        break;
+                }
+                
+                // Add arrowhead marker definition
+                const defs = document.createElementNS(svgNS, "defs");
+                const marker = document.createElementNS(svgNS, "marker");
+                marker.setAttribute("id", "arrowhead");
+                marker.setAttribute("markerWidth", "10");
+                marker.setAttribute("markerHeight", "7");
+                marker.setAttribute("refX", "9");
+                marker.setAttribute("refY", "3.5");
+                marker.setAttribute("orient", "auto");
+                
+                const arrowhead = document.createElementNS(svgNS, "polygon");
+                arrowhead.setAttribute("points", "0 0, 10 3.5, 0 7");
+                arrowhead.setAttribute("fill", "#333");
+                marker.appendChild(arrowhead);
+                defs.appendChild(marker);
+                svg.insertBefore(defs, svg.firstChild);
+                
+                mechanismAnimation.appendChild(svg);
+                
+                // Update explanation
+                const explanation = mechanismExplanations[currentMechanism][currentMechanismStep - 1];
+                mechanismExplanation.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
+            }
+
+            // Navigation controls
+            document.getElementById('prev-step').addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateAlkylationVisualization();
+                }
+            });
+
+            document.getElementById('next-step').addEventListener('click', () => {
+                if (currentStep < alkylationSteps) {
+                    currentStep++;
+                    updateAlkylationVisualization();
+                }
+            });
+
+            document.getElementById('reset-alkylation').addEventListener('click', () => {
+                currentStep = 1;
+                updateAlkylationVisualization();
+            });
+
+            document.getElementById('prev-replication').addEventListener('click', () => {
+                if (currentReplicationStep > 1) {
+                    currentReplicationStep--;
+                    updateReplicationVisualization();
+                }
+            });
+
+            document.getElementById('next-replication').addEventListener('click', () => {
+                if (currentReplicationStep < replicationSteps) {
+                    currentReplicationStep++;
+                    updateReplicationVisualization();
+                }
+            });
+
+            document.getElementById('reset-replication').addEventListener('click', () => {
+                currentReplicationStep = 1;
+                updateReplicationVisualization();
+            });
+
+            document.getElementById('prev-mechanism').addEventListener('click', () => {
+                if (currentMechanismStep > 1) {
+                    currentMechanismStep--;
+                    updateMechanismVisualization();
+                }
+            });
+
+            document.getElementById('next-mechanism').addEventListener('click', () => {
+                if (currentMechanismStep < mechanismSteps[currentMechanism]) {
+                    currentMechanismStep++;
+                    updateMechanismVisualization();
+                }
+            });
+
+            document.getElementById('reset-mechanism').addEventListener('click', () => {
+                currentMechanismStep = 1;
+                updateMechanismVisualization();
+            });
+
+            // Drug selector
+            document.querySelectorAll('.drug-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.drug-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMechanism = btn.dataset.drug;
+                    currentMechanismStep = 1;
+                    updateMechanismVisualization();
+                });
+            });
+
+            // Add 5' and 3' labels to the Alkylating Agent Visualization
+            const alkylationSvg = document.querySelector('.dna-alkylation-container svg');
+
+            const alkylationLabel5Prime = document.createElementNS(svgNS, "text");
+            alkylationLabel5Prime.setAttribute("x", "90");
+            alkylationLabel5Prime.setAttribute("y", "20");
+            alkylationLabel5Prime.setAttribute("fill", "#333");
+            alkylationLabel5Prime.setAttribute("font-size", "12");
+            alkylationLabel5Prime.textContent = "5'";
+            alkylationSvg.appendChild(alkylationLabel5Prime);
+
+            const alkylationLabel3Prime = document.createElementNS(svgNS, "text");
+            alkylationLabel3Prime.setAttribute("x", "310");
+            alkylationLabel3Prime.setAttribute("y", "20");
+            alkylationLabel3Prime.setAttribute("fill", "#333");
+            alkylationLabel3Prime.setAttribute("font-size", "12");
+            alkylationLabel3Prime.textContent = "3'";
+            alkylationSvg.appendChild(alkylationLabel3Prime);
+
+            // Fix the 'Next' button functionality for Alkylating Agent Visualization
+            document.getElementById('next-step').addEventListener('click', () => {
+                if (currentStep < alkylationSteps) {
+                    currentStep++;
+                    updateAlkylationVisualization();
+                }
+            });
+
+            // Initialize visualizations
+            updateAlkylationVisualization();
+            updateReplicationVisualization();
+            updateMechanismVisualization();
+        });
+    </script>
+</body>
+</html>

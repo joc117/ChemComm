@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about alkylating agents and their role in chemotherapy treatment">
+    <meta property="og:title" content="Alkylating Agents in Chemotherapy">
+    <meta property="og:description" content="Comprehensive guide to alkylating agents and their mechanism of action">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/alkylating-agents">
+    <meta property="og:image" content="https://example.com/images/chemotherapy.jpg">
+    <title>Alkylating Agents</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Loading state */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #1a2980;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Main content container */
+        .main-content {
+            transition: margin-left 0.3s ease;
+            margin-left: 0;
+            min-height: 100vh;
+        }
+        
+        .sidebar-expanded .main-content {
+            margin-left: 280px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar-expanded .main-content {
+                margin-left: 0;
+                position: fixed;
+                left: 250px;
+                width: calc(100% - 250px);
+            }
+        }
+
+        /* Footer styles */
+        .footer {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .footer p {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Rest of your existing styles... */
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a2980;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+        
+        .sidebar-toggle-icon {
+            font-size: 20px;
+            color: white;
+        }
+        
+        /* WHITE SIDEBAR STYLES */
+        .sidebar {
+            width: 280px;
+            background: white;
+            color: #333;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 999;
+            left: -280px;
+            top: 0;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #eee;
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar h2 {
+            color: #1a2980;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 1.5rem;
+        }
+        
+        /* NAVIGATION LINKS */
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* SUBMENU STYLES */
+        .sub-links {
+            list-style: none;
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .has-submenu.active .sub-links {
+            max-height: 500px;
+        }
+
+        .sub-links a {
+            padding: 8px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        
+        .sub-links a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .sub-links.active {
+            display: block;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        line-height: 1.6;
+        scroll-behavior: smooth;
+        background: #f5f7fa;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+        }
+
+        .scene {
+            min-height: auto;
+            height:auto;
+            padding: 80px 40px;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 1000px;
+            margin: 60px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            position: relative;
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-bottom: -30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .sidebar-expanded .main-content {
+                position: fixed;
+                left: 250px;
+                width: 100%;
+            }
+            
+            .sidebar-expanded::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 250px;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 998;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header {
+                padding: 60px 20px 40px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .team-members {
+                padding: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .scene {
+                padding: 40px 20px;
+                margin: 30px auto;
+            }
+            
+            .scene h2 {
+                font-size: 1.5rem;
+            }
+            
+            .battlefield, .lab, .dna-animation, .treatment-scene {
+                height: 280px;
+            }
+            
+            .drug-types {
+                gap: 15px;
+            }
+            
+            .drug-card {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .drug-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .drug-card h4 {
+                font-size: 16px;
+                margin: 10px 0 5px;
+            }
+            
+            .chemical-structure {
+                height: 120px;
+                margin: 30px 0;
+            }
+            
+            .footer {
+                padding: 30px 20px;
+            }
+            
+            .footer p {
+                font-size: 1rem;
+            }
+        }
+
+    /* Drug Types */
+    .drug-types {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .drug-card {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .drug-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #26d0ce, #1a2980);
+        }
+        
+        .drug-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .drug-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #26d0ce, #1a2980);
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .drug-card h4 {
+            margin: 15px 0 8px;
+            color: #1a2980;
+            text-align: center;
+            font-size: 20px;
+        }
+        
+        .drug-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Treatment Scene */
+        .treatment-scene {
+            width: 100%;
+            height: 450px;
+            background: #e0f7fa;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+            background-image: linear-gradient(to bottom, #e0f7fa 0%, #b2ebf2 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .hospital-bed {
+            position: absolute;
+            width: 220px;
+            height: 40px;
+            background: #a69b97;
+            bottom: 0;
+            left: 30%;
+            border-radius: 5px 5px 0 0;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .hospital-bed::before {
+            content: '';
+            position: absolute;
+            width: 240px;
+            height: 15px;
+            background: #8d7b75;
+            bottom: 40px;
+            left: -10px;
+            border-radius: 5px;
+        }
+        
+        .hospital-bed::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 10px;
+            background: #bcaaa4;
+            bottom: 55px;
+            left: 10px;
+        }
+        
+        .patient {
+            position: absolute;
+            width: 80px;
+            height: 160px;
+            background: #b39ddb;
+            bottom: 40px;
+            left: 35%;
+            border-radius: 40px 40px 0 0;
+            opacity: 0;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .patient::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #b39ddb;
+            top: -20px;
+            left: 20px;
+            border-radius: 50%;
+        }
+        
+        .patient::after {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: #f8bbd0;
+            top: -17px;
+            left: 23px;
+            border-radius: 50%;
+        }
+        
+        .iv-bag {
+            position: absolute;
+            width: 70px;
+            height: 100px;
+            background: #80deea;
+            top: 60px;
+            right: 30%;
+            border-radius: 10px;
+            opacity: 0;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .iv-bag::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: #4dd0e1;
+            top: -12px;
+            left: 15px;
+            border-radius: 5px;
+        }
+        
+        .iv-tube {
+            position: absolute;
+            width: 8px;
+            height: 150px;
+            background: #4dd0e1;
+            top: 160px;
+            right: 35%;
+            transform-origin: top center;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .iv-tube::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #4dd0e1;
+            bottom: 0;
+            left: -2px;
+            border-radius: 50%;
+        }
+        
+        .cancer-cell {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #f44336;
+            border-radius: 50%;
+            opacity: 0;
+            filter: drop-shadow(0 0 5px rgba(244, 67, 54, 0.7));
+            z-index: 3;
+            transition: all 0.5s ease;
+        }
+        
+        .cancer-cell::before, .cancer-cell::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #e53935;
+            border-radius: 50%;
+        }
+        
+        .cancer-cell::before {
+            top: -12px;
+            left: -12px;
+        }
+        
+        .cancer-cell::after {
+            bottom: -12px;
+            right: -12px;
+        }
+        
+        .healthy-cell {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: #4caf50;
+            border-radius: 50%;
+            opacity: 0;
+            filter: drop-shadow(0 0 3px rgba(76, 175, 80, 0.5));
+            z-index: 2;
+        }
+        
+        /* Chemical structures */
+        .chemical-structure {
+            width: 100%;
+            height: auto;
+            flex-shrink:0;
+            position: relative;
+            margin: 40px 0;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .chemical-structure::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="1" height="1" fill="%23eee"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .atom {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        
+        .bond {
+            position: absolute;
+            height: 3px;
+            background: #555;
+            transform-origin: left center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .double-bond {
+            position: absolute;
+            height: 3px;
+            background: #555;
+            transform-origin: left center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .double-bond::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #555;
+        }
+        
+        /* Tooltip for chemical elements */
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        /* Detailed Alkylation Animation */
+        .guanine-structure {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 10px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .n7-position, .o6-position {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FF9800;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .n7-position {
+            top: 10px;
+            left: 10px;
+        }
+
+        .o6-position {
+            bottom: 10px;
+            right: 10px;
+        }
+
+        /* Drug Classes Animation */
+        .drug-classes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .drug-class-card {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drug-class-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #26d0ce, #1a2980);
+        }
+
+        .drug-class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .drug-class-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #26d0ce, #1a2980);
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .drug-class-card h4 {
+            margin: 15px 0 8px;
+            color: #1a2980;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .drug-class-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Add hover effects for drug class cards */
+        .drug-class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .mitosis-label{
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 11;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            filter: none !important;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            white-space: nowrap;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false" aria-controls="sidebar">
+        <span class="sidebar-toggle-icon">☰</span>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <h2>Navigation</h2>
+        <ul class="nav-links">
+            <li><a href="overview.html">Overview</a></li>
+            <li><a href="historical.html">Historical content</a></li>
+            <li><a href="mechanism.html">Mechanism</a></li>
+            <li><a href="agents.html">Alkylating Agents</a></li>
+            <li><a href="references.html">References</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <!-- Main Content Area -->
+<div class="main-content" id="mainContent">
+    <header class="header">
+        <h1>Alkylating Agents in Chemotherapy</h1>
+        <p>Key mechanisms and modern cancer treatment applications</p>
+    </header>
+
+    <!-- Treatment Today -->
+    <div class="scene" id="treatment">
+        <h2>Modern Cancer Treatment</h2>
+        <div class="animation-container">
+            <div class="treatment-scene">
+                <div class="hospital-bed"></div>
+                <div class="patient"></div>
+                <div class="iv-bag"></div>
+                <div class="iv-tube"></div>
+                <div class="mitosis-label">Chemotherapy Treatment</div>
+
+                <!-- Cells -->
+                <div class="cancer-cell" style="top:100px; left:80px;"></div>
+                <div class="cancer-cell" style="top:150px; left:160px;"></div>
+                <div class="cancer-cell" style="top:80px; left:240px;"></div>
+                <div class="cancer-cell" style="top:180px; left:120px;"></div>
+                <div class="cancer-cell" style="top:120px; left:200px;"></div>
+                <div class="healthy-cell" style="top:70px; left:120px;"></div>
+                <div class="healthy-cell" style="top:130px; left:200px;"></div>
+                <div class="healthy-cell" style="top:90px; left:160px;"></div>
+                <div class="cell-division" style="position:absolute; width:50px; height:50px; background:#f44336; border-radius:50%; top:200px; left:200px; opacity:0; transform:scale(0);"></div>
+            </div>
+        </div>
+
+        <div class="chemical-structure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Temozolomide_structure.svg/1920px-Temozolomide_structure.svg.png" 
+                 alt="Temozolomide chemical structure"
+                 width="200"
+                 height="180">
+            <figcaption>Temozolomide: a modern DNA-alkylating drug <i>Credit to "Temozolomide structure" by Wikimedia Commons user Ben MIlls </i></figcaption>
+        </div>
+
+        <p>New agents like Temozolomide and Dacarbazine offer targeted treatment for brain tumors and melanomas by damaging cancer DNA.</p>
+    </div>
+
+    <!-- Chemotherapy Drug Classes -->
+    <div class="scene" id="drug-classes">
+        <h2>Chemotherapy Drug Classes</h2>
+        <div class="drug-types">
+            <div class="drug-card" id="nitrogen-mustards">
+                <div class="drug-icon">N</div>
+                <h4>Nitrogen Mustards</h4>
+                <p>Forms aziridinium ions</p>
+            </div>
+            <div class="drug-card" id="nitrosoureas">
+                <div class="drug-icon">N</div>
+                <h4>Nitrosoureas</h4>
+                <p>Brain & Lung Tumors</p>
+            </div>
+            <div class="drug-card" id="alkyl-sulfonates">
+                <div class="drug-icon">A</div>
+                <h4>Alkyl Sulfonates</h4>
+                <p>DNA Cross-linking</p>
+            </div>
+            <div class="drug-card" id="oxazaphosphorines">
+                <div class="drug-icon">O</div>
+                <h4>Oxazaphosphorines</h4>
+                <p>Prodrug for Sarcoma</p>
+            </div>
+        </div>
+
+        <h3>Nitrogen Mustards</h3>
+        <p>Form aziridinium ions that cross-link DNA, blocking mitosis. Non-selective.</p>
+
+        <h3>Nitrosoureas</h3>
+        <p>Generate DNA-alkylating and enzyme-inhibiting products; effective in brain tumors due to lipophilicity.</p>
+
+        <h3>Alkyl Sulfonates</h3>
+        <p>Form reactive carbocations that mono- or bis-alkylate DNA, disrupting replication.</p>
+
+        <h3>Oxazaphosphorines</h3>
+        <p>Activated in liver to form chloroethylaziridine, a DNA cross-linker. Used for solid tumors.</p>
+
+        <h3>Ethyl Imines & Polyaziridines</h3>
+        <p>Contain aziridine rings for DNA alkylation. Used in ovarian, breast, and bladder cancer.</p>
+
+        <h3>Mitomycin C</h3>
+        <p>Enzymatically activated to open aziridine rings, forming DNA cross-links in adenocarcinomas.</p>
+
+        <h3>Triazenes & Hydrazines</h3>
+        <p>Release methyldiazonium ions that methylate DNA. Target brain tumors, melanomas, lymphomas.</p>
+    </div>
+</div>
+
+
+    <script>
+        // Wait for everything to load
+        window.addEventListener('load', function() {
+            // Hide loading overlay
+            gsap.to('#loadingOverlay', {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: function() {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            });
+            
+            // Initialize GSAP and ScrollTrigger
+            try {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Set up all animations
+                setupAnimations();
+                ScrollTrigger.refresh();
+            } catch (error) {
+                console.error("Error initializing animations:", error);
+            }
+        });
+
+        // Sidebar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (sidebarToggle && sidebar && mainContent) {
+                sidebarToggle.addEventListener('click', function() {
+                    const isExpanded = sidebar.classList.toggle('active');
+                    document.body.classList.toggle('sidebar-expanded');
+                    sidebarToggle.setAttribute('aria-expanded', isExpanded);
+                    
+                    // Store sidebar state
+                    localStorage.setItem('sidebarExpanded', isExpanded);
+                });
+                
+                // Initialize sidebar state
+                if (localStorage.getItem('sidebarExpanded') === 'true') {
+                    sidebar.classList.add('active');
+                    document.body.classList.add('sidebar-expanded');
+                    sidebarToggle.setAttribute('aria-expanded', 'true');
+                }
+            }
+            
+            // Submenu handling
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+            if (hasSubmenuItems.length) {
+                hasSubmenuItems.forEach(item => {
+                    const link = item.querySelector('a');
+                    if (link) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            item.classList.toggle('active');
+                        });
+                    }
+                });
+            }
+            
+            // Tooltip functionality for chemical elements
+            document.querySelectorAll('.atom, .dna-base').forEach(element => {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                
+                // Map of element symbols to full names
+                const elementNames = {
+                    'C': 'Carbon',
+                    'N': 'Nitrogen',
+                    'O': 'Oxygen',
+                    'S': 'Sulfur',
+                    'Cl': 'Chlorine',
+                    'P': 'Phosphorus',
+                    'G': 'Guanine',
+                    'A': 'Adenine',
+                    'T': 'Thymine',
+                    'C': 'Cytosine'
+                };
+                
+                // Get the element symbol and its full name
+                const symbol = element.textContent.trim();
+                const fullName = elementNames[symbol] || symbol;
+                tooltip.textContent = `${symbol} (${fullName})`;
+                
+                document.body.appendChild(tooltip);
+                
+                element.addEventListener('mouseenter', (e) => {
+                    const rect = element.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + rect.width/2 - tooltip.offsetWidth/2}px`;
+                    tooltip.style.top = `${rect.top - 35}px`;
+                    tooltip.style.opacity = '1';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+        });
+
+        // Initialize GSAP animations
+        function setupAnimations() {
+            // Drug Cards Animation
+            const drugCards = gsap.utils.toArray(".drug-card");
+            gsap.to(drugCards, {
+                scrollTrigger: {
+                    trigger: "#drugs",
+                    start: "top center",
+                    end: "+=600",
+                    scrub: true
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "back.out"
+            });
+            
+            // Drug card hover effects
+            drugCards.forEach(card => {
+                card.addEventListener("mouseenter", () => {
+                    gsap.to(card, {
+                        scale: 1.05,
+                        duration: 0.3,
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
+                    });
+                });
+                
+                card.addEventListener("mouseleave", () => {
+                    gsap.to(card, {
+                        scale: 1,
+                        duration: 0.3,
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.1)"
+                    });
+                });
+            });
+            
+            // Treatment Animation
+            gsap.to([".patient", ".iv-bag"], {
+                scrollTrigger: {
+                    trigger: "#treatment",
+                    start: "top center",
+                    end: "+=500",
+                    scrub: true
+                },
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                ease: "back.out"
+            });
+            
+            gsap.to(".iv-tube", {
+                scrollTrigger: {
+                    trigger: "#treatment",
+                    start: "top center",
+                    end: "+=600",
+                    scrub: true
+                },
+                opacity: 1,
+                scaleY: 1,
+                duration: 1.5,
+                ease: "power2.out"
+            });
+            
+            // Cancer cells appearing and disappearing
+            const cancerCells = gsap.utils.toArray(".cancer-cell");
+            const healthyCells = gsap.utils.toArray(".healthy-cell");
+            
+            // Healthy cells appear
+            gsap.to(healthyCells, {
+                scrollTrigger: {
+                    trigger: "#treatment",
+                    start: "top center",
+                    end: "+=400",
+                    scrub: true
+                },
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                stagger: 0.2
+            });
+            
+            // Cancer cells appear then disappear
+            cancerCells.forEach((cell, i) => {
+                gsap.to(cell, {
+                    scrollTrigger: {
+                        trigger: "#treatment",
+                        start: "top center",
+                        end: "+=700",
+                        scrub: true
+                    },
+                    keyframes: [
+                        {opacity: 1, scale: 1, duration: 0.5, delay: i * 0.2},
+                        {opacity: 0, scale: 0, duration: 1, delay: i * 0.2 + 0.5}
+                    ],
+                    ease: "power2.inOut"
+                });
+            });
+            
+            // Chemical structure animations
+            animateChemicalStructures();
+        }
+        
+        // Animate all chemical structures
+        function animateChemicalStructures() {
+            document.querySelectorAll('.chemical-structure').forEach((structure, index) => {
+                const atoms = structure.querySelectorAll('.atom');
+                const bonds = structure.querySelectorAll('.bond, .double-bond');
+                
+                gsap.fromTo(atoms, 
+                    { opacity: 0, scale: 0 },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.5,
+                        stagger: 0.1,
+                        scrollTrigger: {
+                            trigger: structure,
+                            start: "top 80%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+                
+                gsap.fromTo(bonds, 
+                    { opacity: 0, scaleX: 0 },
+                    {
+                        opacity: 1,
+                        scaleX: 1,
+                        duration: 0.5,
+                        stagger: 0.05,
+                        scrollTrigger: {
+                            trigger: structure,
+                            start: "top 80%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+            });
+        }
+    </script>
+</body>
+</html>
