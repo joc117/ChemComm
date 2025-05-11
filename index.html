@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
-        .sidebar-toggle {
+         .sidebar-toggle {
             position: fixed;
             top: 20px;
             left: 20px;
@@ -28,13 +28,13 @@
             background-color: rgba(255, 255, 255, 1);
             transform: scale(1.1);
         }
-        
+
         .sidebar-toggle-icon {
             font-size: 20px;
             color: white;
         }
-        
-        /* WHITE SIDEBAR STYLES */
+
+        /* Sidebar styles */
         .sidebar {
             width: 280px;
             background: white;
@@ -50,18 +50,42 @@
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
             border-right: 1px solid #eee;
         }
-        
+
         .sidebar.active {
             left: 0;
         }
-        
-        .sidebar h2 {
-            color: #1a2980;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            font-size: 1.5rem;
+
+        /* Submenu styles */
+        .sub-links {
+            list-style: none;
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
+
+        .has-submenu.active .sub-links {
+            max-height: 500px;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
         
         /* NAVIGATION LINKS */
         .nav-links {
@@ -86,66 +110,6 @@
             background: rgba(255,255,255,0.1);
         }
 
-        /* SUBMENU STYLES */
-        .sub-links {
-            list-style: none;
-            padding-left: 15px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        
-        .has-submenu.active .sub-links {
-            max-height: 500px;
-        }
-        
-        .sub-links a {
-            padding: 10px 15px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .sub-links a:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .sub-links {
-            list-style: none;
-            margin-left: 20px;
-            margin-top: 5px;
-            display: none;
-            padding: 0;
-        }
-
-        .sub-links.active {
-            display: block;
-        }
-
-        .sub-links a {
-            padding: 8px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        .has-submenu {
-            position: relative;
-        }
-
-        .has-submenu::after {
-            content: '▼';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            transition: transform 0.3s ease;
-        }
-
-        .has-submenu.active::after {
-            transform: translateY(-50%) rotate(180deg);
-        }
-
-        
         /* Reset and base styles */
         * {
             box-sizing: border-box;
@@ -272,10 +236,20 @@
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="overview.html">Overview</a></li>
-            <li><a href="historical.html">Historical content</a></li>
-            <li><a hred="mechanism.html">Mechanism</a></li>
-            <li><a href="agents.html">Alkylating Agents</a></li>
+            <li><a href="overview.html">Authors</a></li>
+            <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
+            <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
+            <li class="has-submenu">
+                <a href="agents.html">Alkylating Agents</a>
+                <ul class="sub-links">
+                  <li><a href="agents.html">Summary</a></li>
+                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
+                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
+                  <li><a href="agents.html#alkyl-sulfonate">Alkyl Sulfonate</a></li>
+                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                </ul>
+              </li>
+
             <li><a href="references.html">References</a></li>
         </ul>
     </div>
@@ -299,44 +273,46 @@
         </div>
     </div>
     
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const navLinks = document.querySelectorAll(".nav-links a");
-
-    // Sidebar toggle logic
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-        });
-
-        // Restore state
-        if (localStorage.getItem('sidebarExpanded') === 'true') {
-            sidebar.classList.add('active');
-        }
-    }
-
-    // Sidebar closes when link clicked
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            sidebar.classList.remove("active");
-        });
-    });
-
-    // Submenu toggle
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        if (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                item.classList.toggle('active');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector(".sidebar");
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const navLinks = document.querySelectorAll(".nav-links a");
+        
+            // Restore sidebar state from localStorage
+            const sidebarExpanded = localStorage.getItem('sidebarExpanded') === 'true';
+            if (sidebarExpanded) {
+                sidebar.classList.add('active');
+            }
+        
+            // Sidebar toggle logic
+            sidebarToggle.addEventListener('click', function () {
+                const isActive = sidebar.classList.contains('active');
+                sidebar.classList.toggle('active');
+                localStorage.setItem('sidebarExpanded', !isActive); // Update localStorage when toggling
             });
-        }
-    });
-});
-</script>
-</body>
-</html>
+        
+            // Close sidebar when any main navigation link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    sidebar.classList.remove("active");
+                    localStorage.setItem('sidebarExpanded', 'false'); // Update localStorage to indicate the sidebar is collapsed
+                });
+            });
+        
+            // Submenu logic
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+            hasSubmenuItems.forEach(item => {
+                const link = item.querySelector('a');
+                if (link) {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault(); // Prevent link navigation
+                        item.classList.toggle('active'); // Toggle the active class for submenu
+                    });
+                }
+            });
+        });
+        </script>
+        
+        </body>
+        </html>
