@@ -7,13 +7,13 @@
     <style>
         /* Base styles */
         html, body {
-        width: 100%;
-        height: 100%;
+            width: 100%;
+            height: 100%;
         font-family: 'Arial', sans-serif;
         color: #333;
         line-height: 1.6;
         scroll-behavior: smooth;
-        background: #f5f7fa;
+            background: #f5f7fa;
         }
 
         body {
@@ -40,21 +40,21 @@
             justify-content: center;
             background-color: #1a2980;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            /*color: white;*/
         }
 
         .sidebar-toggle:hover {
             background-color: rgba(255, 255, 255, 1);
             transform: scale(1.1);
         }
-
+        
         .sidebar-toggle-icon {
             font-size: 20px;
             color: white;
         }
-
+        
+        /* WHITE SIDEBAR STYLES */
         .sidebar {
             width: 280px;
             background: white;
@@ -70,11 +70,11 @@
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
             border-right: 1px solid #eee;
         }
-
+        
         .sidebar.active {
             left: 0;
         }
-
+        
         .sidebar h2 {
             color: #1a2980;
             margin-bottom: 25px;
@@ -104,7 +104,7 @@
         .nav-links a:hover {
             background: rgba(26, 41, 128, 0.1);
         }
-
+        
         /* SUBMENU STYLES */
         .sub-links {
             list-style: none;
@@ -129,7 +129,7 @@
         }
         
         .has-submenu {
-        position: relative;
+            position: relative;
         }
 
         .sub-links {
@@ -149,7 +149,7 @@
             padding: 8px 15px;
         }
 
-       
+        
         .has-submenu::after {
             content: '▸';
             position: absolute;
@@ -220,7 +220,7 @@
             height: 3px;
             background: #1a2980;
         }
-
+        
         /* Interactive module styles */
         .interactive-module {
             margin: 20px 0;
@@ -229,13 +229,13 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
+        
         .module-content {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
+        
         /* DNA Alkylation Visualization Styles */
         .dna-alkylation-container {
             position: relative;
@@ -243,13 +243,13 @@
             margin: 20px 0;
             overflow: hidden;
         }
-
+        
         .dna-alkylation-container svg {
             width: 100%;
             height: 100%;
             display: block;
         }
-
+        
         .backbone {
             stroke-width: 3;
             fill: none;
@@ -304,7 +304,7 @@
         }
         .fade-in { opacity: 1; }
         .show-text { opacity: 1; }
-
+        
         /* Explanation box */
         .explanation-box {
             background: #f5f7fa;
@@ -313,7 +313,7 @@
             margin-top: 20px;
             border-left: 5px solid #1a2980;
         }
-
+        
         /* Step indicator and controls */
         .step-indicator {
             text-align: center;
@@ -322,14 +322,14 @@
             color: #2c3e50;
             font-size: 1.5rem;
         }
-
+        
         .step-navigation {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
         }
-
+        
         .control-btn {
             padding: 10px 20px;
             background: #1a2980;
@@ -339,41 +339,41 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
+        
         .control-btn:hover {
             background: #26d0ce;
         }
-
+        
         /* DNA Replication Visualization */
         .replication-container {
             position: relative;
             height: 400px;
             margin: 20px 0;
         }
-
+        
         .replication-visualization {
             display: flex;
             height: 100%;
         }
-
+        
         .replication-fork-vis {
             flex: 1;
             position: relative;
         }
-
+        
         /* Alkylating Agent Mechanisms */
         .drug-comparison {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
+        
         .drug-selector {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
-
+        
         .drug-btn {
             padding: 10px 15px;
             background: #f5f7fa;
@@ -385,12 +385,12 @@
             flex-direction: column;
             align-items: center;
         }
-
+        
         .drug-btn.active {
             background: #1a2980;
             color: white;
         }
-
+        
         .mechanism-visualization {
             height: 500px;
             background: #f5f7fa;
@@ -398,12 +398,12 @@
             padding: 20px;
             position: relative;
         }
-
+        
         .molecule-container {
             height: 300px;
             position: relative;
         }
-
+        
         /* Tooltip styles */
         .tooltip {
             position: absolute;
@@ -418,23 +418,23 @@
             transition: opacity 0.3s;
             pointer-events: none;
         }
-
+        
         .has-tooltip:hover .tooltip {
             visibility: visible;
             opacity: 1;
         }
-
+        
         /* Guanine N7 highlight */
         .n7-highlight {
             fill: #c0392b;
             animation: highlight-pulse 1.5s infinite alternate;
         }
-
+        
         @keyframes highlight-pulse {
             0% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-
+        
         /* Blood-brain barrier animation */
         .bbb-animation {
             stroke: #1a2980;
@@ -442,12 +442,12 @@
             stroke-dasharray: 5,3;
             animation: bbb-move 3s linear infinite;
         }
-
+        
         @keyframes bbb-move {
             0% { stroke-dashoffset: 10; }
             100% { stroke-dashoffset: 0; }
         }
-
+        
         .sub-links {
             list-style: none;
             padding-left: 20px;
@@ -496,26 +496,65 @@
                 z-index: 998;
             }
         }
+
+        .header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            position: relative;
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-bottom: -30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar-toggle" id="sidebarToggle">
         <span class="sidebar-toggle-icon">☰</span>
     </div>
-    
+
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="overview.html">Overview</a></li>
-            <li><a href="historical.html">Historical content</a></li>
-            <li><a href="mechanism.html">Mechanism</a></li>
-            <li><a href="agents.html">Alkylating Agents</a></li>
+            <li><a href="overview.html">Authors</a></li>
+            <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
+            <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
+            <li class="has-submenu">
+                <a href="agents.html">Alkylating Agents</a>
+                <ul class="sub-links">
+                  <li><a href="agents.html">Summary</a></li>
+                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
+                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
+                  <li><a href="agents.html#alkyl-sulfonate">Alkyl Sulfonate</a></li>
+                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                </ul>
+              </li>
+
             <li><a href="references.html">References</a></li>
         </ul>
     </div>
-        
+
 
     <div class="main-content">
+        <div class="header">
+            <h1>From Mustard Gas to Chemotherapy</h1>
+            <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
+        </div>
+
         <div class="scene" id="interactive-learning">
             <h2>Mechanism: How does Mustard Gas destroy humans' body? </h2>
             
@@ -737,76 +776,60 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Alkylating Agent Mechanisms -->
-            <div class="interactive-module">
-                <h3>Alkylating Agent Mechanisms</h3>
-                <div class="module-content">
-                    <div class="step-indicator" id="mechanismStepIndicator">Nitrogen Mustard Mechanism</div>
-                    <div class="drug-selector">
-                        <button class="drug-btn active" data-drug="nitrogen-mustard">
-                            <span class="drug-icon">NM</span>
-                            <span class="drug-name">Nitrogen Mustard</span>
-                        </button>
-                        <button class="drug-btn" data-drug="nitrosourea">
-                            <span class="drug-icon">NU</span>
-                            <span class="drug-name">Nitrosourea</span>
-                        </button>
-                        <button class="drug-btn" data-drug="alkyl-sulfonate">
-                            <span class="drug-icon">AS</span>
-                            <span class="drug-name">Alkyl Sulfonate</span>
-                        </button>
-                    </div>
-                    <div class="mechanism-visualization">
-                        <div class="molecule-container" id="mechanismAnimation">
-                            <!-- Content will be dynamically generated -->
-                        </div>
-                        
-                        <!-- Explanation box -->
-                        <div class="explanation-box" id="mechanismExplanation">
-                            <h4>Nitrogen Mustard Mechanism</h4>
-                            <p>Nitrogen mustards form reactive aziridinium ions that alkylate DNA at the N7 position of guanine, causing cross-linking between DNA strands.</p>
-                        </div>
-                    </div>
-                    <div class="step-navigation">
-                        <button class="control-btn" id="prev-mechanism">Previous</button>
-                        <button class="control-btn" id="next-mechanism">Next</button>
-                        <button class="control-btn" id="reset-mechanism">Reset</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Declare svgNS once
-            const svgNS = "http://www.w3.org/2000/svg";
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            
-            // Toggle sidebar
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                
-                // Save state to localStorage
-                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-            });
-            
-            // Load saved state
-            if (localStorage.getItem('sidebarExpanded') === 'true') {
-                sidebar.classList.add('active');
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const navLinks = document.querySelectorAll(".nav-links a");
 
-            // Handle submenu toggling
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-            hasSubmenuItems.forEach(item => {
-                const link = item.querySelector('a');
-                link.addEventListener('click', function(e) {
+    // Sidebar toggle logic
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+        });
+
+        // Restore state
+        if (localStorage.getItem('sidebarExpanded') === 'true') {
+            sidebar.classList.add('active');
+        }
+    }
+
+    // Close sidebar when any link is clicked (including submenu links)
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            localStorage.setItem('sidebarExpanded', 'false');
+        });
+    });
+
+    // Submenu toggle - prevent default only for submenu parent links
+    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+    hasSubmenuItems.forEach(item => {
+        const link = item.querySelector('a');
+        const submenuLinks = item.querySelectorAll('.submenu a');
+        
+        if (link) {
+            link.addEventListener('click', function (e) {
+                // Only prevent default for the parent link
+                if (!e.target.classList.contains('submenu-link')) {
                     e.preventDefault();
-                    item.classList.toggle('active');
-                });
+                }
+                item.classList.toggle('active');
             });
+        }
+
+        // Add click handlers for submenu links
+        submenuLinks.forEach(subLink => {
+            subLink.addEventListener('click', () => {
+                sidebar.classList.remove("active");
+                localStorage.setItem('sidebarExpanded', 'false');
+            });
+        });
+    });
             // DNA Alkylation Visualization
             const stepIndicator = document.getElementById('stepIndicator');
             const explanationBox = document.getElementById('alkylationExplanation');
