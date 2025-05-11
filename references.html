@@ -319,13 +319,30 @@
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="overview.html">Overview</a></li>
-            <li><a href="historical.html">Historical content</a></li>
-            <li><a href="mechanism.html">Mechanism</a></li>
-            <li><a href="agents.html">Alkylating Agents</a></li>
+            <li><a href="overview.html">Authors</a></li>
+            <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
+            <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
+            <li class="has-submenu">
+                <a href="agents.html">Alkylating Agents</a>
+                <ul class="sub-links">
+                  <li><a href="agents.html">Summary</a></li>
+                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
+                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
+                  <li><a href="agents.html#alkyl-sulfonate">Alkyl Sulfonate</a></li>
+                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                </ul>
+              </li>
+
             <li><a href="references.html">References</a></li>
         </ul>
     </div>
+
+
+    <div class="header">
+        <h1>From Mustard Gas to Chemotherapy</h1>
+        <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
+    </div>
+
 
     <div class="scene" id="references">
         <h2>References</h2>
@@ -335,6 +352,7 @@
                 <li>Drug Discovery News. (2023). Chemotherapy's Hidden Origins. Retrieved from <a href="https://www.drugdiscoverynews.com/chemotherapy-s-hidden-origins-15763" target="_blank">https://www.drugdiscoverynews.com/chemotherapy-s-hidden-origins-15763</a></li>
                 <li>Puyo, S. (2014). Alkylating Agents in Cancer Treatment. Retrieved from <a href="https://biocev.lf1.cuni.cz/file/166/alkylanty-puyo-2014.pdf" target="_blank">https://biocev.lf1.cuni.cz/file/166/alkylanty-puyo-2014.pdf</a></li>
                 <li>NCBI Bookshelf. (2023). Principles of Cancer Treatment. Retrieved from <a href="https://www.ncbi.nlm.nih.gov/books/NBK12772/" target="_blank">https://www.ncbi.nlm.nih.gov/books/NBK12772/</a></li>
+                <li>Yale School of Medicine. (n.d.). From the field of battle: An early strike. Yale Medicine. <a href="https://medicine.yale.edu/news/yale-medicine-magazine/article/from-the-field-of-battle-an-early-strike/", target="_blank">Yale School of Medicine. (n.d.). From the field of battle: An early strike. Yale Medicine. https://medicine.yale.edu/news/yale-medicine-magazine/article/from-the-field-of-battle-an-early-strike/</a>Y</li>
             </ol>
         </div>
     </div>
@@ -358,23 +376,37 @@
         }
     }
 
-    // Sidebar closes when link clicked
+    // Close sidebar when any link is clicked (including submenu links)
     navLinks.forEach(link => {
         link.addEventListener("click", () => {
             sidebar.classList.remove("active");
+            localStorage.setItem('sidebarExpanded', 'false');
         });
     });
 
-    // Submenu toggle
+    // Submenu toggle - prevent default only for submenu parent links
     const hasSubmenuItems = document.querySelectorAll('.has-submenu');
     hasSubmenuItems.forEach(item => {
         const link = item.querySelector('a');
+        const submenuLinks = item.querySelectorAll('.submenu a');
+        
         if (link) {
             link.addEventListener('click', function (e) {
-                e.preventDefault();
+                // Only prevent default for the parent link
+                if (!e.target.classList.contains('submenu-link')) {
+                    e.preventDefault();
+                }
                 item.classList.toggle('active');
             });
         }
+
+        // Add click handlers for submenu links
+        submenuLinks.forEach(subLink => {
+            subLink.addEventListener('click', () => {
+                sidebar.classList.remove("active");
+                localStorage.setItem('sidebarExpanded', 'false');
+            });
+        });
     });
 });
 </script>
