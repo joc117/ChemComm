@@ -3,10 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historical Background</title>
+    <title>From War to Healing: The Chemotherapy Story</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            background: #f5f7fa;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Arial', serif;
+            font-weight: 700;
+        }
+
+        /* Sidebar Styles */
         .sidebar-toggle {
             position: fixed;
             top: 20px;
@@ -34,7 +66,6 @@
             color: white;
         }
         
-        /* WHITE SIDEBAR STYLES */
         .sidebar {
             width: 280px;
             background: white;
@@ -63,7 +94,6 @@
             font-size: 1.5rem;
         }
         
-        /* NAVIGATION LINKS */
         .nav-links {
             list-style: none;
             padding: 0;
@@ -83,10 +113,10 @@
         }
 
         .nav-links a:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(26,41,128,0.1);
+            color: #1a2980;
         }
 
-        /* SUBMENU STYLES */
         .sub-links {
             list-style: none;
             padding-left: 15px;
@@ -107,26 +137,9 @@
         
         .sub-links a:hover {
             background-color: #f8f9fa;
+            color: #1a2980;
         }
         
-        .sub-links {
-            list-style: none;
-            margin-left: 20px;
-            margin-top: 5px;
-            display: none;
-            padding: 0;
-        }
-
-        .sub-links.active {
-            display: block;
-        }
-
-        .sub-links a {
-            padding: 8px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
         .has-submenu {
             position: relative;
         }
@@ -139,52 +152,28 @@
             transform: translateY(-50%);
             font-size: 0.8em;
             transition: transform 0.3s ease;
+            color: #666;
         }
 
         .has-submenu.active::after {
             transform: translateY(-50%) rotate(180deg);
         }
 
-        
-        /* Reset and base styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* Main Content Styles */
+        .main-content {
+            padding-top: 60px;
         }
 
-        html, body {
-        width: 100%;
-        height: 100%;
-        font-family: 'Arial', sans-serif;
-        color: #333;
-        line-height: 1.6;
-        scroll-behavior: smooth;
-        background: #f5f7fa;
-        }
-
-        body {
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        /* Remove margin that might cause extra scrolling */
-        body {
-            margin: 0;
-        }
-        
-        
-        /* Main container */
         .chemotherapy-animation {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
         }
         
-        /* Header styles */
-        .header {
+        /* Hero Section */
+        .hero {
             text-align: center;
-            padding: 80px 20px 60px;
+            padding: 120px 20px 80px;
             background: linear-gradient(135deg, #1a2980, #26d0ce);
             color: white;
             position: relative;
@@ -193,27 +182,43 @@
             margin-bottom: -30px;
         }
         
-        .header h1 {
-            font-size: 2.8rem;
+        .hero h1 {
+            font-size: 3.2rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
         }
         
-        .header p {
-            font-size: 1.3rem;
+        .hero p {
+            font-size: 1.4rem;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto 30px;
             opacity: 0.9;
         }
+
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
         
-        /* Creator section styles */
+        /* Creator Section */
         .creator-section {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
             gap: 40px;
-            padding: 60px 20px;
+            padding: 80px 20px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -230,6 +235,7 @@
             right: 0;
             height: 10px;
             background: linear-gradient(90deg, #26d0ce, #1a2980);
+            border-radius: 20px 20px 0 0;
         }
         
         .creator-image {
@@ -239,6 +245,11 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .creator-image:hover {
+            transform: translateY(-5px);
         }
         
         .creator-image img {
@@ -254,7 +265,7 @@
         
         .creator-content h2 {
             color: #1a2980;
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 3px solid #26d0ce;
@@ -264,6 +275,15 @@
             font-size: 1.1rem;
             line-height: 1.7;
             margin-bottom: 15px;
+        }
+
+        .creator-quote {
+            font-style: italic;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #1a2980;
+            margin: 20px 0;
+            font-size: 1.1rem;
         }
       
         /* Scene container styles */
@@ -292,6 +312,7 @@
             right: 0;
             height: 10px;
             background: linear-gradient(90deg, #26d0ce, #1a2980);
+            border-radius: 20px 20px 0 0;
         }
         
         .scene h2 {
@@ -319,1053 +340,567 @@
             line-height: 1.8;
             margin-bottom: 30px;
         }
-        
-        /* Animation container styles */
-        
-        /* WW1 Battlefield - Updated Styles */
-        .battlefield {
+
+        .scene img {
             width: 100%;
-            height: 500px;
-            background: linear-gradient(to bottom, #2c3e50, #34495e 70%, #23201a); /* Darker, more desolate ground */
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            margin: 30px 0;
-            perspective: 800px; /* For parallax */
-        }
-        
-        .battlefield::before { /* Dust/haze overlay + Lighting target */
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 100 100"><rect width="1" height="1" fill="%23000" opacity="0.03"/></svg>'), /* Finer dust */
-                linear-gradient(to bottom, rgba(100,90,80,0.15) 0%, transparent 50%, rgba(60,50,40,0.25) 100%);
-            opacity: 0.7;
-            z-index: 0;
-            filter: brightness(var(--battlefield-brightness, 1)); /* For GSAP controlled lighting */
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .battlefield::after { /* Dense Ground Fog layer */
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70%; /* Higher fog */
-            background: linear-gradient(to top, rgba(100, 110, 90, 0.6), transparent); /* Denser, slightly greener fog */
-            filter: blur(15px); /* More pronounced blur */
-            z-index: 1; 
-        }
-        
-        /* Trench system */
-        .trench-system {
-            position: absolute;
-            width: 100%;
-            height: 30%;
-            bottom: 0;
-            left: 0;
-            z-index: 2;
-            filter: drop-shadow(0px -5px 10px rgba(0,0,0,0.3)); /* Shadow for depth */
-        }
-        
-        .trench {
-            position: absolute;
-            width: 100%;
-            height: 30px;
-            background: #4a3b32; /* Darker, muddier trench color */
-            bottom: 0;
-            z-index: 3;
-            clip-path: polygon(
-                0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 
-                25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 
-                50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 
-                75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 
-                100% 0%
-            );
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.3); /* Inner shadow for depth */
-            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="rgba(0,0,0,0.05)"/><line x1="0" y1="10" x2="10" y2="0" stroke="rgba(0,0,0,0.05)" stroke-width="2"/></svg>'); /* Subtle texture */
-        }
-        
-        .trench-line {
-            position: absolute;
-            width: 100%;
-            height: 25px;
-            background: #40312a; /* Darker trench line */
-            bottom: 30px;
-            left: 0;
-            clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
-            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
-            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="rgba(255,255,255,0.02)"/><line x1="0" y1="0" x2="8" y2="8" stroke="rgba(0,0,0,0.04)" stroke-width="1"/></svg>'); /* Subtle texture */
-        }
-        
-        /* Barbed wire */
-        .barbed-wire {
-            position: absolute;
-            width: 100%;
-            height: 15px;
-            bottom: 55px;
-            background: 
-                linear-gradient(90deg, 
-                    transparent 5%, 
-                    #777 5%, #777 6%,  /* Darker barbed wire */
-                    transparent 6%, transparent 10%,
-                    #777 10%, #777 11%,
-                    transparent 11%, transparent 15%,
-                    #777 15%, #777 16%,
-                    transparent 16%);
-            z-index: 2;
-            filter: brightness(0.8);
-        }
-        
-        /* Shell craters */
-        .crater {
-            position: absolute;
-            width: 80px;
-            height: 40px;
-            background: #4e342e;
-            border-radius: 50%;
-            z-index: 1;
-            filter: blur(2px);
-        }
-        
-        .crater::after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 30px;
-            background: #3e2723;
-            border-radius: 50%;
-            top: 5px;
-            left: 10px;
-        }
-        
-        /* Soldier styles */
-        .soldier {
-            position: absolute;
-            width: 30px;
-            height: 60px;
-            bottom: 30px;
-            z-index: 4;
-            transition: all 0.5s ease;
-            transform-origin: bottom center;
-            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)); /* Subtle shadow for depth */
-        }
-        
-        .soldier .head {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #253018; /* Slightly darker olive */
-            border: 2.5px solid #12170c; /* Thicker, cleaner outline */
-            top: -15px;
-            left: 5px;
-            border-radius: 50%;
-            z-index: 3;
-        }
-        
-        .soldier .body {
-            position: absolute;
-            width: 25px;
-            height: 35px;
-            background: #32481c; /* Slightly darker army green */
-            border: 2.5px solid #16210d; /* Thicker, cleaner outline */
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-            top: 5px;
-            left: 3px;
-            border-radius: 3px;
-            z-index: 2;
-        }
-        
-        .soldier .arm {
-            position: absolute;
-            width: 12px;
-            height: 30px;
-            background: #32481c;
-            border: 2.5px solid #16210d; /* Thicker, cleaner outline */
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-            top: 8px;
-            left: -4px;
-            border-radius: 3px;
-            z-index: 2;
-        }
-        
-        .soldier .arm.right {
-            left: 17px;
-        }
-        
-        .soldier .leg {
-            position: absolute;
-            width: 10px;
-            height: 30px;
-            background: #3b5323; /* Army green */
-            border: 1px solid #222;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-            bottom: 0;
-            left: 5px;
-            border-radius: 3px;
-            z-index: 2;
-        }
-        
-        .soldier .leg.right {
-            left: 15px;
-        }
-        
-        /* Mustard gas cloud */
-        .gas-cloud {
-            position: absolute; 
-            width: 250px; /* Slightly larger for more presence */
-            height: 180px; 
-            background: radial-gradient(circle, 
-                rgba(180, 190, 70, 0.75) 0%, /* More vibrant yellow-green */
-                rgba(150, 160, 50, 0.6) 50%, 
-                rgba(110, 120, 30, 0.2) 100%);
-            filter: blur(30px) saturate(1.4) brightness(1.2); /* Enhanced effects */
-            border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; /* More irregular shape */
-            mix-blend-mode: overlay; 
-            z-index: 5; 
-            opacity: 0; 
-            box-shadow: 0 0 25px rgba(200, 200, 80, 0.35), 
-                        0 0 45px rgba(170, 170, 40, 0.25),  
-                        0 0 70px rgba(140, 140, 20, 0.15); 
-            animation: flickerGlowWavy 7s infinite alternate ease-in-out;
-        }
-
-        @keyframes flickerGlowWavy { /* Renamed and enhanced */
-            0% {
-                transform: scale(1) translate(0px, 0px) rotate(0deg);
-                opacity: 0.7;
-                filter: blur(25px) saturate(1.2) brightness(1.1);
-                border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
-            }
-            25% {
-                transform: scale(1.02) translate(-10px, 5px) rotate(-5deg);
-                border-radius: 50% 50% 60% 40% / 60% 50% 50% 40%;
-            }
-            50% {
-                transform: scale(1.05) translate(5px, -10px) rotate(3deg);
-                opacity: 0.9;
-                filter: blur(30px) saturate(1.5) brightness(1.3);
-                box-shadow: 0 0 35px rgba(210, 210, 90, 0.45),
-                            0 0 55px rgba(180, 180, 50, 0.35),
-                            0 0 80px rgba(150, 150, 30, 0.25);
-                border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%;
-            }
-            75% {
-                transform: scale(1.03) translate(10px, 10px) rotate(5deg);
-                border-radius: 70% 30% 40% 60% / 40% 70% 30% 60%;
-            }
-            100% {
-                transform: scale(1) translate(0px, 0px) rotate(0deg);
-                opacity: 0.7;
-                filter: blur(25px) saturate(1.2) brightness(1.1);
-                border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
-            }
-        }
-
-        .gas-label, .lab-label, .dna-label, .mitosis-label, .trench-warfare-label {
-            position: absolute;
-            background: rgba(0,0,0,0.85); /* Slightly more opaque background for clarity */
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 18px;
-            font-weight: bold;
-            z-index: 11; /* Ensure it's above the gas cloud (z-index 5) and other elements */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.7); /* Sharper text shadow */
-            filter: none !important; 
-            transform: translate(-50%, -50%) translateZ(1px); /* Promote to new rendering layer */
-            -webkit-transform: translate(-50%, -50%) translateZ(1px);
-            top: 50%;
-            left: 50%;
-            white-space: nowrap;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-        }
-
-        /* Hover effects for labels */
-        .gas-cloud:hover .gas-label,
-        .flask:hover .lab-label,
-        .microscope:hover .lab-label,
-        .lab-equipment:hover .lab-label,
-        .notes:hover .lab-label,
-        .dna-backbone:hover .dna-label,
-        .dna-base:hover .dna-label,
-        .treatment-scene:hover .mitosis-label,
-        .battlefield:hover .trench-warfare-label {
-            opacity: 1;
-        }
-
-        /* Add cursor pointer to interactive elements */
-        .gas-cloud, .flask, .microscope, .lab-equipment, .notes, 
-        .dna-backbone, .dna-base, .treatment-scene, .battlefield {
-            cursor: pointer;
-        }
-
-        /* Ensure death smoke text is sharp */
-        .death-smoke span {
-            filter: none !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            text-shadow: none !important;
-        }
-
-        /* Add collapse animation */
-        .soldier.collapsed {
-            transform: rotate(90deg);
-            transform-origin: bottom center;
-            opacity: 0.5;
-            filter: brightness(0.5);
-        }
-
-        /* Update death smoke styles */
-        .death-smoke {
-            position: absolute;
-            width: 60px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: black;
-            font-weight: bold;
-            font-size: 12px;
-            text-transform: uppercase;
-            pointer-events: none;
-            top: -40px;
-            left: 5px;
-            transform: scale(0);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            filter: none !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            text-shadow: none !important;
-            border: 2px solid rgba(0, 0, 0, 0.1);
-        }
-
-        /* Modern Chemotherapy Styles */
-        .treatment-scene {
-            position: relative;
-            height: 400px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .hospital-bed {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 100px;
-            background: #e0e0e0;
-            border-radius: 10px;
-        }
-
-        .patient {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 120px;
-            background: #90caf9;
-            border-radius: 30px 30px 0 0;
-            opacity: 0;
-        }
-
-        .iv-bag {
-            position: absolute;
-            top: 50px;
-            right: 50px;
-            width: 40px;
-            height: 60px;
-            background: #e3f2fd;
-            border: 2px solid #90caf9;
-            border-radius: 5px;
-            opacity: 0;
-        }
-
-        .iv-tube {
-            position: absolute;
-            top: 110px;
-            right: 70px;
-            width: 2px;
-            height: 0;
-            background: #90caf9;
-            opacity: 0;
-        }
-
-        .mitosis-label {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2em;
-            color: #1a2980;
-            font-weight: bold;
-        }
-
-        .cancer-cell {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #f44336;
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        .healthy-cell {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #4caf50;
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        .cell-division {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: #f44336;
-            border-radius: 50%;
-            opacity: 0;
-            transform: scale(0);
+        figcaption {
+            text-align: center;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
         }
 
         .chemical-structure {
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
 
         .chemical-structure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
+            max-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
-        .chemical-structure figcaption {
-            margin-top: 10px;
-            color: #666;
-            font-size: 0.9em;
-        }
-
+        
+        /* Animation container styles */
         .animation-container {
-            min-height: 400px;
+            min-height: 500px;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 40px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
         }
 
-        .lab {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            width: 80%; /* Adjust width as needed */
+        /* Info Callouts */
+        .info-wrapper {
+            position: relative;
+            display: inline-block;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f5f7fa;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-callout {
+            position: absolute;
+            background: #1a2980;
+            color: white;
+            padding: 18px;
+            border-radius: 12px;
+            max-width: 270px;
+            opacity: 0;
+            z-index: 10;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            pointer-events: none; 
+            font-size: 1.1rem;
+        }
+
+        .info-wrapper:hover .info-callout {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .info-callout::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #1a2980;
+            bottom: -12px;
+            left: 20px;
+        }
+
+        /* Optional: Add some shadow effect and animation to the hover interaction */
+        .info-wrapper:hover .info-callout {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: #1a2980;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
         }
 
-        .flask, .microscope, .lab-equipment, .notes {
+        .timeline-date {
+            font-weight: bold;
+            color: #1a2980;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item::after {
+            content: '';
             position: absolute;
-            width: 80px; /* Example width */
-            height: 80px; /* Example height */
-            background-color: #eee;
-            border-radius: 50%; /* Example for flask */
-        }
-
-        .flask {
-            top: 20%;
-        }
-
-        .microscope {
-            top: 40%;
-        }
-
-        .lab-equipment {
-            top: 60%;
-        }
-
-        .notes {
-            top: 80%;
-        }
-
-        .bubble {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #b3e0ff;
+            width: 20px;
+            height: 20px;
+            background: #26d0ce;
+            border: 4px solid #1a2980;
             border-radius: 50%;
-            animation: bubbleAnimation 2s infinite;
+            top: 20px;
+            z-index: 1;
         }
 
-        @keyframes bubbleAnimation {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-40px); opacity: 0; }
+        .timeline-item:nth-child(odd)::after {
+            right: -12px;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -12px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+            margin-top: 60px;
+        }
+        
+        .footer p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .creator-section, .scene {
+                padding: 60px 20px;
+                margin: 40px auto;
+            }
+
+            .timeline::before {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .timeline-item:nth-child(odd)::after {
+                right: auto;
+                left: 21px;
+            }
         }
     </style>
 </head>
     
 <body>
     <div class="sidebar-toggle" id="sidebarToggle">
-    <span class="sidebar-toggle-icon">☰</span>
-</div>
+        <span class="sidebar-toggle-icon">☰</span>
+    </div>
 
-<div class="sidebar">
-    <h2>Navigation</h2>
-    <ul class="nav-links">
-        <li><a href="overview.html">Authors</a></li>
-        <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
-        <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
-        <li class="has-submenu">
-            <a href="agents.html">Alkylating Agents</a>
-            <ul class="sub-links">
-              <li><a href="agents.html">Summary</a></li>
-              <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
-              <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
-              <li><a href="agents.html#alkyl-sulfonate">Alkyl Sulfonate</a></li>
-              <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
-            </ul>
-          </li>
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <ul class="nav-links">
+            <li><a href="overview.html">Authors</a></li>
+            <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
+            <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
+            <li class="has-submenu">
+                <a href="agents.html">Alkylating Agents</a>
+                <ul class="sub-links">
+                  <li><a href="agents.html">Summary</a></li>
+                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
+                  <li><a href="agents.html#oxazaphosphorines">Oxazaphosphorines</a></li>
+                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
+                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                </ul>
+              </li>
 
-        <li><a href="references.html">References</a></li>
-    </ul>
-</div>
-
+            <li><a href="references.html">References</a></li>
+        </ul>
+    </div>
 
     <div class="main-content"> 
-    <div class="chemotherapy-animation">
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        
-        <div class="header">
-            <h1>From Mustard Gas to Chemotherapy</h1>
-            <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
-        </div>
+        <div class="chemotherapy-animation">
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>From War to Healing: The Chemotherapy Story</h1>
+                <p>The remarkable transformation of chemical weapons into life-saving cancer treatments</p>
+                
+            </div>
 
         
-
-         <!-- WW1 Scene -->
-    <div class="scene" id="ww1">
-        <h2>1917: Chemical Warfare Beginnings</h2>
-        <div class="animation-container">
-            <div class="battlefield">
-                <div class="trench-warfare-label">Trench Warfare During WW1</div>
-                <div class="no-mans-land"></div>
-                
-                <!-- Shell craters -->
-                <div class="crater" style="bottom: 100px; left: 10%;"></div>
-                <div class="crater" style="bottom: 80px; left: 30%; width: 120px; height: 60px;"></div>
-                <div class="crater" style="bottom: 90px; left: 60%;"></div>
-                <div class="crater" style="bottom: 110px; left: 80%; width: 100px; height: 50px;"></div>
-                
-                <!-- Trench system -->
-                <div class="trench-system">
-                    <div class="trench-line"></div>
-                    <div class="trench"></div>
-                    <div class="barbed-wire"></div>
-                </div>
-                
-                <!-- Soldiers -->
-                <div class="soldier" id="soldier1" style="left: 15%;">
-                    <div class="head"></div>
-                    <div class="body"></div>
-                    <div class="arm"></div>
-                    <div class="arm right"></div>
-                    <div class="leg"></div>
-                    <div class="leg right"></div>
-                    <div class="death-smoke">DEAD</div>
-                </div>
-                
-                <div class="soldier" id="soldier2" style="left: 35%; transform: scaleX(-1);">
-                    <div class="head"></div>
-                    <div class="body"></div>
-                    <div class="arm"></div>
-                    <div class="arm right"></div>
-                    <div class="leg"></div>
-                    <div class="leg right"></div>
-                    <div class="death-smoke">DEAD</div>
-                </div>
-                
-                <div class="soldier" id="soldier3" style="left: 55%;">
-                    <div class="head"></div>
-                    <div class="body"></div>
-                    <div class="arm"></div>
-                    <div class="arm right"></div>
-                    <div class="leg"></div>
-                    <div class="leg right"></div>
-                    <div class="death-smoke">DEAD</div>
-                </div>
-                
-                <!-- Gas cloud and particles -->
-                <div class="gas-cloud">
-                    <div class="gas-label">Mustard Gas (Sulfur Mustard)</div>
-                </div>
-            </div>
-        </div>
-    
-            <div class="chemical-structure">
-                <figure>
-                    <div style="text-align: center;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Sulfur-mustard-2D-skeletal.svg/1600px-Sulfur-mustard-2D-skeletal.svg.png" 
-                         alt="Chemical structure of Sulfur Mustard"
-                         width="300"
-                         height="100">
-                    <figcaption>Chemical structure of Sulfur Mustard</figcaption>
-                    <figcaption><i>Credit to "Sulfur mustard 2D skeletal" by Wikimedia Commons user Benjah-bmm27</i></figcaption>
-                    </div>
-                </figure>
-            </div>
-            <br>
-            <h3 style="font-weight: bold; font-size: 1.5em; font-family: 'Arial', serif;">
-                From Poison to Potential: Mustard Gas Sparks Cancer Research
-            </h3>
-
-            <p>Chemical warfare, first used by the German army in WWI, exploits the harmful properties of chemical agents to incapacitate enemies. Mustard gas (C₄H₈Cl₂S), a cellular poison and mutagen, is a known carcinogen. Autopsies of 75 soldiers who died from mustard gas exposure revealed low white blood cell counts, prompting research into its potential use for treating hematologic cancers, which involve abnormal white blood cell growth.</p>
-        </div>
-                        
-        <!-- 1930s Research -->
-        <div class="scene" id="research">
-            <h2>1930s: Nitrogen Mustard Discovery</h2>
-            <div class="animation-container">
-                <div class="lab">
-                    <div class="lab-wall"></div>
-                    <div class="lab-table"></div>
-                    <div class="flask">
-                        <div class="lab-label">Nitrogen Mustard Solution</div>
-                        <div class="flask-liquid"></div>
-                        <div class="flask-bubbles">
-                            <div class="bubble" style="left: 20px;"></div>
-                            <div class="bubble" style="left: 40px; width: 6px; height: 6px;"></div>
-                            <div class="bubble" style="left: 60px;"></div>
+            <!-- Historical Timeline -->
+            <div class="scene" id="timeline">
+                <h2>The Journey of Chemotherapy</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1917</div>
+                            <p>First military use of mustard gas in World War I reveals its effects on white blood cells</p>
                         </div>
                     </div>
-                    <div class="microscope">
-                        <div class="lab-label">Microscope</div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1930s</div>
+                            <p>Development of nitrogen mustards with greater toxicity to rapidly dividing cells</p>
+                        </div>
                     </div>
-                    <div class="lab-equipment">
-                        <div class="lab-label">Centrifuge</div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1942</div>
+                            <p>First human trial of nitrogen mustard on a lymphoma patient at Yale</p>
+                        </div>
                     </div>
-                    <div class="notes">
-                        <div class="lab-label">Research Notes</div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1946</div>
+                            <p>First published results of nitrogen mustard chemotherapy</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1950s</div>
+                            <p>Development of combination chemotherapy protocols</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Recent</div>
+                            <p>Modern targeted chemotherapy with fewer side effects</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            
-            <div class="chemical-structure">
-                <figure>
-                    <div style="text-align: center;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ethyl-S.svg/400px-Ethyl-S.svg.png" 
-                            alt="Chemical structure of Nitrogen Mustard"
-                            width="200"
-                            height="100">
-                    <figcaption>Chemical structure of Nitrogen Mustard </figcaption>
-                    <figcaption><i></i> Credit to "Ethyl-S" by Wikimedia Commons user Benjah-bmm27</i></figcaption>
-                    
-                    </div>
-                </figure>
-            </div>
-
-            <br>
-            
-            <h3 style="font-weight: bold; font-size: 1.5em; font-family: 'Arial', serif;">
-                Nitrogen Mustards: From Wartime Toxin to Chemotherapy Breakthrough
-            </h3>
-
-            <p>Synthesized in the 1930s, nitrogen mustards (C₆H₁₂Cl₃N) were more toxic than sulfur mustard, especially to rapidly dividing cells 
-                like those in lymphoid tissue, bone marrow, and the gut. A successful Yale trial on tumor-bearing mice laid the groundwork for 
-                the first human chemotherapy experiment.</p>
-        </div>
-
-        <div class="creator-section">
-            <div class="creator-image">
-                <img src="https://ysm-res.cloudinary.com/image/upload/w_930/h_576,c_scale,e_unsharp_mask:70/c_scale,e_blur:1700,u_v1:yms:prod:1d68c623-443d-4ca0-9227-68bc86c38324,w_930,h_576/dpr_2/v1/yms/prod/1d68c623-443d-4ca0-9227-68bc86c38324">
+            <div class="creator-section" id="creators">
+                <div class="creator-image">
+                    <figure>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Portret_van_Professor_Fritz_Haber%2C_een_chemicus_uit_Duitsland_%28foto_1918-_1934%29%2C_SFA002023057.jpg" alt="Fritz Haber">
+                    <figcaption class="tight-caption">Photo of Fritz Haber</figcaption>
+                    <figcaption class="tight-caption"><i>Credit to Nationaal Archief. (n.d.). Portret van Professor Fritz Haber, een chemicus uit Duitsland (foto 1918–1934). Wikimedia Commons.</i></figcaption>
+                    </figure>
+                </div>
+                <div class="creator-content">
+                    <h2>The Scientist Behind a Weapon That Unintentionally Shaped Cancer Research</h2>
+                    <p>During World War I, <strong>Fritz Haber</strong>, a German chemist, played a pivotal role in the development of chemical warfare. He oversaw the deployment of <strong>sulfur mustard</strong>, a blistering agent used as a weapon on the battlefield. Though originally designed for destruction, its biological effects would eventually spark a new direction in medical science decades later.</p>
+                </div>
                 
-                <img src="https://ysm-res.cloudinary.com/image/upload/h_576/c_scale,e_blur:1700,u_v1:yms:prod:f69989d6-5d3c-400e-9960-7afe58b68305,w_930,h_576/dpr_2/v1/yms/prod/f69989d6-5d3c-400e-9960-7afe58b68305">
-                <figcaption>Photo of the creators, Alfred Gilman(in labcoat) and Louis Goodman</figcaption>
-                <figcaption><i>Credit to YSM</i></figcaption>
             </div>
-            <div class = "creator-content">
-                <h2>Scientist who discovered Nitrogen Mustard</h2>
-                <p>During World War II, <strong>Louis Goodman</strong> and <strong>Alfred Gilman</strong> noticed that soldiers exposed to mustard gas had reduced white blood cell counts. Suspecting it could target fast-dividing cancer cells, they tested a chemical form called nitrogen mustard on mice with lymphoma and saw tumors shrink. In 1942, they treated a human patient with non-Hodgkin's lymphoma using the drug, resulting in temporary tumor reduction. This marked the first successful use of chemotherapy to treat cancer (Yale School of Medicine, n.d.).</p>
-            </div>
-        </div>
-        <!-- Modern Chemotherapy -->
-        <div class="scene" id="modern-chemotherapy">
-            <h2>Modern Chemotherapy: Targeted Treatment</h2>
-            <div class="animation-container">
-                <div class="treatment-scene">
-                    <div class="hospital-bed"></div>
-                    <div class="patient"></div>
-                    <div class="iv-bag"></div>
-                    <div class="iv-tube"></div>
-                    <div class="mitosis-label">Chemotherapy Treatment</div>
 
-                    <!-- Cells -->
-                    <div class="cancer-cell" style="top:100px; left:80px;"></div>
-                    <div class="cancer-cell" style="top:150px; left:160px;"></div>
-                    <div class="cancer-cell" style="top:80px; left:240px;"></div>
-                    <div class="cancer-cell" style="top:180px; left:120px;"></div>
-                    <div class="cancer-cell" style="top:120px; left:200px;"></div>
-                    <div class="healthy-cell" style="top:70px; left:120px;"></div>
-                    <div class="healthy-cell" style="top:130px; left:200px;"></div>
-                    <div class="healthy-cell" style="top:90px; left:160px;"></div>
-                    <div class="cell-division" style="position:absolute; width:50px; height:50px; background:#f44336; border-radius:50%; top:200px; left:200px; opacity:0; transform:scale(0);"></div>
+            
+            <!-- WW1 Scene -->
+            <div class="scene" id="ww1">
+                <h2>1917: Chemical Warfare Beginnings</h2>
+                <div class="info-wrapper" style="text-align: center;">
+                    More info
+                    <div class="info-callout" id="ww1-info">
+                        <strong>Key Insight:</strong> The observation that mustard gas affected rapidly dividing white blood cells led scientists to investigate its potential against cancers that originate from these cells.
+                    </div>
+                </div>
+                <img src="https://www.kumc.edu/images/histmed/wwi/soldier_charge.jpg" alt="Soldiers in gas masks">
+            
+                <figcaption>Masked soldiers charge through a cloud of gas during WWI (Credit: University of Kansas Medical Center)</figcaption>
+            
+                <div class="chemical-structure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Sulfur-mustard-2D-skeletal.svg/1600px-Sulfur-mustard-2D-skeletal.svg.png" 
+                         alt="Chemical structure of Sulfur Mustard"
+                         width="300">
+                    <figcaption>Chemical structure of Sulfur Mustard (Credit: Wikimedia Commons)</figcaption>
+                </div>
+                
+                <h3>From Poison to Potential: Mustard Gas Sparks Cancer Research</h3>
+
+                <p>Chemical warfare, first used by the German army in WWI, exploits the harmful properties of chemical agents to incapacitate enemies. Mustard gas (C₄H₈Cl₂S), a cellular poison and mutagen, is a known carcinogen. Autopsies of 75 soldiers who died from mustard gas exposure revealed low white blood cell counts, prompting research into its potential use for treating hematologic cancers, which involve abnormal white blood cell growth.</p>
+                
+                
+            </div>
+                        
+            <!-- 1930s Research -->
+            <div class="scene" id="research">
+                <h2>1930s: Nitrogen Mustard Discovery</h2>
+                <div class="info-wrapper" style="text-align:center;">
+                    More info
+                    <div class="info-callout" id="research-info2">
+                        <strong>Breakthrough:</strong> The Yale trials demonstrated that nitrogen mustards could shrink tumors in mice, leading to the first human chemotherapy trials in the 1940s.
+                    </div>
+                </div>
+
+                <div class="chemical-structure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ethyl-S.svg/400px-Ethyl-S.svg.png" 
+                         alt="Chemical structure of Nitrogen Mustard"
+                         width="200">
+                    <figcaption>Chemical structure of Nitrogen Mustard</figcaption>
+                    <figcaption><i>Credit to “Ethyl-S.svg” by Wikipedia user Wikimedia Commons, licensed under the Creative Commons Attribution-Share Alike 3.0 Unported license.</i></figcaption>
+                </div>
+                
+                <h3>Nitrogen Mustards: From Wartime Toxin to Chemotherapy Breakthrough</h3>
+
+                <p>Synthesized in the 1930s, nitrogen mustards (C₆H₁₂Cl₃N) were more toxic than sulfur mustard, especially to rapidly dividing cells like those in lymphoid tissue, bone marrow, and the gut. A successful Yale trial on tumor-bearing mice laid the groundwork for the first human chemotherapy experiment.</p>
+                
+               
+            </div>
+            
+            <div class="creator-section" id="creators">
+                <div class="creator-image">
+                    <img src="https://ysm-res.cloudinary.com/image/upload/w_930/h_576,c_scale,e_unsharp_mask:70/c_scale,e_blur:1700,u_v1:yms:prod:1d68c623-443d-4ca0-9227-68bc86c38324,w_930,h_576/dpr_2/v1/yms/prod/1d68c623-443d-4ca0-9227-68bc86c38324" alt="Alfred Gilman in Lab">
+                    <img src="https://ysm-res.cloudinary.com/image/upload/h_576/c_scale,e_blur:1700,u_v1:yms:prod:f69989d6-5d3c-400e-9960-7afe58b68305,w_930,h_576/dpr_2/v1/yms/prod/f69989d6-5d3c-400e-9960-7afe58b68305" alt="Louis Goodman">
+                    <figcaption class="tight-caption">Drs. Alfred Gilman and Louis Goodman, pioneers of chemotherapy</figcaption>
+                    <figcaption class="tight-caption"><i>YSM. (n.d.). Alfred Gilman in lab [Photograph]. YSM.</i></figcaption>
+                    <figcaption class="tight-caption"><i>YSM. (n.d.). Louis Goodman [Photograph]. YSM.</i></figcaption>
+
+                </div>
+                <div class="creator-content">
+                    <h2>The Scientists Who Revolutionized Cancer Treatment</h2>
+                    <p>During World War II, <strong>Louis Goodman</strong> and <strong>Alfred Gilman</strong> made a groundbreaking observation that would change medicine forever. They noticed that soldiers exposed to mustard gas showed significantly reduced white blood cell counts. This discovery led them to hypothesize that similar chemical compounds might be effective against cancers of the blood and lymphatic system.</p>
+                    
+                    <p>In 1942, working at Yale University, they conducted the first clinical trial of nitrogen mustard (mustine) on a patient with non-Hodgkin's lymphoma. The results were astonishing - the patient's tumors shrank dramatically, marking the birth of chemotherapy as a cancer treatment.</p>
+                    
+                    <p>Their work laid the foundation for modern chemotherapy and opened new avenues for cancer treatment that continue to save millions of lives today.</p>
                 </div>
             </div>
 
-            <div class="chemical-structure">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Temozolomide_structure.svg/1920px-Temozolomide_structure.svg.png" 
-                     alt="Temozolomide chemical structure"
-                     width="200"
-                     height="180">
-                <figcaption>Temozolomide: a modern DNA-alkylating drug <i>Credit to "Temozolomide structure" by Wikimedia Commons user Ben MIlls </i></figcaption>
+            <!-- Modern Chemotherapy -->
+            <div class="scene" id="modern-chemotherapy">
+                <h2>Modern Chemotherapy: Targeted Treatment</h2>
+                <div class="info-wrapper" style="text-align:center;">
+                   More info
+                    <div class="info-callout" id="treatment-info1">
+                        Modern chemotherapy drugs are designed to be more selective, targeting cancer cells while minimizing damage to healthy cells.
+                    </div>
+                </div>
+
+                <img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/406F/production/_101859461_7653a81b-73cd-45fc-b745-da070d908299.jpg.webp" alt="Modern chemotherapy treatment">
+                <figcaption class="tight-caption">Patients having chemotheraphy</figcaption>
+                <figcaption class="tight-caption"><i>Credit to BBC News. (2018, July 27)</i></figcaption>
+
+                <div class="chemical-structure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Temozolomide_structure.svg/1920px-Temozolomide_structure.svg.png" 
+                         alt="Temozolomide chemical structure"
+                         width="200">
+                    <figcaption class="tight-caption">Temozolomide: a modern DNA-alkylating drug</figcaption>
+                    <figcaption class="tight-caption"><i>Credit to Wikimedia Commons. (n.d.). Temozolomide structure [Image]. Wikimedia Commons.</i></figcaption>
+                </div>
+
+                <h3>Evolution of Alkylating Agents: From Mustard Gas to Modern Medicine</h3>
+
+                <p>Today's chemotherapy has evolved significantly from its origins in mustard gas. Modern alkylating agents like Temozolomide and Dacarbazine offer targeted treatment for specific cancers, particularly brain tumors and melanomas. These drugs work by damaging cancer DNA while minimizing harm to healthy cells, representing a major advancement in cancer treatment.</p>
+
+                <p>The development of these modern agents builds upon the fundamental understanding gained from early nitrogen mustard research, but with improved specificity and reduced side effects. This evolution demonstrates how scientific knowledge can transform a deadly weapon into life-saving medicine.</p>
+                
+                <div class="info-callout" id="treatment-info2">
+                    <strong>Modern Approach:</strong> Today's alkylating agents are designed to be more selective and are often combined with other treatments for better outcomes with fewer side effects.
+                </div>
+
             </div>
-
-            <h3 style="font-weight: bold; font-size: 1.5em; font-family: 'Arial', serif;">
-                Evolution of Alkylating Agents: From Mustard Gas to Modern Medicine
-            </h3>
-
-            <p>Today's chemotherapy has evolved significantly from its origins in mustard gas. Modern alkylating agents like Temozolomide and Dacarbazine offer targeted treatment for specific cancers, particularly brain tumors and melanomas. These drugs work by damaging cancer DNA while minimizing harm to healthy cells, representing a major advancement in cancer treatment.</p>
-
-            <p>The development of these modern agents builds upon the fundamental understanding gained from early nitrogen mustard research, but with improved specificity and reduced side effects. This evolution demonstrates how scientific knowledge can transform a deadly weapon into life-saving medicine.</p>
         </div>
-</body>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <div class="footer">
+        <p>From Chemical Warfare to Cancer Cure: The Alchemical Evolution of Chemotherapy</p>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const navLinks = document.querySelectorAll(".nav-links a");
+            // Sidebar toggle functionality
+            const sidebar = document.querySelector(".sidebar");
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const navLinks = document.querySelectorAll(".nav-links a");
 
-    // Sidebar toggle logic
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-        });
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+                });
 
-        // Restore state
-        if (localStorage.getItem('sidebarExpanded') === 'true') {
-            sidebar.classList.add('active');
-        }
-    }
-
-    // Close sidebar when any link is clicked (including submenu links)
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            sidebar.classList.remove("active");
-            localStorage.setItem('sidebarExpanded', 'false');
-        });
-    });
-
-    // Submenu toggle - prevent default only for submenu parent links
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        const submenuLinks = item.querySelectorAll('.submenu a');
-        
-        if (link) {
-            link.addEventListener('click', function (e) {
-                // Only prevent default for the parent link
-                if (!e.target.classList.contains('submenu-link')) {
-                    e.preventDefault();
+                // Restore state
+                if (localStorage.getItem('sidebarExpanded') === 'true') {
+                    sidebar.classList.add('active');
                 }
-                item.classList.toggle('active');
-            });
-        }
+            }
 
-        // Add click handlers for submenu links
-        submenuLinks.forEach(subLink => {
-            subLink.addEventListener('click', () => {
-                sidebar.classList.remove("active");
-                localStorage.setItem('sidebarExpanded', 'false');
+            // Close sidebar when any link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    sidebar.classList.remove("active");
+                    localStorage.setItem('sidebarExpanded', 'false');
+                });
             });
-        });
-    });
+
+            // Submenu toggle
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+            hasSubmenuItems.forEach(item => {
+                const link = item.querySelector('a');
+                const submenuLinks = item.querySelectorAll('.sub-links a');
+                
+                if (link) {
+                    link.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('sub-links')) {
+                            e.preventDefault();
+                        }
+                        item.classList.toggle('active');
+                    });
+                }
+
+                submenuLinks.forEach(subLink => {
+                    subLink.addEventListener('click', () => {
+                        sidebar.classList.remove("active");
+                        localStorage.setItem('sidebarExpanded', 'false');
+                    });
+                });
+            });
 
             // Initialize GSAP and ScrollTrigger
             if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                 gsap.registerPlugin(ScrollTrigger);
-                setupAnimations();
+                
+                // Animate info callouts
+                gsap.utils.toArray('.info-callout').forEach(callout => {
+                    ScrollTrigger.create({
+                        trigger: callout.parentElement,
+                        start: "top 60%",
+                        end: "bottom 20%",
+                        onEnter: () => callout.classList.add('active'),
+                        onLeaveBack: () => callout.classList.remove('active')
+                    });
+                });
+
+                // Animate timeline items
+                gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+                    gsap.from(item, {
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 80%",
+                            toggleActions: "play none none none"
+                        },
+                        opacity: 0,
+                        y: 50,
+                        duration: 0.8,
+                        delay: i * 0.1
+                    });
+                });
+
+                // Animate scene elements
+                gsap.utils.toArray('.scene').forEach(scene => {
+                    gsap.from(scene, {
+                        scrollTrigger: {
+                            trigger: scene,
+                            start: "top 80%",
+                            toggleActions: "play none none none"
+                        },
+                        opacity: 0,
+                        y: 50,
+                        duration: 0.8
+                    });
+                });
             } else {
                 console.warn("GSAP or ScrollTrigger not loaded - animations disabled");
             }
-
-            function setupAnimations() {
-                const battlefield = document.querySelector(".battlefield");
-
-                // Create gas particles
-                for (let i = 0; i < 40; i++) {
-                    const particle = document.createElement("div");
-                    particle.className = "gas-particle";
-                    particle.style.left = `${Math.random() * 120 - 10}%`;
-                    particle.style.top = `${50 + Math.random() * 60}%`;
-                    particle.style.width = `${6 + Math.random() * 20}px`;
-                    particle.style.height = particle.style.width;
-                    particle.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 250}px`);
-                    particle.style.setProperty('--drift-y', `${-(Math.random() * 180 + 70)}px`);
-                    particle.style.setProperty('--drift-scale', `${Math.random() * 0.4 + 0.2}`);
-                    particle.style.animationDelay = `${Math.random() * 15}s`;
-                    battlefield.appendChild(particle);
-                }
-
-                const gasCloud = document.querySelector(".gas-cloud");
-                const gasLabel = document.querySelector(".gas-label");
-                const soldiers = gsap.utils.toArray(".soldier");
-                const craters = gsap.utils.toArray(".crater");
-                const trenchSystem = document.querySelector(".trench-system");
-
-                // Parallax for background elements
-                gsap.to(craters, {
-                    yPercent: -10,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: battlefield,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.5
-                    }
-                });
-
-                gsap.to(trenchSystem, {
-                    yPercent: -5,
-                    z: -50,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: battlefield,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1
-                    }
-                });
-
-                // Main gas cloud animation
-                if (gasCloud) {
-                    gsap.fromTo(gasCloud, 
-                        {
-                            opacity: 0,
-                            scale: 0.2,
-                            xPercent: 100,
-                            yPercent: -30,
-                            rotation: -20
-                        },
-                        {
-                            scrollTrigger: {
-                                trigger: "#battlefield",
-                                start: "top center",
-                                end: "center center",
-                                scrub: 0.8,
-                                markers: false
-                            },
-                            opacity: 0.85,
-                            scale: 1,
-                            xPercent: -50,
-                            yPercent: 0,
-                            rotation: 10,
-                            duration: 5,
-                            ease: "power1.inOut"
-                        }
-                    );
-                }
-
-                // Gas label disappearance on scroll
-                if (gasLabel) {
-                    gsap.to(gasLabel, {
-                        opacity: 0,
-                        duration: 0.5,
-                        scrollTrigger: {
-                            trigger: battlefield,
-                            start: "top center",
-                            end: "center center",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Animate soldier collapse
-                soldiers.forEach((soldier, i) => {
-                    const deathSmoke = soldier.querySelector(".death-smoke");
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: "#battlefield",
-                            start: "top 60%",
-                            end: "+=400",
-                            scrub: 1,
-                            markers: false
-                        }
-                    });
-
-                    tl.to(soldier, { 
-                        x: () => (Math.random() - 0.5) * 3, 
-                        rotation: () => (Math.random() - 0.5) * 2,
-                        duration: 0.7 + Math.random() * 0.4, 
-                        repeat: 1, 
-                        yoyo: true,
-                        ease: "sine.inOut",
-                        delay: i * 0.1 
-                    })
-                    .to(soldier, { 
-                        x: () => (Math.random() - 0.5) * 15, 
-                        y: () => (Math.random() - 0.5) * 5, 
-                        rotation: () => (Math.random() - 0.5) * 25, 
-                        duration: 0.5, 
-                        ease: "power1.inOut"
-                    }, "-=0.2") 
-                    .to(soldier, { 
-                        rotation: () => soldier.style.transform.includes('scaleX(-1)') ? -90 : 90, 
-                        y: 15, 
-                        opacity: 0.65, 
-                        duration: 0.8, 
-                        ease: "power2.in",
-                        delay: 0.5
-                    }, "-=0.1")
-                    .to(soldier, { 
-                        filter: "brightness(0.55) saturate(0.4)", 
-                        duration: 0.5
-                    })
-                    .to(deathSmoke, { 
-                        opacity: 1,
-                        scale: 1.1, 
-                        y: -15, 
-                        duration: 0.5, 
-                        ease: "elastic.out(1, 0.4)"
-                    }, "-=0.5");
-                });
-
-                // Battlefield lighting effect
-                gsap.to(battlefield, {
-                    scrollTrigger: {
-                        trigger: "#battlefield",
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: true
-                    },
-                    onUpdate: function() {
-                        const progress = this.progress();
-                        const brightness = 1 - Math.sin(progress * Math.PI) * 0.2; 
-                        battlefield.style.setProperty('--battlefield-brightness', brightness);
-                    }
-                });
-            }
-
-            // Research section animations
-            gsap.to([".flask", ".microscope", ".lab-equipment", ".notes"], {
-            scrollTrigger: {
-                trigger: "#research",
-                start: "top center",
-                end: "+=500",
-                scrub: true
-            },
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.2
-        });
-        
-        gsap.to(".flask-liquid", {
-            scrollTrigger: {
-                trigger: "#research",
-                start: "top center",
-                end: "+=600",
-                scrub: true
-            },
-            scaleY: 1.8,
-            duration: 2,
-            ease: "sine.inOut"
-        });
-        
-        // Bubbles in flask
-        const bubbles = gsap.utils.toArray(".bubble");
-        bubbles.forEach((bubble, i) => {
-            gsap.to(bubble, {
-                scrollTrigger: {
-                    trigger: "#research",
-                    start: "center center",
-                    scrub: true
-                },
-                opacity: 1,
-                y: -80,
-                duration: 3 + i * 0.5,
-                repeat: -1,
-                delay: i * 0.3,
-                ease: "sine.in"
-            });
-        });
-        
-        // Flask wobble effect
-        gsap.to(".flask", {
-            scrollTrigger: {
-                trigger: "#research",
-                start: "center center",
-                scrub: true
-            },
-            rotation: 5,
-            yoyo: true,
-            repeat: 1,
-            duration: 0.8,
-            ease: "sine.inOut"
-        });
-
-            // Research chemical structure
-            const researchAtoms = gsap.utils.toArray("#research .atom");
-            const researchBonds = gsap.utils.toArray("#research .bond");
-
-            gsap.fromTo(researchAtoms.concat(researchBonds), {
-                opacity: 0,
-                scale: 0
-            }, {
-                scrollTrigger: {
-                    trigger: "#research",
-                    start: "top center",
-                    end: "bottom center",
-                    scrub: true,
-                    onEnter: () => {
-                        gsap.to(researchAtoms.concat(researchBonds), {
-                            opacity: 1,
-                            scale: 1,
-                            duration: 1,
-                            stagger: 0.1
-                        });
-                    },
-                    onLeaveBack: () => {
-                        gsap.to(researchAtoms.concat(researchBonds), {
-                            opacity: 0,
-                            scale: 0,
-                            duration: 0.5
-                        });
-                    }
-                }
-            });
-        });
-
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
         });
     </script>
+
+    <style>
+        .tight-caption {
+        margin: 3px 0;
+        line-height: 1.2;
+    }
+    </style>
 </body>
 </html>
