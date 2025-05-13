@@ -256,10 +256,10 @@
             background: #1a2980;
         }
 
-        /* DNA Alkylation Visualization Styles */
-        .dna-alkylation-container {
+    /* DNA Alkylation Visualization Styles */
+    .dna-alkylation-container {
             position: relative;
-            height: 500px;
+            height: 600px;
             margin: 20px 0;
             overflow: hidden;
         }
@@ -268,6 +268,8 @@
             width: 100%;
             height: 100%;
             display: block;
+            transform: scale(1.2);
+            transform-origin: center;
         }
 
         .backbone {
@@ -276,55 +278,52 @@
         }
         .backbone1 { stroke: #0066cc; }
         .backbone2 { stroke: #cc3300; }
+        
         .base-pair {
             stroke-width: 2;
             transition: all 1.5s ease-in-out;
         }
-        .unwound-strand {
-            stroke-width: 2;
-            fill: none;
-            opacity: 0;
-            transition: all 2s ease-in-out;
+        
+        /* Base pair colors matching molecular models */
+        .adenine { stroke: #FF6B6B; stroke-width: 3; }    /* A - Red */
+        .thymine { stroke: #FFD166; stroke-width: 3; }   /* T - Yellow */
+        .cytosine { stroke: #06D6A0; stroke-width: 3; }  /* C - Green */
+        .guanine { stroke: #118AB2; stroke-width: 3; }   /* G - Blue */
+        
+        /* Alkylated base */
+        .alkylated {
+            stroke: #c0392b;
+            stroke-width: 6 !important;
+            stroke-linecap: round;
+            animation: pulse 1s infinite alternate;
         }
-        .unwound1 { stroke: #0066cc; }
-        .unwound2 { stroke: #cc3300; }
+        
+        @keyframes pulse {
+            0% { stroke-width: 6; opacity: 0.9; }
+            100% { stroke-width: 8; opacity: 1; }
+        }
+        
         .base-text {
-            font-size: 8px;
+            font-size: 10px;
             font-weight: bold;
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
-        .helicase, .alkylating-agent, .polymerase {
+        
+        .helicase, .alkylating-agent, .polymerase, .single-strand-binding, .topoisomerase {
             opacity: 0;
             transition: all 2s ease-in-out;
         }
-
-        /* Increase the size of the alkylating agent */
-    .alkylating-agent circle {
-        r: 18 !important; /* Increased from 12 to 18 */
-        fill: #c0392b;
-    }
-
-    .alkylating-agent text {
-        font-size: 14px !important; /* Larger text */
-    }
-        .adenine { stroke: #FF6B6B; }
-        .thymine { stroke: #FFD166; }
-        .cytosine { stroke: #06D6A0; }
-        .guanine { stroke: #118AB2; }
-       /* Make the alkylated base lines thicker and more visible */
-        .alkylated {
-            stroke: #c0392b;
-            stroke-width: 5 !important; /* Increased from 3 to 5 */
-            stroke-linecap: round; /* Makes the ends rounded for better visibility */
-            animation: pulse 1s infinite alternate;
+        
+        /* Larger alkylating agent */
+        .alkylating-agent circle {
+            r: 18 !important;
+            fill: #c0392b;
         }
-
-        /* Enhance the pulse animation */
-        @keyframes pulse {
-            0% { stroke-width: 5; opacity: 0.9; }
-            100% { stroke-width: 7; opacity: 1; }
+        .alkylating-agent text {
+            font-size: 14px !important;
         }
+        
         .cross-link {
             stroke: #c0392b;
             stroke-width: 2;
@@ -332,17 +331,20 @@
             opacity: 0;
             transition: all 1s ease-in-out;
         }
-        @keyframes pulse {
-            0% { stroke-width: 3; }
-            100% { stroke-width: 4; }
-        }
+        
         @keyframes agent-move {
             0% { transform: translate(0,0); }
-            100% { transform: translate(40px,80px); }
+            100% { transform: translate(60px,120px); }
         }
+        
+        @keyframes helicase-move {
+            0% { transform: translate(140px,300px); }
+            100% { transform: translate(140px,370px); }
+        }
+        
         .fade-in { opacity: 1; }
         .show-text { opacity: 1; }
-
+        
         /* Explanation box */
         .explanation-box {
             background: #f5f7fa;
@@ -351,7 +353,7 @@
             margin-top: 20px;
             border-left: 5px solid #1a2980;
         }
-
+        
         /* Step indicator and controls */
         .step-indicator {
             text-align: center;
@@ -360,14 +362,14 @@
             color: #2c3e50;
             font-size: 1.5rem;
         }
-
+        
         .step-navigation {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
         }
-
+        
         .control-btn {
             padding: 10px 20px;
             background: #1a2980;
@@ -377,208 +379,17 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
+        
         .control-btn:hover {
             background: #26d0ce;
         }
 
-        /* DNA Replication Visualization */
-        .dna-alkylation-container {
-    position: relative;
-    height: 600px; /* Increased from 500px */
-    margin: 20px 0;
-    overflow: hidden;
+
+@keyframes agent-move {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(40px,80px); }
 }
-
-.dna-alkylation-container svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    transform: scale(1.2); /* Scale up the entire SVG */
-    transform-origin: center;
-}
-
-        .replication-fork-vis {
-            flex: 1;
-            position: relative;
-        }
-
-        /* Alkylating Agent Mechanisms */
-        .drug-comparison {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .drug-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .drug-btn {
-            padding: 10px 15px;
-            background: #f5f7fa;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .drug-btn.active {
-            background: #1a2980;
-            color: white;
-        }
-
-        .mechanism-visualization {
-            height: 500px;
-            background: #f5f7fa;
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .molecule-container {
-            height: 300px;
-            position: relative;
-        }
-
-        /* Tooltip styles */
-        .tooltip {
-            position: absolute;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 100;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .has-tooltip:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Guanine N7 highlight */
-        .n7-highlight {
-            fill: #c0392b;
-            animation: highlight-pulse 1.5s infinite alternate;
-        }
-
-        @keyframes highlight-pulse {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Blood-brain barrier animation */
-        .bbb-animation {
-            stroke: #1a2980;
-            stroke-width: 3;
-            stroke-dasharray: 5,3;
-            animation: bbb-move 3s linear infinite;
-        }
-
-        @keyframes bbb-move {
-            0% { stroke-dashoffset: 10; }
-            100% { stroke-dashoffset: 0; }
-        }
-
-        .sub-links {
-            list-style: none;
-            padding-left: 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .has-submenu {
-            position: relative;
-        }
-
-        .has-submenu::after {
-            content: '▼';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            transition: transform 0.3s ease;
-        }
-
-        .has-submenu.active::after {
-            transform: translateY(-50%) rotate(180deg);
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 250px;
-            }
-            
-            .sidebar-expanded .main-content {
-                position: fixed;
-                left: 250px;
-                width: 100%;
-            }
-            
-            .sidebar-expanded::after {
-                content: '';
-                position: fixed;
-                top: 0;
-                left: 250px;
-                right: 0;
-                bottom: 0;
-                background: rgba(0,0,0,0.5);
-                z-index: 998;
-            }
-        }
-        
-        /* Header styles */
-        .header {
-            text-align: center;
-            padding: 80px 20px 60px;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-            color: white;
-            position: relative;
-            z-index: 10;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-            margin-bottom: -30px;
-        }
-        
-        .header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header p {
-            font-size: 1.3rem;
-            max-width: 800px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-            color: white;
-        }
-        
-        .footer p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-    </style>
+</style>
 </head>
 <body>
     <div class="sidebar-toggle" id="sidebarToggle">
@@ -588,9 +399,9 @@
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="overview.html">Authors</a></li>
-            <li><a href="historical.html">Historical content - Warhead and Wonder drugs</a></li>
-            <li><a href="mechanism.html">Normal DNA Replication - Clean copies</a></li>
+            <li><a href="index.html">Authors</a></li>
+            <li><a href="historical.html">Warhead and Wonder drugs</a></li>
+            <li><a href="mechanism.html">Clean copies</a></li>
             <li class="has-submenu">
                 <a href="agents.html">Alkylating Agents</a>
                 <ul class="sub-links">
@@ -619,102 +430,127 @@
                 <div class="module-content">
                     <div class="step-indicator" id="stepIndicator">Step 1: Normal DNA Structure</div>
                     <div class="dna-alkylation-container">
-                        <svg viewBox="0 0 300 600">
+                        <svg viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
                             <!-- DNA Double Helix -->
                             <g id="double-helix">
-                                <path class="backbone backbone1" id="backbone1" d="M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370" />
-                                <path class="backbone backbone2" id="backbone2" d="M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370" />
+                                <!-- Backbones with proper helical twist -->
+                                <path class="backbone backbone1" id="backbone1" d="M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370 C100,390 100,420 120,440 C140,460 140,490 120,510 C100,530 100,560 120,580" />
+                                <path class="backbone backbone2" id="backbone2" d="M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370 C180,390 180,420 160,440 C140,460 140,490 160,510 C180,530 180,560 160,580" />
                                 
-                                <!-- Base Pairs -->
+                                <!-- Base Pairs with proper complementary pairing and angles -->
                                 <g class="base-pair" id="bp1">
-                                    <line x1="120" y1="20" x2="160" y2="20" class="adenine" transform="rotate(-5,140,20)"/>
-                                    <text x="135" y="18" class="base-text adenine" font-size="12">A</text>
-                                    <text x="145" y="22" class="base-text thymine" font-size="12">T</text>
+                                    <line x1="120" y1="20" x2="160" y2="20" class="adenine" transform="rotate(-15,140,20)"/>
+                                    <text x="135" y="18" class="base-text adenine">A</text>
+                                    <text x="145" y="22" class="base-text thymine">T</text>
                                 </g>
                                 <g class="base-pair" id="bp2">
-                                    <line x1="120" y1="55" x2="160" y2="55" class="cytosine" transform="rotate(8,140,55)"/>
-                                    <text x="135" y="53" class="base-text cytosine" font-size="12">C</text>
-                                    <text x="145" y="57" class="base-text guanine" font-size="12">G</text>
+                                    <line x1="120" y1="55" x2="160" y2="55" class="cytosine" transform="rotate(15,140,55)"/>
+                                    <text x="135" y="53" class="base-text cytosine">C</text>
+                                    <text x="145" y="57" class="base-text guanine">G</text>
                                 </g>
                                 <g class="base-pair" id="bp3">
-                                    <line x1="120" y1="90" x2="160" y2="90" class="guanine" transform="rotate(-3,140,90)"/>
-                                    <text x="135" y="88" class="base-text guanine" font-size="12">G</text>
-                                    <text x="145" y="92" class="base-text cytosine font-size="12"">C</text>
+                                    <line x1="120" y1="90" x2="160" y2="90" class="guanine" transform="rotate(-15,140,90)"/>
+                                    <text x="135" y="88" class="base-text guanine">G</text>
+                                    <text x="145" y="92" class="base-text cytosine">C</text>
                                 </g>
                                 <g class="base-pair" id="bp4">
-                                    <line x1="120" y1="125" x2="160" y2="125" class="thymine" transform="rotate(7,140,125)"/>
-                                    <text x="135" y="123" class="base-text thymine" font-size="12">T</text>
-                                    <text x="145" y="127" class="base-text adenine" font-size="12">A</text>
+                                    <line x1="120" y1="125" x2="160" y2="125" class="thymine" transform="rotate(15,140,125)"/>
+                                    <text x="135" y="123" class="base-text thymine">T</text>
+                                    <text x="145" y="127" class="base-text adenine">A</text>
                                 </g>
                                 <g class="base-pair" id="bp5">
-                                    <line x1="120" y1="160" x2="160" y2="160" class="adenine" transform="rotate(-4,140,160)"/>
-                                    <text x="135" y="158" class="base-text adenine" font-size="12">A</text>
-                                    <text x="145" y="162" class="base-text thymine" font-size="12">T</text>
+                                    <line x1="120" y1="160" x2="160" y2="160" class="adenine" transform="rotate(-15,140,160)"/>
+                                    <text x="135" y="158" class="base-text adenine">A</text>
+                                    <text x="145" y="162" class="base-text thymine">T</text>
                                 </g>
                                 <g class="base-pair" id="bp6">
-                                    <line x1="120" y1="195" x2="160" y2="195" class="cytosine" transform="rotate(6,140,195)"/>
-                                    <text x="135" y="193" class="base-text cytosine" font-size="12">C</text>
-                                    <text x="145" y="197" class="base-text guanine" font-size="12">G</text>
+                                    <line x1="120" y1="195" x2="160" y2="195" class="cytosine" transform="rotate(15,140,195)"/>
+                                    <text x="135" y="193" class="base-text cytosine">C</text>
+                                    <text x="145" y="197" class="base-text guanine">G</text>
                                 </g>
                                 <g class="base-pair" id="bp7">
-                                    <line x1="120" y1="230" x2="160" y2="230" class="guanine" transform="rotate(-2,140,230)"/>
-                                    <text x="135" y="228" class="base-text guanine" font-size="12">G</text>
-                                    <text x="145" y="232" class="base-text cytosine" font-size="12">C</text>
+                                    <line x1="120" y1="230" x2="160" y2="230" class="guanine" transform="rotate(-15,140,230)"/>
+                                    <text x="135" y="228" class="base-text guanine">G</text>
+                                    <text x="145" y="232" class="base-text cytosine">C</text>
                                 </g>
                                 <g class="base-pair" id="bp8">
-                                    <line x1="120" y1="265" x2="160" y2="265" class="thymine" transform="rotate(5,140,265)"/>
-                                    <text x="135" y="263" class="base-text thymine" font-size="12">T</text>
-                                    <text x="145" y="267" class="base-text adenine" font-size="12">A</text>
+                                    <line x1="120" y1="265" x2="160" y2="265" class="thymine" transform="rotate(15,140,265)"/>
+                                    <text x="135" y="263" class="base-text thymine">T</text>
+                                    <text x="145" y="267" class="base-text adenine">A</text>
                                 </g>
                                 <g class="base-pair" id="bp9">
-                                    <line x1="120" y1="300" x2="160" y2="300" class="adenine" transform="rotate(-3,140,300)"/>
-                                    <text x="135" y="298" class="base-text adenine" font-size="12">A</text>
-                                    <text x="145" y="302" class="base-text thymine" font-size="12">T</text>
+                                    <line x1="120" y1="300" x2="160" y2="300" class="adenine" transform="rotate(-15,140,300)"/>
+                                    <text x="135" y="298" class="base-text adenine">A</text>
+                                    <text x="145" y="302" class="base-text thymine">T</text>
                                 </g>
                                 <g class="base-pair" id="bp10">
-                                    <line x1="120" y1="335" x2="160" y2="335" class="cytosine" transform="rotate(4,140,335)"/>
-                                    <text x="135" y="333" class="base-text cytosine" font-size="12">C</text>
-                                    <text x="145" y="337" class="base-text guanine" font-size="12">G</text>
+                                    <line x1="120" y1="335" x2="160" y2="335" class="cytosine" transform="rotate(15,140,335)"/>
+                                    <text x="135" y="333" class="base-text cytosine">C</text>
+                                    <text x="145" y="337" class="base-text guanine">G</text>
+                                </g>
+                                <g class="base-pair" id="bp11">
+                                    <line x1="120" y1="370" x2="160" y2="370" class="guanine" transform="rotate(-15,140,370)"/>
+                                    <text x="135" y="368" class="base-text guanine">G</text>
+                                    <text x="145" y="372" class="base-text cytosine">C</text>
+                                </g>
+                                <g class="base-pair" id="bp12">
+                                    <line x1="120" y1="405" x2="160" y2="405" class="thymine" transform="rotate(15,140,405)"/>
+                                    <text x="135" y="403" class="base-text thymine">T</text>
+                                    <text x="145" y="407" class="base-text adenine">A</text>
+                                </g>
+                                <g class="base-pair" id="bp13">
+                                    <line x1="120" y1="440" x2="160" y2="440" class="adenine" transform="rotate(-15,140,440)"/>
+                                    <text x="135" y="438" class="base-text adenine">A</text>
+                                    <text x="145" y="442" class="base-text thymine">T</text>
+                                </g>
+                                <g class="base-pair" id="bp14">
+                                    <line x1="120" y1="475" x2="160" y2="475" class="cytosine" transform="rotate(15,140,475)"/>
+                                    <text x="135" y="473" class="base-text cytosine">C</text>
+                                    <text x="145" y="477" class="base-text guanine">G</text>
+                                </g>
+                                <g class="base-pair" id="bp15">
+                                    <line x1="120" y1="510" x2="160" y2="510" class="guanine" transform="rotate(-15,140,510)"/>
+                                    <text x="135" y="508" class="base-text guanine">G</text>
+                                    <text x="145" y="512" class="base-text cytosine">C</text>
+                                </g>
+                                <g class="base-pair" id="bp16">
+                                    <line x1="120" y1="545" x2="160" y2="545" class="thymine" transform="rotate(15,140,545)"/>
+                                    <text x="135" y="543" class="base-text thymine">T</text>
+                                    <text x="145" y="547" class="base-text adenine">A</text>
                                 </g>
                             </g>
                             
-                            <!-- Helicase with hover tooltip -->
-                            <g class="helicase" id="helicase" transform="translate(140,200)">
-                                <path d="M0,0 Q-10,-10 0,-20 Q10,-10 0,0 Z" fill="#FF9F1C"/>
-                                <path d="M0,0 Q-10,10 0,20 Q10,10 0,0 Z" fill="#FF9F1C"/>
-                                <circle cx="0" cy="0" r="10" fill="#FF9F1C" opacity="0.9"/>
-                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">H
-                                    <title>Helicase</title>
-                                </text>
+                            <!-- Helicase -->
+                            <g class="helicase" id="helicase" transform="translate(140,300)">
+                                <path d="M0,0 Q-15,-15 0,-30 Q15,-15 0,0 Z" fill="#FF9F1C"/>
+                                <path d="M0,0 Q-15,15 0,30 Q15,15 0,0 Z" fill="#FF9F1C"/>
+                                <circle cx="0" cy="0" r="12" fill="#FF9F1C" opacity="0.9"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3">H</text>
                             </g>
                             
-                            <!-- Alkylating Agent with hover tooltip -->
+                            <!-- Alkylating Agent -->
                             <g class="alkylating-agent" id="alkylatingAgent" transform="translate(100,100)">
-                                <circle cx="0" cy="0" r="12" fill="#c0392b"/>
-                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">A
-                                    <title>Alkylating Agent</title>
-                                </text>
+                                <circle cx="0" cy="0" r="18" fill="#c0392b"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="14" fill="white" dy="4">A</text>
                             </g>
                             
-                            <!-- Polymerase with hover tooltip -->
-                            <g class="polymerase" id="polymerase" transform="translate(160,400)">
-                                <rect x="-15" y="-10" width="30" height="20" rx="3" fill="#9b59b6"/>
-                                <text x="0" y="0" text-anchor="middle" font-size="10" fill="white" dy="3" class="has-tooltip">POL
-                                    <title>DNA Polymerase</title>
-                                </text>
+                            <!-- Polymerase -->
+                            <g class="polymerase" id="polymerase" transform="translate(160,450)">
+                                <rect x="-18" y="-12" width="36" height="24" rx="4" fill="#9b59b6"/>
+                                <text x="0" y="0" text-anchor="middle" font-size="12" fill="white" dy="4">POL</text>
                             </g>
                             
                             <!-- Cross-link -->
-                            <line class="cross-link" id="crossLink" x1="140" y1="350" x2="140" y2="400"/>
+                            <line class="cross-link" id="crossLink" x1="140" y1="370" x2="140" y2="450"/>
                             
                             <!-- Unwound section -->
                             <g id="unwound-section">
-                                <path class="unwound-strand unwound1" id="unwound1" d="M120,370 L110,390 L100,430 L95,470 L90,510 L85,550" />
-                                <path class="unwound-strand unwound2" id="unwound2" d="M160,370 L170,390 L180,430 L185,470 L190,510 L195,550" />
-                                <g class="base-pair" id="unwound-bp1">
-                                    <line x1="100" y1="430" x2="180" y2="430" class="guanine"/>
-                                    <text x="135" y="428" class="base-text guanine">G</text>
-                                    <text x="145" y="432" class="base-text cytosine">C</text>
+                                <path class="backbone backbone1" id="unwound1" d="M120,440 L110,460 L100,500 L95,540 L90,580" opacity="0"/>
+                                <path class="backbone backbone2" id="unwound2" d="M160,440 L170,460 L180,500 L185,540 L190,580" opacity="0"/>
+                                <g class="base-pair" id="unwound-bp1" opacity="0">
+                                    <line x1="100" y1="500" x2="180" y2="500" class="guanine"/>
+                                    <text x="135" y="498" class="base-text guanine">G</text>
+                                    <text x="145" y="502" class="base-text cytosine">C</text>
                                 </g>
                             </g>
                         </svg>
@@ -736,280 +572,184 @@
         </div>
     </div>
              
-        <div class="footer">
-            <p>From Chemical Warfare to Cancer Cure: The Alchemical Evolution of Chemotherapy</p>
-        </div>
+    <div class="footer">
+        <p>From Chemical Warfare to Cancer Cure: The Alchemical Evolution of Chemotherapy</p>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Declare svgNS once
-            const svgNS = "http://www.w3.org/2000/svg";
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            
-            // Toggle sidebar
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                
-                // Save state to localStorage
-                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-            });
-            
-            // Load saved state
-            if (localStorage.getItem('sidebarExpanded') === 'true') {
-                sidebar.classList.add('active');
-            }
+       document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const navLinks = document.querySelectorAll(".nav-links a");
 
-            // Handle submenu toggling
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-            hasSubmenuItems.forEach(item => {
-                const link = item.querySelector('a');
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    item.classList.toggle('active');
-                });
-            });
-            // DNA Alkylation Visualization
-            const stepIndicator = document.getElementById('stepIndicator');
-            const explanationBox = document.getElementById('alkylationExplanation');
-            let currentStep = 1;
-            const alkylationSteps = 6;
-            const alkylationExplanations = [
-                {
-                    title: "Normal DNA Structure",
-                    content: "The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G)."
-                },
-                {
-                    title: "Replication Fork Formation",
-                    content: "During replication, the DNA double helix begins to unwind, forming a Y-shaped replication fork where new DNA will be synthesized."
-                },
-                {
-                    title: "Helicase Unwinds DNA",
-                    content: "The helicase enzyme (H) breaks hydrogen bonds between base pairs, separating the DNA strands to create a single-stranded template."
-                },
-                {
-                    title: "Alkylating Agent Approaches",
-                    content: "Alkylating agents (A) are reactive compounds that can form covalent bonds with DNA, particularly targeting the N7 position of guanine."
-                },
-                {
-                    title: "DNA Alkylation Occurs",
-                    content: "The alkylating agent forms a covalent bond with guanine (red highlight), creating a bulky lesion that distorts the DNA structure."
-                },
-                {
-                    title: "Replication Blocked by Cross-Link",
-                    content: "The alkylated guanine prevents DNA polymerase (POL) from replicating past the lesion, leading to replication fork stalling and potential DNA breaks."
-                }
-            ];
-
-            function updateAlkylationVisualization() {
-            // Reset all elements
-            document.querySelectorAll('.base-text').forEach(t => t.classList.remove('show-text'));
-            document.querySelectorAll('.base-pair').forEach(bp => bp.style.opacity = '1');
-            document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '0');
-            document.getElementById('unwound-bp1').style.opacity = '0';
-            helicase.style.opacity = '0';
-            alkylatingAgent.style.opacity = '0';
-            alkylatingAgent.style.animation = 'none';
-            polymerase.style.opacity = '0';
-            crossLink.style.opacity = '0';
-            document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370');
-            document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370');
-            document.querySelector('#unwound-bp1 line').classList.remove('alkylated');
-
-            // Show base letters
-            document.querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
-
-            // Get the next button
-            const nextButton = document.getElementById('next-step');
-            
-            // Reset button color
-            nextButton.style.backgroundColor = '#1a2980';
-            nextButton.textContent = 'Next';
-
-            // Update visualization based on current step
-            switch(currentStep) {
-                case 1:
-                    stepIndicator.textContent = "Step 1: Normal DNA Structure";
-                    break;
-                case 2:
-                    stepIndicator.textContent = "Step 2: Replication Fork Forms";
-                    ['bp7', 'bp8', 'bp9', 'bp10'].forEach(id => document.getElementById(id).style.opacity = '0.3');
-                    break;
-                case 3:
-                    stepIndicator.textContent = "Step 3: Helicase Unwinds DNA";
-                    helicase.style.opacity = '1';
-                    document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
-                    document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 L120,370');
-                    document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 L160,370');
-                    break;
-                case 4:
-                    stepIndicator.textContent = "Step 4: Alkylating Agent Approaches";
-                    helicase.style.opacity = '1';
-                    document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
-                    alkylatingAgent.style.opacity = '1';
-                    alkylatingAgent.style.animation = 'agent-move 2s forwards';
-                    document.getElementById('unwound-bp1').style.opacity = '1';
-                    document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
-                    break;
-                case 5:
-                    stepIndicator.textContent = "Step 5: DNA Alkylation Occurs";
-                    helicase.style.opacity = '1';
-                    alkylatingAgent.style.opacity = '1';
-                    document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
-                    document.getElementById('unwound-bp1').style.opacity = '1';
-                    document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
-                    document.querySelector('#unwound-bp1 line').classList.add('alkylated');
-                    crossLink.style.opacity = '1';
-                    break;
-                case 6:
-                    stepIndicator.textContent = "Step 6: Replication Blocked by Cross-Link";
-                    helicase.style.opacity = '1';
-                    alkylatingAgent.style.opacity = '1';
-                    polymerase.style.opacity = '1';
-                    document.querySelectorAll('.unwound-strand').forEach(s => s.style.opacity = '1');
-                    document.getElementById('unwound-bp1').style.opacity = '1';
-                    document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
-                    document.querySelector('#unwound-bp1 line').classList.add('alkylated');
-                    crossLink.style.opacity = '1';
-                    
-                    // Change the next button color and text when it's the last step
-                    nextButton.style.backgroundColor = '#26d0ce';
-                    nextButton.textContent = 'Last Step';
-                    break;
-            }
-
-            // Update explanation
-            const explanation = alkylationExplanations[currentStep - 1];
-            explanationBox.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
-            }
-
-            // DNA Replication Visualization
-            const replicationStepIndicator = document.getElementById('replicationStepIndicator');
-            const replicationExplanation = document.getElementById('replicationExplanation');
-            let currentReplicationStep = 1;
-            const replicationSteps = 6;
-            const replicationExplanations = [
-                {
-                    title: "Replication Initiation",
-                    content: "DNA replication begins at specific origins where the DNA double helix is unwound by helicase."
-                },
-                {
-                    title: "Replication Fork Formation",
-                    content: "The helicase enzyme (H) separates the DNA strands, creating a replication fork where new DNA will be synthesized."
-                },
-                {
-                    title: "Leading Strand Synthesis",
-                    content: "DNA polymerase (POL) synthesizes the leading strand continuously in the 5' to 3' direction."
-                },
-                {
-                    title: "Lagging Strand Synthesis",
-                    content: "The lagging strand is synthesized discontinuously as Okazaki fragments, each initiated by an RNA primer."
-                },
-                {
-                    title: "Alkylating Agent Attack",
-                    content: "An alkylating agent (A) forms a covalent bond with guanine, creating a DNA lesion (red highlight)."
-                },
-                {
-                    title: "Replication Block",
-                    content: "The DNA lesion blocks polymerase progression, causing replication fork collapse and potential DNA breaks."
-                }
-            ];
-
-            function updateReplicationVisualization() {
-                // Reset all elements
-                document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '0');
-                document.getElementById('helicaseRep').setAttribute('opacity', '0');
-                document.getElementById('polymeraseRep').setAttribute('opacity', '0');
-                document.getElementById('leadingStrand').setAttribute('opacity', '0');
-                document.getElementById('laggingStrand').setAttribute('opacity', '0');
-                document.getElementById('okazaki1').setAttribute('opacity', '0');
-                document.getElementById('alkylatingAgentRep').setAttribute('opacity', '0');
-                document.getElementById('crossLinkRep').setAttribute('opacity', '0');
-                document.querySelectorAll('.base-pair line').forEach(line => line.classList.remove('alkylated'));
-
-                // Update visualization based on current step
-                switch(currentReplicationStep) {
-                    case 1:
-                        replicationStepIndicator.textContent = "Step 1: Replication Initiation";
-                        break;
-                    case 2:
-                        replicationStepIndicator.textContent = "Step 2: Replication Fork Formation";
-                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
-                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
-                        break;
-                    case 3:
-                        replicationStepIndicator.textContent = "Step 3: Leading Strand Synthesis";
-                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
-                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
-                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
-                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
-                        break;
-                    case 4:
-                        replicationStepIndicator.textContent = "Step 4: Lagging Strand Synthesis";
-                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
-                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
-                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
-                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
-                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
-                        document.getElementById('okazaki1').setAttribute('opacity', '1');
-                        break;
-                    case 5:
-                        replicationStepIndicator.textContent = "Step 5: Alkylating Agent Attack";
-                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
-                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
-                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
-                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
-                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
-                        document.getElementById('okazaki1').setAttribute('opacity', '1');
-                        document.getElementById('alkylatingAgentRep').setAttribute('opacity', '1');
-                        document.getElementById('rep-bp3').querySelector('line').classList.add('alkylated');
-                        break;
-                    case 6:
-                        replicationStepIndicator.textContent = "Step 6: Replication Block";
-                        document.getElementById('replicationFork').querySelector('path').setAttribute('opacity', '1');
-                        document.getElementById('helicaseRep').setAttribute('opacity', '1');
-                        document.getElementById('polymeraseRep').setAttribute('opacity', '1');
-                        document.getElementById('leadingStrand').setAttribute('opacity', '1');
-                        document.getElementById('laggingStrand').setAttribute('opacity', '1');
-                        document.getElementById('okazaki1').setAttribute('opacity', '1');
-                        document.getElementById('alkylatingAgentRep').setAttribute('opacity', '1');
-                        document.getElementById('crossLinkRep').setAttribute('opacity', '1');
-                        document.getElementById('rep-bp3').querySelector('line').classList.add('alkylated');
-                        break;
-                }
-
-                // Update explanation
-                const explanation = replicationExplanations[currentReplicationStep - 1];
-                replicationExplanation.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
-            }
-
-           
-
-          
-           
-            // Navigation controls
-            document.getElementById('prev-step').addEventListener('click', () => {
-                if (currentStep > 1) {
-                    currentStep--;
-                    updateAlkylationVisualization();
-                }
-            });
-
-            document.getElementById('next-step').addEventListener('click', () => {
-                if (currentStep < alkylationSteps) {
-                    currentStep++;
-                    updateAlkylationVisualization();
-                }
-            });
-
-            document.getElementById('reset-alkylation').addEventListener('click', () => {
-                currentStep = 1;
-                updateAlkylationVisualization();
-            });
-
-            
-            updateAlkylationVisualization();
+    // Sidebar toggle logic
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
         });
+
+        // Restore state
+        if (localStorage.getItem('sidebarExpanded') === 'true') {
+            sidebar.classList.add('active');
+        }
+    }
+
+    // Close sidebar when any link is clicked (including submenu links)
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            localStorage.setItem('sidebarExpanded', 'false');
+        });
+    });
+
+    // Submenu toggle
+    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+    hasSubmenuItems.forEach(item => {
+        const link = item.querySelector('a');
+        
+        if (link) {
+            link.addEventListener('click', function (e) {
+                // Only prevent default for the parent link
+                if (!e.target.classList.contains('sub-links')) {
+                    e.preventDefault();
+                }
+                item.classList.toggle('active');
+            });
+        }
+    });
+
+    // DNA Alkylation Visualization
+    const stepIndicator = document.getElementById('stepIndicator');
+    const explanationBox = document.getElementById('alkylationExplanation');
+    let currentStep = 1;
+    const alkylationSteps = 6;
+    const alkylationExplanations = [
+        {
+            title: "Normal DNA Structure",
+            content: "The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G). The helix makes a complete turn every 10 base pairs."
+        },
+        {
+            title: "Replication Fork Formation",
+            content: "During replication, the DNA double helix begins to unwind, forming a Y-shaped replication fork where new DNA will be synthesized. Helicase breaks the hydrogen bonds between base pairs."
+        },
+        {
+            title: "Helicase Unwinds DNA",
+            content: "The helicase enzyme (H) moves along the DNA, separating the strands to create single-stranded templates. The unwinding creates positive supercoils ahead of the fork that are resolved by topoisomerases."
+        },
+        {
+            title: "Alkylating Agent Approaches",
+            content: "Alkylating agents (A) are electrophilic compounds that can form covalent bonds with nucleophilic sites on DNA, particularly targeting the N7 position of guanine (most nucleophilic site in DNA)."
+        },
+        {
+            title: "DNA Alkylation Occurs",
+            content: "The alkylating agent forms a covalent bond with guanine (red highlight), creating a bulky lesion that distorts the DNA structure. This can lead to mispairing during replication or complete replication block."
+        },
+        {
+            title: "Replication Blocked by Lesion",
+            content: "The alkylated guanine prevents DNA polymerase (POL) from replicating past the lesion, leading to replication fork stalling. This can result in single-strand breaks that may convert to double-strand breaks during subsequent replication."
+        }
+    ];
+
+    function updateAlkylationVisualization() {
+        // Reset all elements
+        document.querySelectorAll('.base-text').forEach(t => t.classList.remove('show-text'));
+        document.querySelectorAll('.base-pair').forEach(bp => bp.style.opacity = '1');
+        document.getElementById('unwound1').style.opacity = '0';
+        document.getElementById('unwound2').style.opacity = '0';
+        document.getElementById('unwound-bp1').style.opacity = '0';
+        document.getElementById('helicase').style.opacity = '0';
+        document.getElementById('alkylatingAgent').style.opacity = '0';
+        document.getElementById('alkylatingAgent').style.animation = 'none';
+        document.getElementById('polymerase').style.opacity = '0';
+        document.getElementById('crossLink').style.opacity = '0';
+        document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370 C100,390 100,420 120,440 C140,460 140,490 120,510 C100,530 100,560 120,580');
+        document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370 C180,390 180,420 160,440 C140,460 140,490 160,510 C180,530 180,560 160,580');
+        document.querySelector('#unwound-bp1 line').classList.remove('alkylated');
+
+        // Show base letters
+        document.querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+
+        // Update visualization based on current step
+        switch(currentStep) {
+            case 1:
+                stepIndicator.textContent = "Step 1: Normal DNA Structure";
+                break;
+            case 2:
+                stepIndicator.textContent = "Step 2: Replication Fork Forms";
+                ['bp7', 'bp8', 'bp9', 'bp10', 'bp11', 'bp12'].forEach(id => document.getElementById(id).style.opacity = '0.3');
+                break;
+            case 3:
+                stepIndicator.textContent = "Step 3: Helicase Unwinds DNA";
+                document.getElementById('helicase').style.opacity = '1';
+                document.getElementById('unwound1').style.opacity = '1';
+                document.getElementById('unwound2').style.opacity = '1';
+                document.getElementById('backbone1').setAttribute('d', 'M120,20 C140,40 140,70 120,90 C100,110 100,140 120,160 C140,180 140,210 120,230 C100,250 100,280 120,300 C140,320 140,350 120,370 L120,440 C140,460 140,490 120,510 C100,530 100,560 120,580');
+                document.getElementById('backbone2').setAttribute('d', 'M160,20 C140,40 140,70 160,90 C180,110 180,140 160,160 C140,180 140,210 160,230 C180,250 180,280 160,300 C140,320 140,350 160,370 L160,440 C140,460 140,490 160,510 C180,530 180,560 160,580');
+                break;
+            case 4:
+                stepIndicator.textContent = "Step 4: Alkylating Agent Approaches";
+                document.getElementById('helicase').style.opacity = '1';
+                document.getElementById('unwound1').style.opacity = '1';
+                document.getElementById('unwound2').style.opacity = '1';
+                document.getElementById('alkylatingAgent').style.opacity = '1';
+                document.getElementById('alkylatingAgent').style.animation = 'agent-move 2s forwards';
+                document.getElementById('unwound-bp1').style.opacity = '1';
+                document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                break;
+            case 5:
+                stepIndicator.textContent = "Step 5: DNA Alkylation Occurs";
+                document.getElementById('helicase').style.opacity = '1';
+                document.getElementById('alkylatingAgent').style.opacity = '1';
+                document.getElementById('unwound1').style.opacity = '1';
+                document.getElementById('unwound2').style.opacity = '1';
+                document.getElementById('unwound-bp1').style.opacity = '1';
+                document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                document.querySelector('#unwound-bp1 line').classList.add('alkylated');
+                document.getElementById('crossLink').style.opacity = '1';
+                break;
+            case 6:
+                stepIndicator.textContent = "Step 6: Replication Blocked by Lesion";
+                document.getElementById('helicase').style.opacity = '1';
+                document.getElementById('alkylatingAgent').style.opacity = '1';
+                document.getElementById('polymerase').style.opacity = '1';
+                document.getElementById('unwound1').style.opacity = '1';
+                document.getElementById('unwound2').style.opacity = '1';
+                document.getElementById('unwound-bp1').style.opacity = '1';
+                document.getElementById('unwound-bp1').querySelectorAll('.base-text').forEach(t => t.classList.add('show-text'));
+                document.querySelector('#unwound-bp1 line').classList.add('alkylated');
+                document.getElementById('crossLink').style.opacity = '1';
+                break;
+        }
+
+        // Update explanation
+        const explanation = alkylationExplanations[currentStep - 1];
+        explanationBox.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
+    }
+
+    // Navigation controls
+    document.getElementById('prev-step').addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            updateAlkylationVisualization();
+        }
+    });
+
+    document.getElementById('next-step').addEventListener('click', () => {
+        if (currentStep < alkylationSteps) {
+            currentStep++;
+            updateAlkylationVisualization();
+        }
+    });
+
+    document.getElementById('reset-alkylation').addEventListener('click', () => {
+        currentStep = 1;
+        updateAlkylationVisualization();
+    });
+
+    // Initialize
+    updateAlkylationVisualization();
+});
     </script>
 </body>
 </html>
