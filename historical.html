@@ -359,15 +359,16 @@
 
         .chemical-structure {
             text-align: center;
-            margin: 30px 0;
+            margin: 10px 0; /* Reduced from 30px */
         }
 
         .chemical-structure img {
             max-width: 300px;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 5px; /* Optional: reduce space below image */
         }
         
         /* Animation container styles */
@@ -599,21 +600,21 @@
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="index.html">Authors</a></li>
             <li><a href="historical.html">Warhead and Wonder drugs</a></li>
             <li><a href="mechanism.html">Clean copies</a></li>
             <li class="has-submenu">
                 <a href="agents.html">Alkylating Agents</a>
                 <ul class="sub-links">
                   <li><a href="agents.html">Summary</a></li>
-                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
-                  <li><a href="agents.html#oxazaphosphorines">Oxazaphosphorines</a></li>
-                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
-                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                  <li><a href="nitrogen-mustards.html">Nitrogen Mustards</a></li>
+                  <li><a href="oxazaphosphorines.html">Oxazaphosphorines</a></li>
+                  <li><a href="nitrosoureas.html">Nitrosourea</a></li>
+                  <li><a href="mitomycin-c.html">Mitomycin C</a></li>
                 </ul>
               </li>
 
             <li><a href="references.html">References</a></li>
+            <li><a href="index.html">Authors</a></li>
         </ul>
     </div>
 
@@ -708,7 +709,13 @@
                 
                 <h3>From Poison to Potential: Mustard Gas Sparks Cancer Research</h3>
 
-                <p>Chemical warfare, first used by the German army in WWI, exploits the harmful properties of chemical agents to incapacitate enemies. Mustard gas (C₄H₈Cl₂S), a cellular poison and mutagen, is a known carcinogen. Autopsies of 75 soldiers who died from mustard gas exposure revealed low white blood cell counts, prompting research into its potential use for treating hematologic cancers, which involve abnormal white blood cell growth.</p>
+                <p>Sulfur Mustards (C₄H₈Cl₂S), one of the most infamous chemical weapon used in the two World Wars. In WWI alone, there were 400,000 casualties due to the gas.
+                    <strong>Nitrogen Mustard</strong> was developed during World War II for military use by the German Reich and the United States of America:
+                      <ul>
+                        <li style="font-size: 19px;"><strong>HN-1</strong> – Designed specifically for military deployment</li>
+                        <li style="font-size: 19px;"><strong>HN-2</strong> – Classified as a chemical warfare agent</li>
+                      </ul>
+                </p>
                 
                 
             </div>
@@ -733,7 +740,9 @@
                 
                 <h3>Nitrogen Mustards: From Wartime Toxin to Chemotherapy Breakthrough</h3>
 
-                <p>Synthesized in the 1930s, nitrogen mustards (C₆H₁₂Cl₃N) were more toxic than sulfur mustard, especially to rapidly dividing cells like those in lymphoid tissue, bone marrow, and the gut. A successful Yale trial on tumor-bearing mice laid the groundwork for the first human chemotherapy experiment.</p>
+                <p>Autopsies done on soldiers who died from mustard gas revealed a substantial decrease in white blood count.</p>
+                <p>This motivated the first clinical study to turn this into a cure for hematological cancers in 1942, conducted by Drs. Louis Goodman and Alfred Gilman using HN-2 on a patient suffering from advanced Non-Hodgkin’s Lymphoma. It was successful in reducing the size of the tumor, paving the way for using alkylating agents as a cure for cancer.
+                    </p>
                 
                
             </div>
@@ -799,53 +808,53 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Sidebar toggle functionality
-            const sidebar = document.querySelector(".sidebar");
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const navLinks = document.querySelectorAll(".nav-links a");
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const navLinks = document.querySelectorAll(".nav-links > li > a"); // Target direct links within list items
+    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+    const subLinks = document.querySelectorAll('.sub-links a');
 
-            if (sidebarToggle && sidebar) {
-                sidebarToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('active');
-                    localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-                });
+    // Sidebar toggle logic
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+        });
 
-                // Restore state
-                if (localStorage.getItem('sidebarExpanded') === 'true') {
-                    sidebar.classList.add('active');
-                }
+        // Restore state
+        if (localStorage.getItem('sidebarExpanded') === 'true') {
+            sidebar.classList.add('active');
+        }
+    }
+
+    // Submenu toggle
+    hasSubmenuItems.forEach(item => {
+        const link = item.querySelector('a');
+        if (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                item.classList.toggle('active');
+            });
+        }
+    });
+
+    // Close sidebar when a submenu link is clicked
+    subLinks.forEach(subLink => {
+        subLink.addEventListener('click', () => {
+            sidebar.classList.remove("active");
+            localStorage.setItem('sidebarExpanded', 'false');
+        });
+    });
+
+    // Close sidebar when a top-level (non-submenu) link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            if (!link.parentElement.classList.contains('has-submenu')) { // Check the parent LI
+                sidebar.classList.remove("active");
+                localStorage.setItem('sidebarExpanded', 'false');
             }
-
-            // Close sidebar when any link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener("click", () => {
-                    sidebar.classList.remove("active");
-                    localStorage.setItem('sidebarExpanded', 'false');
-                });
-            });
-
-            // Submenu toggle
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-            hasSubmenuItems.forEach(item => {
-                const link = item.querySelector('a');
-                const submenuLinks = item.querySelectorAll('.sub-links a');
-                
-                if (link) {
-                    link.addEventListener('click', function(e) {
-                        if (!e.target.classList.contains('sub-links')) {
-                            e.preventDefault();
-                        }
-                        item.classList.toggle('active');
-                    });
-                }
-
-                submenuLinks.forEach(subLink => {
-                    subLink.addEventListener('click', () => {
-                        sidebar.classList.remove("active");
-                        localStorage.setItem('sidebarExpanded', 'false');
-                    });
-                });
-            });
+        });
+    });
 
             // Initialize GSAP and ScrollTrigger
             if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
