@@ -251,21 +251,21 @@
     <div class="sidebar">
         <h2>Navigation</h2>
         <ul class="nav-links">
-            <li><a href="index.html">Authors</a></li>
             <li><a href="historical.html">Warhead and Wonder drugs</a></li>
             <li><a href="mechanism.html">Clean copies</a></li>
             <li class="has-submenu">
                 <a href="agents.html">Alkylating Agents</a>
                 <ul class="sub-links">
                   <li><a href="agents.html">Summary</a></li>
-                  <li><a href="agents.html#nitrogen-mustard">Nitrogen Mustards</a></li>
-                  <li><a href="agents.html#oxazaphosphorines">Oxazaphosphorines</a></li>
-                  <li><a href="agents.html#nitrosourea">Nitrosourea</a></li>
-                  <li><a href="agents.html#mitomycin-c">Mitomycin C</a></li>
+                  <li><a href="nitrogen-mustards.html">Nitrogen Mustards</a></li>
+                  <li><a href="oxazaphosphorines.html">Oxazaphosphorines</a></li>
+                  <li><a href="nitrosoureas.html">Nitrosourea</a></li>
+                  <li><a href="mitomycin-c.html">Mitomycin C</a></li>
                 </ul>
               </li>
 
             <li><a href="references.html">References</a></li>
+            <li><a href="index.html">Authors</a></li>
         </ul>
     </div>
     <div class="main-content"> 
@@ -292,45 +292,55 @@
         <p>From Chemical Warfare to Cancer Cure: The Alchemical Evolution of Chemotherapy</p>
     </div>
     
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.querySelector(".sidebar");
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const navLinks = document.querySelectorAll(".nav-links a");
-        
-            // Restore sidebar state from localStorage
-            const sidebarExpanded = localStorage.getItem('sidebarExpanded') === 'true';
-            if (sidebarExpanded) {
+    <script>document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const navLinks = document.querySelectorAll(".nav-links > li > a"); // Target direct links within list items
+        const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+        const subLinks = document.querySelectorAll('.sub-links a');
+    
+        // Sidebar toggle logic
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+                localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
+            });
+    
+            // Restore state
+            if (localStorage.getItem('sidebarExpanded') === 'true') {
                 sidebar.classList.add('active');
             }
-        
-            // Sidebar toggle logic
-            sidebarToggle.addEventListener('click', function () {
-                const isActive = sidebar.classList.contains('active');
-                sidebar.classList.toggle('active');
-                localStorage.setItem('sidebarExpanded', !isActive); // Update localStorage when toggling
-            });
-        
-            // Close sidebar when any main navigation link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener("click", () => {
-                    sidebar.classList.remove("active");
-                    localStorage.setItem('sidebarExpanded', 'false'); // Update localStorage to indicate the sidebar is collapsed
+        }
+    
+        // Submenu toggle
+        hasSubmenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            if (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    item.classList.toggle('active');
                 });
+            }
+        });
+    
+        // Close sidebar when a submenu link is clicked
+        subLinks.forEach(subLink => {
+            subLink.addEventListener('click', () => {
+                sidebar.classList.remove("active");
+                localStorage.setItem('sidebarExpanded', 'false');
             });
-        
-            // Submenu logic
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-            hasSubmenuItems.forEach(item => {
-                const link = item.querySelector('a');
-                if (link) {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault(); // Prevent link navigation
-                        item.classList.toggle('active'); // Toggle the active class for submenu
-                    });
+        });
+    
+        // Close sidebar when a top-level (non-submenu) link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                if (!link.parentElement.classList.contains('has-submenu')) { // Check the parent LI
+                    sidebar.classList.remove("active");
+                    localStorage.setItem('sidebarExpanded', 'false');
                 }
             });
         });
+    });
         </script>
         
         </body>
