@@ -357,6 +357,180 @@
             animation: highlight 2s ease;
         }
 
+
+
+.scene.chemistry-theme {
+            width: 100%;
+            padding: 2rem;
+            background: 
+                url('https://www.transparenttextures.com/patterns/hexellence.png') repeat,
+                linear-gradient(135deg, #f0f8ff 0%, #e0f7fa 100%);
+            background-blend-mode: overlay;
+            box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            border-top: 6px solid #4db6ac;
+            border-bottom: 6px solid #4db6ac;
+            box-sizing: border-box;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center; /* ✅ Center content vertically */
+            justify-content: center;
+        }
+
+        .source-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-caption {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #00796b;
+            margin-top: 1rem;
+        }
+
+    img {
+      cursor: pointer;
+      max-width: 200px;
+    }
+        #img2 {
+      display: none;
+      margin-top: 10px;
+    }
+
+    img {
+      cursor: pointer;
+      max-width: 200px;
+    }
+
+    .scene img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .navigation-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .navigation-buttons button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .navigation-buttons button:nth-child(1),
+    .navigation-buttons button:nth-child(2) {
+        background: linear-gradient(135deg, #1a2980, #26d0ce);
+        color: white;
+    }
+    
+    .navigation-buttons button:last-child {
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .navigation-buttons button:last-child::after {
+        content: '↻';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+    }
+    
+    .navigation-buttons button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    .navigation-buttons button:active {
+        transform: translateY(1px);
+    }
+    
+    .navigation-buttons button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .mechanism-visualization {
+            height: 400px;
+            position: relative;
+            margin: 30px 0;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .mechanism-visualization::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="1" height="1" fill="%23eee"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .molecule-label {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+        
+        .dna-strand {
+            position: absolute;
+            width: 300px;
+            height: 60px;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            border-radius: 30px;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .blood-brain-barrier {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: #1a2980;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            opacity: 0.7;
+        }
+
+
     </style>
 </head>
 
@@ -397,6 +571,81 @@
         <h2>Nitrosourea</h2>
 
     </div>
+
+    <div class="scene chemistry-theme">
+        <figure>
+
+            <img src="https://www.researchgate.net/publication/383912937/figure/fig39/AS:11431281280620803@1727459245781/DNA-cross-linking-by-nitrosoureas.tif" alt="Nitrosoureas process">
+            <figcaption class="main-caption">Nitrosoureas Activation Pathway</figcaption>
+            <figcaption class="source-caption">
+                <i>Credit to Author Unknown. (n.d.). [Image of DNA cross-linking by nitrosoureas]. ResearchGate. </i>
+    
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="scene chemistry-theme">
+        <figure>
+
+            <img id="img1" src="nitrosoureas1.png" alt="Nitrosoureas 1">
+            <img id="img2" src="nitrosoureas2.png" alt="Nitrosoureas 2">
+            <figcaption class="main-caption">Nitrogen Mustard Activation Pathway</figcaption>
+            <figcaption class="source-caption">
+                <i>Credit to IDK WHO</i>
+    
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="scene chemistry-theme">
+        <figure>
+
+            <img src="nitrosoureas-decomposition.png" alt="Nitrosoureas Decomposition">
+            <!--<figcaption class="main-caption">Nitrogen Mustard Activation Pathway</figcaption>-->
+            <figcaption class="source-caption">
+                <i>Credit to Weller, M., & Le Rhun, E. (2020). Chemical structure and major mode of action of the nitrosourea lomustine [Figure 1]. In How did lomustine become standard of care in recurrent glioblastoma? Cancer Treatment Reviews, 87, 102029. </i>
+    
+            </figcaption>
+        </figure>
+        <p class="description">
+            <ul>
+                <li>Nitrosoureas, upon decomposition, will release another compound known as isocyanate. The <strong>isocyanate group</strong> although not responsible for alkylation, has a crucial role in further preventing DNA replication.</li>
+    
+                <li>It will inhibit DNA repair or replication enzymes (<strong>Carbamoylation</strong>) such as the α-Polymerase, Poly-adenosine diphosphate-Ribose and O6-Methylguanine - <strong>DNA Methyltransferase</strong></li>
+
+                <li>Reduces the repair of the damaged DNA structure, allowing alkylation effects to pile on
+                </li>
+                
+                </ul>
+        </p>
+    </div>
+
+    <div class="scene chemistry-theme">
+        <figure>
+
+            <img src="nitrosoureas-medicine.png" alt="Nitrosoureas Medicine">
+            <!--<figcaption class="main-caption">Nitrogen Mustard Activation Pathway</figcaption>-->
+            <figcaption class="source-caption">
+                <i>Credit to Rizochem. (2023). [Image of Rizochem pharmaceutical product]. </i>
+                <i>Credit toDr. Reddy's Direct. (n.d.). [Image of Carmustine 100mg vial].</i>
+
+            </figcaption>
+        </figure>
+        <p class="description">
+            <ul>
+                <li>Nitrosourea-class drugs such as Lomustine, Carmustine and Nimustine
+                </li>
+    
+                <li>It will inhibit DNA repair or replication enzymes (<strong>Carbamoylation</strong>) such as the α-Polymerase, Poly-adenosine diphosphate-Ribose and O6-Methylguanine - <strong>DNA Methyltransferase</strong></li>
+
+                <li>Nitrosoureas are the most commonly used chemotherapeutic agents that targets brain tumors, lung tumors, pancreatic islet cell tumors, Hodgkin disease and many more.
+
+                </li>
+                
+                </ul>
+        </p>
+    </div>
+
     <!-- Nitrosourea Mechanism -->
     <div class="scene" id="nitrosourea-mechanism">
         <h2>Nitrosourea Animation</h2>
@@ -446,6 +695,10 @@
 
 
 <script>
+    document.getElementById('img1').addEventListener('click', function() {
+      document.getElementById('img2').style.display = 'block';
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.querySelector(".sidebar");
     const sidebarToggle = document.querySelector('.sidebar-toggle');
