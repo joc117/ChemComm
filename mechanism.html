@@ -5,6 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DNA Mechanism</title>
     <style>
+ .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a2980;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle-icon {
+            font-size: 20px;
+            color: white;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            color: #333;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 999;
+            left: -280px;
+            top: 0;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #eee;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        /* Submenu styles */
+        .sub-links {
+            list-style: none;
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .has-submenu.active .sub-links {
+            max-height: 500px;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        
+        /* NAVIGATION LINKS */
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
 
 .scene.chemistry-theme {
             width: 100%;
@@ -335,61 +437,7 @@
             line-height: 1.6;
         }
 
-        .sidebar-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #1a2980;
-            border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
 
-        .sidebar-toggle:hover {
-            background-color: rgba(255, 255, 255, 1);
-            transform: scale(1.1);
-        }
-        
-        .sidebar-toggle-icon {
-            font-size: 20px;
-            color: white;
-        }
-        
-        /* WHITE SIDEBAR STYLES */
-        .sidebar {
-            width: 280px;
-            background: white;
-            color: #333;
-            padding: 30px 20px;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 999;
-            left: -280px;
-            top: 0;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
-            border-right: 1px solid #eee;
-        }
-        
-        .sidebar.active {
-            left: 0;
-        }
-        
-        .sidebar h2 {
-            color: #1a2980;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            font-size: 1.5rem;
-        }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -410,7 +458,6 @@
                 height: 400px;
             }
         }
-
         @media (max-width: 768px) {
             .sidebar {
                 width: 250px;
@@ -457,6 +504,7 @@
   background: linear-gradient(135deg, #81c784, #388e3c);
   cursor: pointer;
 }
+
 
 
 
@@ -586,89 +634,74 @@
             <div class="interactive-module">
                 <div class="module-content">
                     <div class="step-indicator" id="stepIndicator">Step 1: Normal DNA Structure</div>
-                    <div class="dna-replication-container" style="height: 600px">
-                        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                            <!-- DNA Backbone - More accurate helical structure -->
+                    <div class="dna-replication-container">
+                        <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Horizontal DNA Backbone -->
                             <path id="leading-backbone" class="backbone leading-strand" 
-                                  d="M200,50 Q220,80 200,110 Q180,140 200,170 Q220,200 200,230 Q180,260 200,290 Q220,320 200,350 Q180,380 200,410 Q220,440 200,470 Q180,500 200,530 Q220,560 200,590 Q180,620 200,650"/>
+                                  d="M50,80 Q80,60 110,80 Q140,100 170,80 Q200,60 230,80 Q260,100 290,80 Q320,60 350,80 Q380,100 410,80 Q440,60 470,80 Q500,100 530,80 Q560,60 590,80 Q620,100 650,80 Q680,60 710,80 Q740,100 770,80"/>
+                            
                             <path id="lagging-backbone" class="backbone lagging-strand" 
-                                  d="M280,50 Q260,80 280,110 Q300,140 280,170 Q260,200 280,230 Q300,260 280,290 Q260,320 280,350 Q300,380 280,410 Q260,440 280,470 Q300,500 280,530 Q260,560 280,590 Q300,620 280,650"/>
+                                  d="M50,120 Q80,140 110,120 Q140,100 170,120 Q200,140 230,120 Q260,100 290,120 Q320,140 350,120 Q380,100 410,120 Q440,140 470,120 Q500,100 530,120 Q560,140 590,120 Q620,100 650,120 Q680,140 710,120 Q740,100 770,120"/>
                             
-                            <!-- Base pairs with accurate pairing (A-T, C-G) -->
+                            <!-- Base pairs (20 total for 2 complete twists) -->
                             <g id="base-pairs">
-                                <!-- First 10 base pairs (helix turn 1) -->
-                                <line x1="200" y1="50" x2="280" y2="50" class="base-pair adenine" />
-                                <line x1="200" y1="80" x2="280" y2="80" class="base-pair thymine" />
-                                <line x1="200" y1="110" x2="280" y2="110" class="base-pair cytosine" />
-                                <line x1="200" y1="140" x2="280" y2="140" class="base-pair guanine" />
-                                <line x1="200" y1="170" x2="280" y2="170" class="base-pair adenine" />
-                                <line x1="200" y1="200" x2="280" y2="200" class="base-pair thymine" />
-                                <line x1="200" y1="230" x2="280" y2="230" class="base-pair guanine" />
-                                <line x1="200" y1="260" x2="280" y2="260" class="base-pair cytosine" />
-                                <line x1="200" y1="290" x2="280" y2="290" class="base-pair thymine" />
-                                <line x1="200" y1="320" x2="280" y2="320" class="base-pair adenine" />
+                                <!-- First 10 base pairs (first twist) -->
+                                <line x1="50" y1="80" x2="50" y2="120" class="base-pair adenine" />
+                                <line x1="80" y1="60" x2="80" y2="140" class="base-pair thymine" />
+                                <line x1="110" y1="80" x2="110" y2="120" class="base-pair cytosine" />
+                                <line x1="140" y1="100" x2="140" y2="100" class="base-pair guanine" />
+                                <line x1="170" y1="80" x2="170" y2="120" class="base-pair adenine" />
+                                <line x1="200" y1="60" x2="200" y2="140" class="base-pair thymine" />
+                                <line x1="230" y1="80" x2="230" y2="120" class="base-pair guanine" />
+                                <line x1="260" y1="100" x2="260" y2="100" class="base-pair cytosine" />
+                                <line x1="290" y1="80" x2="290" y2="120" class="base-pair thymine" />
+                                <line x1="320" y1="60" x2="320" y2="140" class="base-pair adenine" />
                                 
-                                <!-- Second 10 base pairs (helix turn 2) -->
-                                <line x1="200" y1="350" x2="280" y2="350" class="base-pair cytosine" />
-                                <line x1="200" y1="380" x2="280" y2="380" class="base-pair guanine" />
-                                <line x1="200" y1="410" x2="280" y2="410" class="base-pair adenine" />
-                                <line x1="200" y1="440" x2="280" y2="440" class="base-pair thymine" />
-                                <line x1="200" y1="470" x2="280" y2="470" class="base-pair guanine" />
-                                <line x1="200" y1="500" x2="280" y2="500" class="base-pair cytosine" />
-                                <line x1="200" y1="530" x2="280" y2="530" class="base-pair thymine" />
-                                <line x1="200" y1="560" x2="280" y2="560" class="base-pair adenine" />
-                                <line x1="200" y1="590" x2="280" y2="590" class="base-pair cytosine" />
-                                <line x1="200" y1="620" x2="280" y2="620" class="base-pair guanine" />
+                                <!-- Second 10 base pairs (second twist) -->
+                                <line x1="350" y1="80" x2="350" y2="120" class="base-pair cytosine" />
+                                <line x1="380" y1="100" x2="380" y2="100" class="base-pair guanine" />
+                                <line x1="410" y1="80" x2="410" y2="120" class="base-pair adenine" />
+                                <line x1="440" y1="60" x2="440" y2="140" class="base-pair thymine" />
+                                <line x1="470" y1="80" x2="470" y2="120" class="base-pair guanine" />
+                                <line x1="500" y1="100" x2="500" y2="100" class="base-pair cytosine" />
+                                <line x1="530" y1="80" x2="530" y2="120" class="base-pair thymine" />
+                                <line x1="560" y1="60" x2="560" y2="140" class="base-pair adenine" />
+                                <line x1="590" y1="80" x2="590" y2="120" class="base-pair cytosine" />
+                                <line x1="620" y1="100" x2="620" y2="100" class="base-pair guanine" />
                             </g>
                             
-                            <!-- Replication fork lines -->
-                            <line id="fork-line1" x1="200" y1="650" x2="160" y2="700" class="fork-line" />
-                            <line id="fork-line2" x1="280" y1="650" x2="320" y2="700" class="fork-line" />
+                            <!-- Replication fork elements (initially hidden) -->
+                            <path id="unwound-leading" d="M770,80 L810,60 L820,40" class="backbone leading-strand" opacity="0" />
+                            <path id="unwound-lagging" d="M770,120 L810,140 L820,160" class="backbone lagging-strand" opacity="0" />
                             
-                            <!-- Unwound DNA strands -->
-                            <path id="unwound-leading" d="M200,650 L160,700 L150,750 L145,800" class="backbone leading-strand" opacity="0" />
-                            <path id="unwound-lagging" d="M280,650 L320,700 L330,750 L335,800" class="backbone lagging-strand" opacity="0" />
-                            
-                            <!-- Unwound base pairs (single-stranded) -->
-                            <g id="unwound-bases" opacity="0">
-                                <line x1="160" y1="700" x2="160" y2="710" class="base-pair adenine" />
-                                <line x1="165" y1="720" x2="165" y2="730" class="base-pair thymine" />
-                                <line x1="170" y1="740" x2="170" y2="750" class="base-pair cytosine" />
-                                <line x1="175" y1="760" x2="175" y2="770" class="base-pair guanine alkylated" />
-                                
-                                <line x1="320" y1="700" x2="320" y2="710" class="base-pair thymine" />
-                                <line x1="315" y1="720" x2="315" y2="730" class="base-pair adenine" />
-                                <line x1="310" y1="740" x2="310" y2="750" class="base-pair guanine" />
-                                <line x1="305" y1="760" x2="305" y2="770" class="base-pair cytosine" />
-                            </g>
-                            
-                            <!-- Enzymes -->
-                            <g id="helicase" class="enzyme" transform="translate(240,650)">
+                            <!-- Enzymes (initially hidden) -->
+                            <g id="helicase" class="enzyme" transform="translate(740,100)" opacity="0">
                                 <circle r="15" class="helicase" />
                                 <text x="0" y="5" text-anchor="middle" font-size="10" fill="white">Helicase</text>
                             </g>
                             
-                            <g id="primase" class="enzyme" transform="translate(160,720)" opacity="0">
+                            <g id="primase" class="enzyme" transform="translate(810,140)" opacity="0">
                                 <rect x="-20" y="-10" width="40" height="20" class="primase" rx="5" />
                                 <text x="0" y="5" text-anchor="middle" font-size="10" fill="white">Primase</text>
                             </g>
                             
-                            <g id="polymerase-leading" class="enzyme" transform="translate(320,720)" opacity="0">
+                            <g id="polymerase-leading" class="enzyme" transform="translate(810,60)" opacity="0">
                                 <rect x="-20" y="-10" width="40" height="20" class="polymerase" rx="5" />
                                 <text x="0" y="5" text-anchor="middle" font-size="10" fill="white">Pol III</text>
                             </g>
                             
-                            <g id="polymerase-lagging" class="enzyme" transform="translate(150,760)" opacity="0">
+                            <g id="polymerase-lagging" class="enzyme" transform="translate(820,160)" opacity="0">
                                 <rect x="-20" y="-10" width="40" height="20" class="polymerase" rx="5" />
                                 <text x="0" y="5" text-anchor="middle" font-size="10" fill="white">Pol III</text>
                             </g>
                             
                             <!-- New DNA strands -->
-                            <path id="new-strand-leading" d="M320,700 Q340,730 320,760" class="new-strand leading-new" />
-                            <path id="new-strand-lagging" d="M160,700 Q140,730 160,760" class="new-strand lagging-new" />
+                            <path id="new-strand-leading" d="M810,60 Q830,40 850,60" class="new-strand leading-new" opacity="0" />
+                            <path id="new-strand-lagging" d="M810,140 Q830,160 850,140" class="new-strand lagging-new" opacity="0" />
                             
                             <!-- Okazaki fragments -->
-                            <path id="okazaki1" d="M160,760 L140,780 L145,800" class="okazaki" />
+                            <path id="okazaki1" d="M850,140 L870,120 L880,100" class="okazaki" opacity="0" />
+                            <path id="okazaki2" d="M880,100 L860,80 L840,90" class="okazaki" opacity="0" />
                             
                             <!-- Direction arrows -->
                             <defs>
@@ -677,21 +710,14 @@
                                 </marker>
                             </defs>
                             
-                            <line id="leading-arrow" x1="340" y1="730" x2="360" y2="730" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" class="direction-arrow" />
-                            <line id="lagging-arrow" x1="140" y1="750" x2="120" y2="750" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" class="direction-arrow" />
+                            <line id="leading-arrow" x1="830" y1="40" x2="850" y2="40" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" opacity="0" />
+                            <line id="lagging-arrow" x1="830" y1="160" x2="850" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" opacity="0" />
                             
                             <!-- Strand labels -->
-                            <text x="180" y="660" font-size="12" fill="#1a2980">3'</text>
-                            <text x="300" y="660" font-size="12" fill="#26d0ce">5'</text>
-                            <text x="120" y="790" font-size="12" fill="#26d0ce">5'</text>
-                            <text x="360" y="790" font-size="12" fill="#1a2980">3'</text>
-                            
-                            <!-- Alkylating agent -->
-                            <g id="alkylating-agent" opacity="0" transform="translate(400,600)">
-                                <circle r="15" fill="#c0392b" />
-                                <text x="0" y="5" text-anchor="middle" font-size="10" fill="white">A</text>
-                              
-                            </g>
+                            <text x="40" y="70" font-size="12" fill="#1a2980">3'</text>
+                            <text x="40" y="130" font-size="12" fill="#26d0ce">5'</text>
+                            <text x="760" y="70" font-size="12" fill="#1a2980">5'</text>
+                            <text x="760" y="130" font-size="12" fill="#26d0ce">3'</text>
                         </svg>
                     </div>
                     
@@ -708,18 +734,165 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        
              
     <div class="footer">
         <p>From Chemical Warfare to Cancer Cure: The Alchemical Evolution of Chemotherapy</p>
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', () => {
-        const sidebar = document.querySelector(".sidebar");
+
+            // Replication Process Variables
+            const stepIndicator = document.getElementById('stepIndicator');
+        const explanationBox = document.getElementById('replicationExplanation');
+        let currentStep = 1;
+        const replicationSteps = 5;
+        
+        // Detailed explanations for each step
+        const replicationExplanations = [
+            {
+                title: "Normal DNA Structure",
+                content: "The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G). The helix makes a complete turn every 10 base pairs, with 2 full twists shown here (20 base pairs). The 5' to 3' orientation of each strand is indicated by the labels."
+            },
+            {
+                title: "Replication Fork Formation",
+                content: "DNA replication begins at specific origins where the DNA unwinds, forming a Y-shaped replication fork. The helicase enzyme will bind here to separate the strands. The fork is visible where the strands begin to separate, with one strand oriented 5'→3' (leading strand) and the other 3'→5' (lagging strand)."
+            },
+            {
+                title: "Helicase Unwinds DNA",
+                content: "The helicase enzyme moves along the DNA, breaking hydrogen bonds between base pairs to separate the strands. This creates single-stranded templates for replication. The unwinding creates positive supercoils ahead of the fork that are resolved by topoisomerases (not shown)."
+            },
+            {
+                title: "Primase Adds RNA Primers",
+                content: "Primase synthesizes short RNA primers on both strands. On the lagging strand, primers are needed for each Okazaki fragment. On the leading strand, only one primer is required at the origin. These primers provide a 3'-OH group for DNA polymerase to begin synthesis."
+            },
+            {
+                title: "DNA Polymerase Synthesizes New Strands",
+                content: "DNA polymerase III extends the primers, adding nucleotides to the 3' end. On the leading strand, synthesis is continuous. On the lagging strand, synthesis occurs in short Okazaki fragments. The proofreading exonuclease activity ensures high fidelity."
+            }
+        ];
+
+        // Update visualization based on current step
+        function updateReplicationVisualization() {
+            // First reset all elements to initial state
+            resetVisualization();
+            
+            // Then apply changes for current step with animation
+            setTimeout(() => {
+                applyStepChanges();
+                updateExplanation();
+                updateButtonStates();
+            }, 50);
+        }
+
+        function resetVisualization() {
+            // Reset all elements
+            const elementsToReset = [
+                'unwound-leading', 'unwound-lagging', 'helicase', 'primase',
+                'polymerase-leading', 'polymerase-lagging', 'new-strand-leading', 
+                'new-strand-lagging', 'okazaki1', 'okazaki2', 'leading-arrow', 
+                'lagging-arrow'
+            ];
+            
+            elementsToReset.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.opacity = '0';
+                    el.classList.remove('animate-step');
+                }
+            });
+            
+            // Reset backbone paths
+            document.getElementById('leading-backbone').setAttribute('d', 
+                'M50,80 Q80,60 110,80 Q140,100 170,80 Q200,60 230,80 Q260,100 290,80 Q320,60 350,80 Q380,100 410,80 Q440,60 470,80 Q500,100 530,80 Q560,60 590,80 Q620,100 650,80 Q680,60 710,80 Q740,100 770,80');
+            document.getElementById('lagging-backbone').setAttribute('d', 
+                'M50,120 Q80,140 110,120 Q140,100 170,120 Q200,140 230,120 Q260,100 290,120 Q320,140 350,120 Q380,100 410,120 Q440,140 470,120 Q500,100 530,120 Q560,140 590,120 Q620,100 650,120 Q680,140 710,120 Q740,100 770,120');
+        }
+
+        function applyStepChanges() {
+            stepIndicator.textContent = `Step ${currentStep}: ${replicationExplanations[currentStep-1].title}`;
+            
+            // Apply changes based on current step
+            switch (currentStep) {
+                case 1:
+                    // Normal DNA structure - already reset
+                    break;
+                case 2:
+                    // Show replication fork formation
+                    animateElements(['unwound-leading', 'unwound-lagging']);
+                    break;
+                case 3:
+                    // Show helicase unwinding
+                    animateElements(['helicase', 'unwound-leading', 'unwound-lagging']);
+                    break;
+                case 4:
+                    // Show primase adding primers
+                    animateElements(['helicase', 'primase', 'unwound-leading', 'unwound-lagging']);
+                    break;
+                case 5:
+                    // Show complete replication with all enzymes
+                    animateElements([
+                        'helicase', 'primase', 'polymerase-leading', 'polymerase-lagging',
+                        'new-strand-leading', 'new-strand-lagging', 'okazaki1', 'okazaki2',
+                        'leading-arrow', 'lagging-arrow'
+                    ]);
+                    break;
+            }
+        }
+
+        function animateElements(ids) {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.opacity = '1';
+                    el.classList.add('animate-step');
+                }
+            });
+        }
+
+        function updateExplanation() {
+            const explanation = replicationExplanations[currentStep - 1];
+            explanationBox.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
+            explanationBox.classList.add('animate-step');
+            setTimeout(() => explanationBox.classList.remove('animate-step'), 800);
+        }
+
+        function updateButtonStates() {
+            document.getElementById('prev-step').disabled = currentStep === 1;
+            document.getElementById('next-step').disabled = currentStep === replicationSteps;
+        }
+
+        // Navigation controls
+        document.getElementById('prev-step').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateReplicationVisualization();
+            }
+        });
+
+        document.getElementById('next-step').addEventListener('click', () => {
+            if (currentStep < replicationSteps) {
+                currentStep++;
+                updateReplicationVisualization();
+            }
+        });
+
+        document.getElementById('reset-replication').addEventListener('click', () => {
+            currentStep = 1;
+            updateReplicationVisualization();
+        });
+
+        // Initialize
+        updateReplicationVisualization();
+
+
+    
+        document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector(".sidebar");
     const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const navLinks = document.querySelectorAll(".nav-links a");
+    const navLinks = document.querySelectorAll(".nav-links > li > a"); // Target direct links within list items
+    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+    const subLinks = document.querySelectorAll('.sub-links a');
 
     // Sidebar toggle logic
     if (sidebarToggle && sidebar) {
@@ -734,208 +907,52 @@
         }
     }
 
-    // Close sidebar when any link is clicked (including submenu links)
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
+    // Submenu toggle
+    hasSubmenuItems.forEach(item => {
+        const link = item.querySelector('a');
+        if (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                item.classList.toggle('active');
+            });
+        }
+    });
+
+    // Close sidebar when a submenu link is clicked
+    subLinks.forEach(subLink => {
+        subLink.addEventListener('click', () => {
             sidebar.classList.remove("active");
             localStorage.setItem('sidebarExpanded', 'false');
         });
     });
 
-    // Submenu toggle - prevent default only for submenu parent links
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        const submenuLinks = item.querySelectorAll('.submenu a');
-        
-        if (link) {
-            link.addEventListener('click', function (e) {
-                // Only prevent default for the parent link
-                if (!e.target.classList.contains('submenu-link')) {
-                    e.preventDefault();
-                }
-                item.classList.toggle('active');
-            });
-        }
-
-        // Add click handlers for submenu links
-        submenuLinks.forEach(subLink => {
-            subLink.addEventListener('click', () => {
+    // Close sidebar when a top-level (non-submenu) link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            if (!link.parentElement.classList.contains('has-submenu')) { // Check the parent LI
                 sidebar.classList.remove("active");
                 localStorage.setItem('sidebarExpanded', 'false');
-            });
+            }
         });
     });
+});
 
-            // Replication Process Variables
-            const stepIndicator = document.getElementById('stepIndicator');
-            const explanationBox = document.getElementById('replicationExplanation');
-            let currentStep = 1;
-            const replicationSteps = 6;
-            
-            // Detailed explanations for each step
-            const replicationExplanations = [
-                {
-                    title: "Normal DNA Structure",
-                    content: "The DNA double helix consists of two antiparallel strands with complementary base pairing (A-T and C-G). The helix makes a complete turn every 10 base pairs, with 2 full twists shown here (20 base pairs). The 5' to 3' orientation of each strand is indicated by the labels."
-                },
-                {
-                    title: "Replication Fork Formation",
-                    content: "DNA replication begins at specific origins where the DNA unwinds, forming a Y-shaped replication fork. The helicase enzyme will bind here to separate the strands. The fork is visible where the strands begin to separate, with one strand oriented 5'→3' (leading strand) and the other 3'→5' (lagging strand)."
-                },
-                {
-                    title: "Helicase Unwinds DNA",
-                    content: "The helicase enzyme moves along the DNA, breaking hydrogen bonds between base pairs to separate the strands. This creates single-stranded templates for replication. The unwinding creates positive supercoils ahead of the fork that are resolved by topoisomerases (not shown). The replication fork now shows clear separation of strands."
-                },
-                {
-                    title: "Primase Adds RNA Primers",
-                    content: "Primase synthesizes short RNA primers (red) on both strands. On the lagging strand, primers are needed for each Okazaki fragment. On the leading strand, only one primer is required at the origin. These primers provide a 3'-OH group for DNA polymerase to begin synthesis."
-                },
-                {
-                    title: "DNA Polymerase Synthesizes New Strands",
-                    content: "DNA polymerase III extends the primers, adding nucleotides to the 3' end. On the leading strand, synthesis is continuous. On the lagging strand, synthesis occurs in short Okazaki fragments (shown as dashed lines). The proofreading exonuclease activity ensures high fidelity."
-                },
-                {
-                    title: "Alkylation Blocks Replication",
-                    content: "An alkylating agent (A) forms a covalent bond with guanine (red highlight), creating a bulky lesion that distorts the DNA. This prevents DNA polymerase from replicating past the lesion, leading to replication fork stalling. The stalled fork may collapse, creating double-strand breaks that are cytotoxic to rapidly dividing cells."
-                }
-            ];
-
-            // Update visualization based on current step
-            function updateReplicationVisualization() {
-                // First reset all elements to initial state
-                resetVisualization();
-                
-                // Then apply changes for current step with animation
-                setTimeout(() => {
-                    applyStepChanges();
-                    updateExplanation();
-                    updateButtonStates();
-                }, 50); // Small delay to allow reset to complete
-            }
-
-            function resetVisualization() {
-                // Reset all elements
-                const elementsToReset = [
-                    'unwound-leading', 'unwound-lagging', 'unwound-bases',
-                    'fork-line1', 'fork-line2', 'helicase', 'primase',
-                    'polymerase-leading', 'polymerase-lagging', 'new-strand-leading',
-                    'new-strand-lagging', 'okazaki1', 'leading-arrow', 'lagging-arrow',
-                    'alkylating-agent'
-                ];
-                
-                elementsToReset.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.style.opacity = '0';
-                        el.classList.remove('animate-step');
-                    }
-                });
-                
-                // Reset backbone paths
-                document.getElementById('leading-backbone').setAttribute('d', 
-                'M200,100 Q220,130 200,160 Q180,190 200,220 Q220,250 200,280 Q180,310 200,340 Q220,370 200,400 Q180,430 200,460 Q220,490 200,520 Q180,550 200,580 L180,600');
-            document.getElementById('lagging-backbone').setAttribute('d', 
-                'M280,100 Q260,130 280,160 Q300,190 280,220 Q260,250 280,280 Q300,310 280,340 Q260,370 280,400 Q300,430 280,460 Q260,490 280,520 Q300,550 280,580 L300,600');
-            }
-
-            function applyStepChanges() {
-    stepIndicator.textContent = `Step ${currentStep}: ${replicationExplanations[currentStep-1].title}`;
-    
-    // Apply changes based on current step
-    switch (currentStep) {
-        case 1:
-            // Normal DNA structure - already reset
-            break;
-        case 2:
-            animateElements(['fork-line1', 'fork-line2']);
-            break;
-        case 3:
-            animateElements(['helicase', 'fork-line1', 'fork-line2']);
-            document.getElementById('unwound-leading').style.opacity = '1';
-            document.getElementById('unwound-lagging').style.opacity = '1';
-            
-            // Adjust backbone paths to show unwinding
-            document.getElementById('leading-backbone').setAttribute('d', 
-                'M200,100 Q220,130 200,160 Q180,190 200,220 Q220,250 200,280 Q180,310 200,340 Q220,370 200,400 Q180,430 200,460 Q220,490 200,520 Q180,550 200,580 L180,600 L170,620');
-            document.getElementById('lagging-backbone').setAttribute('d', 
-                'M280,100 Q260,130 280,160 Q300,190 280,220 Q260,250 280,280 Q300,310 280,340 Q260,370 280,400 Q300,430 280,460 Q260,490 280,520 Q300,550 280,580 L300,600 L310,620');
-            break;
-        case 4:
-            animateElements(['helicase', 'primase', 'fork-line1', 'fork-line2']);
-            document.getElementById('unwound-leading').style.opacity = '1';
-            document.getElementById('unwound-lagging').style.opacity = '1';
-            break;
-        case 5:
-            animateElements([
-                'helicase', 'primase', 'polymerase-leading', 'polymerase-lagging',
-                'new-strand-leading', 'new-strand-lagging', 'okazaki1',
-                'leading-arrow', 'lagging-arrow'
-            ]);
-            document.getElementById('unwound-leading').style.opacity = '1';
-            document.getElementById('unwound-lagging').style.opacity = '1';
-            document.getElementById('fork-line1').style.opacity = '1';
-            document.getElementById('fork-line2').style.opacity = '1';
-            break;
-        case 6:
-            animateElements([
-                'helicase', 'primase', 'polymerase-leading', 'polymerase-lagging',
-                'new-strand-leading', 'new-strand-lagging', 'okazaki1',
-                'leading-arrow', 'lagging-arrow', 'unwound-bases', 'alkylating-agent'
-            ]);
-            document.getElementById('unwound-leading').style.opacity = '1';
-            document.getElementById('unwound-lagging').style.opacity = '1';
-            document.getElementById('fork-line1').style.opacity = '1';
-            document.getElementById('fork-line2').style.opacity = '1';
-            break;
+    function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        // Calculate offset considering fixed header if needed
+        const offset = 100; // Adjust this value based on your header height
+        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - offset;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+        
+        // Update URL without jumping
+        history.pushState(null, null, `#${sectionId}`);
     }
 }
-
-            function animateElements(ids) {
-                ids.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.style.opacity = '1';
-                        el.classList.add('animate-step');
-                    }
-                });
-            }
-
-            function updateExplanation() {
-                const explanation = replicationExplanations[currentStep - 1];
-                explanationBox.innerHTML = `<h4>${explanation.title}</h4><p>${explanation.content}</p>`;
-                explanationBox.classList.add('animate-step');
-                setTimeout(() => explanationBox.classList.remove('animate-step'), 800);
-            }
-
-            function updateButtonStates() {
-                document.getElementById('prev-step').disabled = currentStep === 1;
-                document.getElementById('next-step').disabled = currentStep === replicationSteps;
-            }
-
-            // Navigation controls
-            document.getElementById('prev-step').addEventListener('click', () => {
-                if (currentStep > 1) {
-                    currentStep--;
-                    updateReplicationVisualization();
-                }
-            });
-
-            document.getElementById('next-step').addEventListener('click', () => {
-                if (currentStep < replicationSteps) {
-                    currentStep++;
-                    updateReplicationVisualization();
-                }
-            });
-
-            document.getElementById('reset-replication').addEventListener('click', () => {
-                currentStep = 1;
-                updateReplicationVisualization();
-            });
-
-            // Initialize
-            updateReplicationVisualization();
-        });
     </script>
 </body>
 </html>
