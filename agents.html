@@ -384,13 +384,16 @@
 
     /* Drug Types */
     .drug-types {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: stretch; /* This ensures all cards stretch to same height */
-            gap: 30px;
-            margin: 50px 0;
-        }
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to next row */
+    justify-content: flex-start; /* Align cards to the left */
+    align-items: stretch;
+    gap: 30px;
+    margin: 50px 0;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding-bottom: 10px; /* Optional spacing for scrollbar visibility */
+}
+
         
         .drug-card {
             width: 200px;
@@ -409,7 +412,7 @@
             opacity: 1;
             transform: translateY(0);
             cursor: pointer;
-            flex: 1 0 auto; /* Allows cards to grow if content is larger */
+            flex: 0 0 auto; /* Allows cards to grow if content is larger */
         }
         
         .drug-card::before {
@@ -1070,39 +1073,39 @@
     <div class="scene" id="drug-classes">
         
         <h2>Chemotherapy Drug Classes</h2>
-        <div class="drug-types">
-            <a href="#nitrogen-mustard-mechanism" class="drug-card-link">
-                <div class="drug-card" id="nitrogen-mustard">
-                    <div class="drug-icon">N</div>
-                    <h4>Nitrogen Mustards</h4>
-                    <p>Forms aziridinium ions</p>
-                </div>
-            </a>
-            
-            <a href="#nitrosourea-mechanism" class="drug-card-link">
-                <div class="drug-card" id="nitrosourea">
-                    <div class="drug-icon">NU</div>
-                    <h4>Nitrosoureas</h4>
-                    <p>Crosses Blood-Brain Barrier</p>
-                </div>
-            </a>
-            
-            <a href="#mitomycin-c-mechanism" class="drug-card-link">
-                <div class="drug-card" id="mitomycin-c">
-                    <div class="drug-icon">M</div>
-                    <h4>Mitomycin C</h4>
-                    <p>DNA Cross-linking</p>
-                </div>
-            </a>
-            
-            <a href="#oxazaphosphorine-mechanism" class="drug-card-link">
-                <div class="drug-card" id="oxazaphosphorines">
-                    <div class="drug-icon">O</div>
-                    <h4>Oxazaphosphorines</h4>
-                    <p>Prodrug for Sarcoma</p>
-                </div>
-            </a>
-        </div>
+<div class="drug-types">
+  <a class="drug-card-link" href="nitrogen-mustards.html">
+    <div class="drug-card" id="nitrogen-mustard">
+      <div class="drug-icon">N</div>
+      <h4>Nitrogen Mustards</h4>
+      <p>Forms aziridinium ions</p>
+    </div>
+  </a>
+
+  <a class="drug-card-link" href="nitrosoureas.html">
+    <div class="drug-card" id="nitrosourea">
+      <div class="drug-icon">NU</div>
+      <h4>Nitrosoureas</h4>
+      <p>Crosses Blood-Brain Barrier</p>
+    </div>
+  </a>
+
+  <a class="drug-card-link" href="mitomycin-c.html">
+    <div class="drug-card" id="mitomycin-c">
+      <div class="drug-icon">M</div>
+      <h4>Mitomycin C</h4>
+      <p>DNA Cross-linking</p>
+    </div>
+  </a>
+
+  <a class="drug-card-link" href="oxazaphosphorines">
+    <div class="drug-card" id="oxazaphosphorines">
+      <div class="drug-icon">O</div>
+      <h4>Oxazaphosphorines</h4>
+      <p>Prodrug for Sarcoma</p>
+    </div>
+  </a>
+</div>
 
         <h3>Nitrogen Mustards</h3>
         <p>Form aziridinium ions that cross-link DNA strands, preventing cell division and leading to cell death.</p>
@@ -1178,31 +1181,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Submenu toggle - prevent default only for submenu parent links
 
-    function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        // Calculate offset considering fixed header if needed
-        const offset = 100; // Adjust this value based on your header height
-        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - offset;
-        
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
-        
-        // Update URL without jumping
-        history.pushState(null, null, `#${sectionId}`);
-    }
-}
 
 // Add event listeners for card clicks
-document.querySelectorAll('.drug-card-link').forEach(cardLink => {
-    cardLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        const sectionId = this.getAttribute('href').substring(1);
-        scrollToSection(sectionId);
+document.querySelectorAll('.drug-card-link').forEach(card => {
+        card.addEventListener('click', () => {
+            const url = card.getAttribute('data-url');
+            if (url) window.location.href = url;
+        });
     });
-});
 
 // Handle hash changes (when user clicks browser back/forward)
 window.addEventListener('hashchange', function() {
