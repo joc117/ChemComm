@@ -240,6 +240,34 @@
             margin: 0 auto;
             line-height: 1.6;
         }
+
+        .wishes {
+    max-width: 700px;
+    margin: 40px auto 80px;
+    padding: 25px 35px;
+    background: linear-gradient(135deg, #1a2980, #26d0ce, #50c9c3);
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(26, 41, 128, 0.4);
+    color: #e0f7fa;
+    font-size: 1.35rem;
+    font-style: italic;
+    font-family: 'Georgia', serif;
+    text-align: center;
+    line-height: 1.6;
+    border: 1px solid rgba(38, 208, 206, 0.5);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    animation: fadeInWishes 1.8s forwards ease-in-out;
+}
+
+
+
+@keyframes fadeInWishes {
+    to {
+        opacity: 1;
+    }
+}
+
     </style>
 </head>
 
@@ -285,6 +313,10 @@
             <p>Jocelyn Lau Yu Xuan, 4D</p>
             <p>River Valley High School</p>
         </div>
+    </div>
+
+    <div class="wishes">
+        <p>We hope in the future, chemistry can continue to serve as a force for hope or healing, not harm or havoc.</p>
     </div>
 
      
