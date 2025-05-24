@@ -539,9 +539,9 @@
         <h2>Navigation</h2>
         <ul class="nav-links">
             <li><a href="historical.html">Warhead and Wonder drugs</a></li>
-            <li><a href="mechanism.html">Clean copies</a></li>
+            <li><a href="mechanism.html">Cellular blueprints</a></li>
             <li class="has-submenu">
-                <a href="agents.html">Alkylating Agents</a>
+                <a href="agents.html">Weapons of the cell war</a>
                 <ul class="sub-links">
                   <li><a href="agents.html">Summary</a></li>
                   <li><a href="nitrogen-mustards.html">Nitrogen Mustards</a></li>
@@ -550,7 +550,6 @@
                   <li><a href="mitomycin-c.html">Mitomycin C</a></li>
                 </ul>
               </li>
-
             <li><a href="references.html">References</a></li>
             <li><a href="index.html">Authors</a></li>
         </ul>
@@ -559,7 +558,11 @@
 
     <div class="header">
         <h1>From Mustard Gas to Chemotherapy</h1>
-        <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
+        <p>From chemical warfare to cancer cure, the alchemical evolution of chemotherapy drugs</p>
+    </div>
+
+    <div class="scene">
+        <h2>Oxazaphosphorines</h2>
     </div>
 
     <div class="scene chemistry-theme">
@@ -725,7 +728,7 @@
             }
         });
     });
-    
+
     const currentStep = {
             'oxazaphosphorine': 0
         };
@@ -737,150 +740,329 @@
             return names[agentKey] || agentKey;
         }
 
-        const mechanisms = {
-            'oxazaphosphorine': {
-                steps: [
-                    `<b>Step 1: Cyclophosphamide (Prodrug)</b><br>Cyclophosphamide is an inactive prodrug. It needs to be metabolized by the liver to become active.`,
-                    `<b>Step 2: Liver Activation</b><br>In the liver, Cytochrome P450 enzymes convert Cyclophosphamide to 4-hydroxycyclophosphamide, which exists in equilibrium with its tautomer, aldophosphamide.`,
-                    `<b>Step 3: Release of Active Bifunctional Alkylator</b><br>Aldophosphamide breaks down to yield a *bifunctional* phosphoramide mustard derivative and acrolein. This derivative has two reactive sites capable of alkylating DNA.`,
-                    `<b>Step 4: Second Activation and Alkylation</b><br>After the first alkylation, the second reactive group on the phosphoramide mustard derivative is activated. This activated group then alkylates a guanine on the opposite DNA strand, forming an interstrand cross-link.`,
-                    `<b>Step 5: Phosphoramide Mustard Alkylates DNA</b><br>The DNA cross-links formed by phosphoramide mustard disrupt DNA replication and transcription, triggering cell death pathways in cancer cells.`,
-                    `<b>Step 6: DNA Damage and Cell Response</b><br>The DNA cross-links formed by phosphoramide mustard disrupt DNA replication and transcription, triggering cell death pathways in cancer cells.`
-                ],
-                animations: [
-                    function () { // OX Step 1
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        const cp = createMolecule(svg, 'cp-drug', 150, 140, '#1E88E5', 'Cyclophosphamide', 30);
-                        const liver = createMolecule(svg, 'liver-ox', 350, 140, '#FB8C00', 'Liver (CYP450)', 40);
-                        tl.to(cp, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" })
-                            .to(liver, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, "+=0.2")
-                            .to(cp, { x: 300, duration: 0.8, ease: "power1.inOut" }, "+=0.3");
-                        return tl;
-                    },
-                    function () { // OX Step 2
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        const liver = createMolecule(svg, 'liver-s2', 250, 140, '#FB8C00', '', 40);
-                        liver.querySelector('text').textContent = '';
-                        const cpInside = createMolecule(svg, 'cp-inside', 250, 140, '#64B5F6', 'CP', 25);
-                        const ohcp = createMolecule(svg, 'ohcp-metabolite', 250, 140, '#43A047', '4-OH-CP / Aldo-CP', 28);
-                        tl.to(liver, { opacity: 1, scale: 1, duration: 0.3 })
-                            .to(cpInside, { opacity: 1, scale: 1, duration: 0.3 }, "<")
-                            .to(cpInside, { opacity: 0, scale: 0.7, duration: 0.5, ease: "power1.in" }, "+=0.5")
-                            .to(ohcp, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, "-=0.3");
-                        return tl;
-                    },
-                    function () { // OX Step 3
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        const ohcp = createMolecule(svg, 'ohcp-s3', 200, 140, '#43A047', 'Aldo-CP', 28);
-                        const pm = createMolecule(svg, 'pm-active', 330, 100, '#D81B60', 'Bifunctional Phosphoramide Mustard', 25);
-                        const acrolein = createMolecule(svg, 'acrolein-byproduct', 330, 180, '#757575', 'Acrolein', 15);
-                        tl.to(ohcp, { opacity: 1, scale: 1, duration: 0.4 })
-                            .to(ohcp, { x: 170, opacity: 0, scale: 0.8, duration: 0.6, ease: "power1.in" }, "+=0.3")
-                            .to([pm, acrolein], { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.3")
-                            .fromTo(pm.querySelector('circle'), { fill: '#D81B60' }, { fill: '#F06292', duration: 0.3, yoyo: true, repeat: 3 }, "<");
-                        return tl;
-                    },
-                    function() { // OX Step 4
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        const pm = createMolecule(svg, 'pm-s4', 150, 120, '#D81B60', 'PM', 20);
-                        const dna = createDetailedDNAStrands(svg, 'dna-ox-s4', 300, 40, 200, 8);
-                        const guanine1 = dna.group.querySelector(`#dna-ox-s4-base1-2`);
-                        const guanine2 = dna.group.querySelector(`#dna-ox-s4-base2-4`);
-                        
-                        tl.to(dna.elements, { opacity: 1, scale: 1, duration: 0.5 })
-                        .to(pm, { opacity: 1, scale: 1, duration: 0.4 }, "<")
-                        .to(pm, { 
-                            x: parseFloat(guanine1.dataset.n7x) - 20, 
-                            y: parseFloat(guanine1.dataset.n7y), 
-                            duration: 0.7 
-                        })
-                        .to(guanine1, { fill: '#FBC02D' }, "-=0.2")
-                        .to(pm, {
-                            x: parseFloat(guanine2.dataset.n7x) + 20,
-                            y: parseFloat(guanine2.dataset.n7y),
-                            duration: 0.7
-                        })
-                        .to(guanine2, { fill: '#FBC02D' }, "-=0.2");
-                        return tl;
-                    },
-                    function() { // OX Step 5
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        
-                        const dna = createDetailedDNAStrands(svg, 'dna-ox-s5', 250, 40, 200);
-                        const guanines = dna.getGuaninePositions();
-                        
-                        const g1 = guanines[2].element;
-                        const g2 = guanines[5].element;
-                        
-                        const crosslink = createBond(svg, 'ox-crosslink', 
-                            guanines[2].n7.x, guanines[2].n7.y,
-                            guanines[5].n7.x, guanines[5].n7.y,
-                            '#D32F2F', 4);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to([g1, g2], { fill: '#FFEB3B', duration: 0.3 })
-                        .to(crosslink, { 
-                            attr: { 
-                                x2: guanines[5].n7.x, 
-                                y2: guanines[5].n7.y 
-                            },
-                            duration: 0.8,
-                            ease: "elastic.out(1, 0.5)"
-                        }, "-=0.2")
-                        .to([dna.path1, dna.path2], {
-                            attr: { 
-                                d: i => i === 0 ? 
-                                    dna.path1.getAttribute('d').replace(/L/g, 'L') + 'Z' : 
-                                    dna.path2.getAttribute('d').replace(/L/g, 'L') + 'Z'
-                            },
-                            duration: 0.5
-                        });
-                        
-                        return tl;
-                    },
-                    function() { // OX Step 6
-                        clearSVG('ox-animation');
-                        const svg = document.getElementById('ox-animation');
-                        const tl = gsap.timeline();
-                        
-                        const dna = createDetailedDNAStrands(svg, 'dna-ox-s6', 250, 40, 200);
-                        const guanines = dna.getGuaninePositions();
-                        const crosslink = createBond(svg, 'ox-crosslink-s6', 
-                            guanines[2].n7.x, guanines[2].n7.y,
-                            guanines[5].n7.x, guanines[5].n7.y,
-                            '#D32F2F', 4);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(crosslink, { opacity: 1, duration: 0.5 })
-                        .to([dna.path1, dna.path2], {
-                            attr: { 
-                                d: i => i === 0 ? 
-                                    dna.path1.getAttribute('d').replace(/L/g, 'L') + 'Z' : 
-                                    dna.path2.getAttribute('d').replace(/L/g, 'L') + 'Z'
-                            },
-                            duration: 0.5
-                        })
-                        .to(dna.elements, { 
-                            opacity: 0.5,
-                            duration: 1,
-                            ease: "power1.inOut"
-                        });
-                        
-                        return tl;
+        // Improved animation functions for oxazaphosphorine mechanism
+const improvedAnimations = [
+    function () { // Step 1: Cyclophosphamide (Prodrug) - Show inactive state
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        // Create cyclophosphamide structure
+        const cp = createMolecule(svg, 'cp-drug', 120, 140, '#64B5F6', 'Cyclophosphamide\n(Inactive Prodrug)', 35);
+        const liver = createMolecule(svg, 'liver-ox', 380, 140, '#FB8C00', 'Liver\n(CYP450 enzymes)', 40);
+        
+        // Add "INACTIVE" label to emphasize prodrug concept
+        const inactiveLabel = createLabel(svg, 'inactive-label', 120, 190, 'INACTIVE');
+        gsap.set(inactiveLabel, {fill: '#E74C3C', fontSize: '12px', fontWeight: 'bold'});
+        
+        // Add arrow showing direction to liver
+        const arrow = document.createElementNS(svgNS, 'path');
+        arrow.setAttribute('d', 'M200,140 L320,140');
+        arrow.setAttribute('stroke', '#333');
+        arrow.setAttribute('stroke-width', '3');
+        arrow.setAttribute('marker-end', 'url(#arrowhead)');
+        svg.appendChild(arrow);
+        gsap.set(arrow, {opacity: 0});
+        
+        tl.to(cp, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" })
+          .to(inactiveLabel, { opacity: 1, duration: 0.5 }, "-=0.3")
+          .to(liver, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "+=0.3")
+          .to(arrow, { opacity: 1, duration: 0.6 }, "-=0.4")
+          .to(cp, { x: 250, duration: 1.2, ease: "power2.inOut" }, "+=0.5");
+        
+        return tl;
+    },
+    
+    function () { // Step 2: Liver Activation - Show metabolic transformation
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        const liver = createMolecule(svg, 'liver-s2', 250, 140, '#FB8C00', 'CYP450', 45);
+        const cpInside = createMolecule(svg, 'cp-inside', 250, 140, '#64B5F6', 'CP', 25);
+        const ohcp = createMolecule(svg, 'ohcp-metabolite', 350, 100, '#43A047', '4-OH-CP', 30);
+        const aldocp = createMolecule(svg, 'aldo-metabolite', 350, 180, '#2E7D32', 'Aldophosphamide', 25);
+        
+        // Add equilibrium arrows
+        const equilibrium = document.createElementNS(svgNS, 'path');
+        equilibrium.setAttribute('d', 'M350,120 L350,160');
+        equilibrium.setAttribute('stroke', '#666');
+        equilibrium.setAttribute('stroke-width', '2');
+        svg.appendChild(equilibrium);
+        
+        const eqLabel = createLabel(svg, 'eq-label', 380, 140, '⇌');
+        gsap.set(eqLabel, {fontSize: '20px', fill: '#666'});
+        
+        tl.to(liver, { opacity: 1, scale: 1, duration: 0.5 })
+          .to(cpInside, { opacity: 1, scale: 1, duration: 0.5 }, "<")
+          .to(cpInside, { 
+              rotation: 360, 
+              scale: 0.8, 
+              duration: 1, 
+              ease: "power2.inOut" 
+          }, "+=0.5")
+          .to(cpInside, { opacity: 0, duration: 0.3 })
+          .to([ohcp, aldocp], { 
+              opacity: 1, 
+              scale: 1, 
+              duration: 0.7, 
+              stagger: 0.2, 
+              ease: "back.out(1.7)" 
+          })
+          .to([equilibrium, eqLabel], { opacity: 1, duration: 0.5 }, "-=0.3")
+          .to([ohcp, aldocp], {
+              y: "+=5",
+              duration: 0.8,
+              yoyo: true,
+              repeat: 2,
+              ease: "sine.inOut"
+          });
+        
+        return tl;
+    },
+    
+    function () { // Step 3: Breakdown to active metabolites
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        const aldocp = createMolecule(svg, 'aldo-s3', 150, 140, '#2E7D32', 'Aldophosphamide', 30);
+        const pm = createMolecule(svg, 'pm-active', 320, 100, '#D81B60', 'Phosphoramide\nMustard', 28);
+        const acrolein = createMolecule(svg, 'acrolein-byproduct', 320, 180, '#757575', 'Acrolein\n(Toxic)', 20);
+        
+        // Add breakdown arrow
+        const breakdownArrow = document.createElementNS(svgNS, 'path');
+        breakdownArrow.setAttribute('d', 'M200,140 L270,140');
+        breakdownArrow.setAttribute('stroke', '#E74C3C');
+        breakdownArrow.setAttribute('stroke-width', '3');
+        breakdownArrow.setAttribute('marker-end', 'url(#arrowhead)');
+        svg.appendChild(breakdownArrow);
+        
+        const breakdownLabel = createLabel(svg, 'breakdown-label', 235, 125, 'Spontaneous\nBreakdown');
+        gsap.set(breakdownLabel, {fontSize: '10px', fill: '#E74C3C'});
+        
+        // Emphasize bifunctional nature
+        const bifuncLabel = createLabel(svg, 'bifunc-label', 320, 70, 'BIFUNCTIONAL\n(2 reactive sites)');
+        gsap.set(bifuncLabel, {fontSize: '10px', fill: '#D81B60', fontWeight: 'bold'});
+        
+        tl.to(aldocp, { opacity: 1, scale: 1, duration: 0.6 })
+          .to([breakdownArrow, breakdownLabel], { opacity: 1, duration: 0.5 }, "+=0.3")
+          .to(aldocp, { 
+              scale: 1.2, 
+              duration: 0.3, 
+              yoyo: true, 
+              repeat: 1 
+          }, "+=0.2")
+          .to([pm, acrolein], { 
+              opacity: 1, 
+              scale: 1, 
+              duration: 0.8, 
+              stagger: 0.2, 
+              ease: "back.out(1.7)" 
+          })
+          .to(bifuncLabel, { opacity: 1, duration: 0.5 }, "-=0.3")
+          .to(pm.querySelector('circle'), { 
+              fill: '#F06292', 
+              duration: 0.4, 
+              yoyo: true, 
+              repeat: 3 
+          }, "<");
+        
+        return tl;
+    },
+    
+    function() { // Step 4: First alkylation event
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        const pm = createMolecule(svg, 'pm-s4', 100, 120, '#D81B60', 'PM', 20);
+        const dna = createDetailedDNAStrands(svg, 'dna-ox-s4', 300, 40, 200, 8);
+        
+        // Get guanine positions
+        const guanine1 = dna.group.querySelector(`#dna-ox-s4-base1-2`); // First guanine
+        const guanine2 = dna.group.querySelector(`#dna-ox-s4-base2-4`); // Second guanine
+        
+        // Add labels for alkylation sites
+        const site1Label = createLabel(svg, 'site1-label', 
+            parseFloat(guanine1.dataset.n7x), 
+            parseFloat(guanine1.dataset.n7y) - 20, 
+            'N7 site');
+        gsap.set(site1Label, {fontSize: '10px', fill: '#E74C3C'});
+        
+        // Create first alkylation bond
+        const alkylBond1 = createBond(svg, 'alkyl-bond1',
+            parseFloat(guanine1.dataset.n7x), parseFloat(guanine1.dataset.n7y),
+            parseFloat(guanine1.dataset.n7x), parseFloat(guanine1.dataset.n7y),
+            '#FBC02D', 4);
+        
+        tl.to(dna.elements, { opacity: 1, scale: 1, duration: 0.7 })
+          .to(pm, { opacity: 1, scale: 1, duration: 0.5 }, "<")
+          .to(site1Label, { opacity: 1, duration: 0.3 }, "+=0.3")
+          .to(pm, { 
+              x: parseFloat(guanine1.dataset.n7x) - 30, 
+              y: parseFloat(guanine1.dataset.n7y), 
+              duration: 1.2,
+              ease: "power2.inOut"
+          })
+          .to(guanine1, { 
+              fill: '#FBC02D', 
+              scale: 1.3, 
+              duration: 0.5 
+          }, "-=0.3")
+          .to(alkylBond1, {
+              attr: {
+                  x2: parseFloat(guanine1.dataset.n7x) - 15,
+                  y2: parseFloat(guanine1.dataset.n7y)
+              },
+              opacity: 1,
+              duration: 0.6
+          })
+          .to(pm, { 
+              scale: 0.8, 
+              opacity: 0.7,
+              duration: 0.4 
+          }, "-=0.2") // PM partially consumed
+          .set({}, {}, "+=0.5"); // Pause to show first alkylation
+        
+        return tl;
+    },
+    
+    function() { // Step 5: Second alkylation and cross-link formation
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        const dna = createDetailedDNAStrands(svg, 'dna-ox-s5', 250, 40, 200);
+        const guanines = dna.getGuaninePositions();
+        
+        const g1 = guanines[2].element;
+        const g2 = guanines[5].element;
+        
+        // Show first alkylation already occurred
+        gsap.set(g1, {fill: '#FBC02D'});
+        
+        const firstBond = createBond(svg, 'first-alkyl', 
+            guanines[2].n7.x - 15, guanines[2].n7.y,
+            guanines[2].n7.x, guanines[2].n7.y,
+            '#FBC02D', 4);
+        gsap.set(firstBond, {opacity: 1});
+        
+        // Create the cross-link bond
+        const crosslink = createBond(svg, 'ox-crosslink', 
+            guanines[2].n7.x, guanines[2].n7.y,
+            guanines[5].n7.x, guanines[5].n7.y,
+            '#D32F2F', 5);
+        
+        // Labels
+        const crosslinkLabel = createLabel(svg, 'crosslink-label', 250, 20, 'INTERSTRAND CROSS-LINK');
+        gsap.set(crosslinkLabel, {fontSize: '12px', fill: '#D32F2F', fontWeight: 'bold'});
+        
+        const site2Label = createLabel(svg, 'site2-label', 
+            guanines[5].n7.x, guanines[5].n7.y - 20, 'N7 site');
+        gsap.set(site2Label, {fontSize: '10px', fill: '#E74C3C'});
+        
+        tl.to(dna.elements, { opacity: 1, duration: 0.6 })
+          .to(site2Label, { opacity: 1, duration: 0.3 }, "+=0.2")
+          .to(g2, { 
+              fill: '#FFEB3B', 
+              scale: 1.2, 
+              duration: 0.5 
+          }, "+=0.3")
+          .to(crosslink, { 
+              attr: { 
+                  x2: guanines[5].n7.x, 
+                  y2: guanines[5].n7.y 
+              },
+              opacity: 1,
+              duration: 1.2,
+              ease: "elastic.out(1, 0.5)"
+          })
+          .to(g2, { fill: '#FBC02D', duration: 0.3 }, "-=0.5")
+          .to(crosslinkLabel, { opacity: 1, duration: 0.5 })
+          .to([dna.path1, dna.path2], {
+              stroke: '#E74C3C',
+              'stroke-width': 6,
+              duration: 0.8,
+              yoyo: true,
+              repeat: 1
+          }, "-=0.3"); // Highlight stressed DNA
+        
+        return tl;
+    },
+    
+    function() { // Step 6: DNA damage and cellular response
+        clearSVG('ox-animation');
+        const svg = document.getElementById('ox-animation');
+        const tl = gsap.timeline();
+        
+        const dna = createDetailedDNAStrands(svg, 'dna-ox-s6', 250, 40, 200);
+        const guanines = dna.getGuaninePositions();
+        
+        // Pre-existing cross-link
+        const crosslink = createBond(svg, 'ox-crosslink-s6', 
+            guanines[2].n7.x, guanines[2].n7.y,
+            guanines[5].n7.x, guanines[5].n7.y,
+            '#D32F2F', 5);
+        gsap.set([guanines[2].element, guanines[5].element], {fill: '#FBC02D'});
+        gsap.set(crosslink, {opacity: 1});
+        
+        // DNA damage indicators
+        const damageLabel1 = createLabel(svg, 'damage1', 180, 15, '✗ Replication\nBlocked');
+        const damageLabel2 = createLabel(svg, 'damage2', 320, 15, '✗ Transcription\nBlocked');
+        gsap.set([damageLabel1, damageLabel2], {fontSize: '11px', fill: '#E74C3C', fontWeight: 'bold'});
+        
+        // Cell death pathway
+        const apoptosis = createMolecule(svg, 'apoptosis', 250, 220, '#8E44AD', 'APOPTOSIS\n(Cell Death)', 35);
+        
+        // DNA fragmentation effect
+        const fragmentLines = [];
+        for(let i = 0; i < 5; i++) {
+            const line = document.createElementNS(svgNS, 'line');
+            line.setAttribute('x1', 200 + i*20);
+            line.setAttribute('y1', 60 + i*15);
+            line.setAttribute('x2', 210 + i*20);
+            line.setAttribute('y2', 70 + i*15);
+            line.setAttribute('stroke', '#E74C3C');
+            line.setAttribute('stroke-width', '3');
+            svg.appendChild(line);
+            fragmentLines.push(line);
+            gsap.set(line, {opacity: 0});
+        }
+        
+        tl.to(dna.elements, { opacity: 1, duration: 0.6 })
+          .to([damageLabel1, damageLabel2], { 
+              opacity: 1, 
+              duration: 0.6, 
+              stagger: 0.2 
+          }, "+=0.3")
+          .to([dna.path1, dna.path2], { 
+              opacity: 0.3,
+              stroke: '#E74C3C',
+              'stroke-width': 8,
+              duration: 1.2,
+              ease: "power2.inOut"
+          })
+          .to(fragmentLines, {
+              opacity: 1,
+              duration: 0.8,
+              stagger: 0.1
+          }, "-=0.5")
+          .to(apoptosis, { 
+              opacity: 1, 
+              scale: 1, 
+              duration: 0.8, 
+              ease: "back.out(1.7)" 
+          })
+          .to(dna.elements.concat(fragmentLines), { 
+              opacity: 0.2,
+              duration: 1.5,
+              ease: "power2.inOut"
+          }, "-=0.3");
+        
+        return tl;
                     }
-                ]
-            }
-        };
+                ];
 
         let activeTimelines = {}; 
 
