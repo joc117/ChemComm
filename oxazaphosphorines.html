@@ -660,22 +660,88 @@
 <script>
     const svgNS = "http://www.w3.org/2000/svg";
     
-    // --- Begin Detailed DNA Helix Cartoon Integration ---
-    
-    // Utility to create a text label in SVG at a given position.
-    function createLabel(svg, id, x, y, text) {
-        const label = document.createElementNS(svgNS, "text");
-        label.setAttribute("id", id);
-        label.setAttribute("x", x);
-        label.setAttribute("y", y);
-        label.setAttribute("dominant-baseline", "middle");
-        label.setAttribute("text-anchor", "middle");
-        label.textContent = text;
-        svg.appendChild(label);
-        return label;
+    // Utility to create a labeled circle molecule
+    function createMolecule(svg, id, x, y, color, label, r = 32) {
+        const group = document.createElementNS(svgNS, "g");
+        // Main circle
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("id", id + "-circle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", r);
+        circle.setAttribute("fill", color);
+        circle.setAttribute("stroke", "#333");
+        circle.setAttribute("stroke-width", "3");
+        group.appendChild(circle);
+        // Label
+        const txt = document.createElementNS(svgNS, "text");
+        txt.setAttribute("x", x);
+        txt.setAttribute("y", y + 6);
+        txt.setAttribute("font-size", "13px");
+        txt.setAttribute("text-anchor", "middle");
+        txt.setAttribute("fill", "white");
+        txt.setAttribute("font-weight", "bold");
+        txt.textContent = label.replace(/\n/g, ' ');
+        group.appendChild(txt);
+        svg.appendChild(group);
+        return { group, circle, label: txt };
+    }
+    // Utility to create a liver rectangle with label
+    function createLiver(svg, id, x, y) {
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", 70);
+        rect.setAttribute("height", 38);
+        rect.setAttribute("fill", "#9477b3");
+        rect.setAttribute("rx", 18);
+        rect.setAttribute("stroke", "#333");
+        rect.setAttribute("stroke-width", "2");
+        svg.appendChild(rect);
+        const txt = document.createElementNS(svgNS, "text");
+        txt.setAttribute("x", x + 35);
+        txt.setAttribute("y", y + 24);
+        txt.setAttribute("font-size", "16px");
+        txt.setAttribute("text-anchor", "middle");
+        txt.setAttribute("fill", "white");
+        txt.setAttribute("font-weight", "bold");
+        txt.textContent = "Liver";
+        svg.appendChild(txt);
+        return { rect, label: txt };
+    }
+    // Utility to draw arrow
+    function createArrow(svg, x1, y1, x2, y2, color = "#333") {
+        const arrow = document.createElementNS(svgNS, "line");
+        arrow.setAttribute("x1", x1);
+        arrow.setAttribute("y1", y1);
+        arrow.setAttribute("x2", x2);
+        arrow.setAttribute("y2", y2);
+        arrow.setAttribute("stroke", color);
+        arrow.setAttribute("stroke-width", "5");
+        arrow.setAttribute("marker-end", "url(#arrowhead)");
+        svg.appendChild(arrow);
+        return arrow;
+    }
+    // Clear SVG and add marker
+    function clearSVG(id) {
+        const svg = document.getElementById(id);
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        let defs = document.createElementNS(svgNS, 'defs');
+        let marker = document.createElementNS(svgNS, 'marker');
+        marker.setAttribute('id', 'arrowhead');
+        marker.setAttribute('markerWidth', '10');
+        marker.setAttribute('markerHeight', '7');
+        marker.setAttribute('refX', '10');
+        marker.setAttribute('refY', '3.5');
+        marker.setAttribute('orient', 'auto');
+        let arrowPath = document.createElementNS(svgNS, 'polygon');
+        arrowPath.setAttribute('points', '0 0, 10 3.5, 0 7');
+        arrowPath.setAttribute('fill', '#333');
+        marker.appendChild(arrowPath);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
     }
     
-    // Tooltip utilities
     function showAnimationTooltip(evt, html) {
         let tooltip = document.getElementById('dna-tooltip');
         if (!tooltip) {
@@ -702,7 +768,18 @@
         if (tooltip) tooltip.style.display = 'none';
     }
     
-    // Detailed DNA helix cartoon
+    // DNA helix and bond helpers as defined in your original script
+    function createLabel(svg, id, x, y, text) {
+        const label = document.createElementNS(svgNS, "text");
+        label.setAttribute("id", id);
+        label.setAttribute("x", x);
+        label.setAttribute("y", y);
+        label.setAttribute("dominant-baseline", "middle");
+        label.setAttribute("text-anchor", "middle");
+        label.textContent = text;
+        svg.appendChild(label);
+        return label;
+    }
     function createDetailedDNAStrands(svg, idPrefix, x_center, y_offset, overall_height, numSegments = 5) {
         const group = document.createElementNS(svgNS, 'g');
         group.setAttribute('id', `${idPrefix}-dna-helix`);
@@ -901,8 +978,6 @@
             getGuaninePositions: () => guaninePositions
         };
     }
-    
-    // Helper for bonds (crosslinks/alkylation lines)
     function createBond(svg, id, x1, y1, x2, y2, color = "#FBC02D", width = 4) {
         const line = document.createElementNS(svgNS, "line");
         line.setAttribute("id", id);
@@ -916,31 +991,6 @@
         return line;
     }
     
-    // --- End Detailed DNA Helix Cartoon Integration ---
-    
-    // Clear SVG and add arrowhead marker
-    function clearSVG(id) {
-        const svg = document.getElementById(id);
-        while (svg.firstChild) svg.removeChild(svg.firstChild);
-        let defs = document.createElementNS(svgNS, 'defs');
-        let marker = document.createElementNS(svgNS, 'marker');
-        marker.setAttribute('id', 'arrowhead');
-        marker.setAttribute('markerWidth', '10');
-        marker.setAttribute('markerHeight', '7');
-        marker.setAttribute('refX', '10');
-        marker.setAttribute('refY', '3.5');
-        marker.setAttribute('orient', 'auto');
-        let arrowPath = document.createElementNS(svgNS, 'polygon');
-        arrowPath.setAttribute('points', '0 0, 10 3.5, 0 7');
-        arrowPath.setAttribute('fill', '#333');
-        marker.appendChild(arrowPath);
-        defs.appendChild(marker);
-        svg.appendChild(defs);
-    }
-    
-    // Create a labeled molecule (circle + label) [Unchanged]
-    
-    // Explanations per step (unchanged)
     const stepExplanations = [
         "1. Cyclophosphamide (inactive prodrug) circulates in the blood. It must be activated in the liver.",
         "2. Liver CYP450 enzymes convert cyclophosphamide into 4-hydroxycyclophosphamide (OHCP) and Aldophosphamide (ALDO).",
@@ -949,13 +999,50 @@
         "5. A second alkylation links to another guanine (G) on the opposite DNA strand, causing a cytotoxic cross-link."
     ];
     
-    // Animation steps (modifying steps 4 & 5 to use detailed DNA helix)
+    // FULL ANIMATION STEPS
     const improvedAnimations = [
-        // ... [steps 1-3 unchanged, as before] ...
+        // Step 1: Cyclophosphamide in blood
         function() {
             clearSVG('ox-animation');
             const svg = document.getElementById('ox-animation');
-            // Step 4: Show PM and cartoon DNA, highlight first guanine
+            const cp = createMolecule(svg, 'cp', 100, 140, '#1976D2', 'Cyclophosphamide', 36);
+            gsap.set([cp.circle, cp.label], { opacity: 0 });
+            gsap.to([cp.circle, cp.label], { opacity: 1, duration: 0.8 });
+        },
+        // Step 2: Activation in liver
+        function() {
+            clearSVG('ox-animation');
+            const svg = document.getElementById('ox-animation');
+            const cp = createMolecule(svg, 'cp', 100, 140, '#1976D2', 'Cyclophosphamide', 36);
+            const liver = createLiver(svg, 'liver', 200, 110);
+            const arrow = createArrow(svg, 136, 140, 200, 129, "#333");
+            const ohcp = createMolecule(svg, 'ohcp', 340, 120, '#43A047', 'OHCP', 24);
+            const aldo = createMolecule(svg, 'aldo', 340, 180, '#FBC02D', 'ALDO', 24);
+            gsap.set([cp.circle, cp.label, liver.rect, liver.label, arrow, ohcp.circle, ohcp.label, aldo.circle, aldo.label], { opacity: 0 });
+            let tl = gsap.timeline();
+            tl.to([cp.circle, cp.label], { opacity: 1, duration: 0.6 })
+              .to([liver.rect, liver.label], { opacity: 1, duration: 0.5 }, "-=0.3")
+              .to([arrow], { opacity: 1, duration: 0.4 }, "-=0.3")
+              .to([ohcp.circle, ohcp.label, aldo.circle, aldo.label], { opacity: 1, duration: 0.5, stagger: 0.1 });
+        },
+        // Step 3: Formation of PM and Acrolein
+        function() {
+            clearSVG('ox-animation');
+            const svg = document.getElementById('ox-animation');
+            const aldo = createMolecule(svg, 'aldo', 120, 140, '#FBC02D', 'ALDO', 32);
+            const arrow = createArrow(svg, 152, 140, 210, 140, "#333");
+            const pm = createMolecule(svg, 'pm', 270, 110, '#D81B60', 'PM', 28);
+            const acrolein = createMolecule(svg, 'acr', 270, 180, '#BDB76B', 'Acrolein', 22);
+            gsap.set([aldo.circle, aldo.label, arrow, pm.circle, pm.label, acrolein.circle, acrolein.label], { opacity: 0 });
+            let tl = gsap.timeline();
+            tl.to([aldo.circle, aldo.label], { opacity: 1, duration: 0.6 })
+              .to([arrow], { opacity: 1, duration: 0.4 })
+              .to([pm.circle, pm.label, acrolein.circle, acrolein.label], { opacity: 1, duration: 0.5, stagger: 0.1 });
+        },
+        // Step 4: PM and DNA - first alkylation
+        function() {
+            clearSVG('ox-animation');
+            const svg = document.getElementById('ox-animation');
             const pm = createMolecule(svg, 'pm', 120, 140, '#D81B60', 'Phosphoramide\nMustard', 36);
             const dna = createDetailedDNAStrands(svg, 'dna-ox', 320, 30, 200, 8);
             const guanines = dna.getGuaninePositions();
@@ -968,10 +1055,10 @@
               .to(dna.elements, {opacity: 1, duration: 0.7, stagger: 0.02}, "-=0.2")
               .to(bond, {opacity: 1, duration: 0.5});
         },
+        // Step 5: DNA crosslink
         function() {
             clearSVG('ox-animation');
             const svg = document.getElementById('ox-animation');
-            // Step 5: DNA cartoon, crosslink two guanines
             const dna = createDetailedDNAStrands(svg, 'dna-ox', 250, 30, 200, 8);
             const guanines = dna.getGuaninePositions();
             const g1 = guanines[0];
@@ -984,7 +1071,7 @@
         }
     ];
     
-    // Navigation and UI logic
+    // Navigation logic
     let currentStep = 0;
     function updateExplanation() {
         document.getElementById('ox-explanation').innerText = stepExplanations[currentStep];
@@ -1002,7 +1089,23 @@
         else if (action === "restart") currentStep = 0;
         showStep();
     }
-    document.addEventListener('DOMContentLoaded', showStep);
+    
+    // Sidebar toggle and submenu logic
+    document.addEventListener("DOMContentLoaded", function() {
+        // Sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-expanded');
+        });
+        document.querySelectorAll('.has-submenu > a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                this.parentElement.classList.toggle('active');
+            });
+        });
+        // Animation start
+        showStep();
+    });
     </script>
-    </body>
-    </html>
