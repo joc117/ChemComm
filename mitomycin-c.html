@@ -539,9 +539,9 @@
         <h2>Navigation</h2>
         <ul class="nav-links">
             <li><a href="historical.html">Warhead and Wonder drugs</a></li>
-            <li><a href="mechanism.html">Clean copies</a></li>
+            <li><a href="mechanism.html">Cellular blueprints</a></li>
             <li class="has-submenu">
-                <a href="agents.html">Alkylating Agents</a>
+                <a href="agents.html">Weapons of the cell war</a>
                 <ul class="sub-links">
                   <li><a href="agents.html">Summary</a></li>
                   <li><a href="nitrogen-mustards.html">Nitrogen Mustards</a></li>
@@ -550,7 +550,6 @@
                   <li><a href="mitomycin-c.html">Mitomycin C</a></li>
                 </ul>
               </li>
-
             <li><a href="references.html">References</a></li>
             <li><a href="index.html">Authors</a></li>
         </ul>
@@ -559,7 +558,7 @@
 
     <div class="header">
         <h1>From Mustard Gas to Chemotherapy</h1>
-        <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
+        <p>From chemical warfare to cancer cure, the alchemical evolution of chemotherapy drugs</p>
     </div>
 
     <div class="scene">
@@ -639,868 +638,421 @@
     </div>
 
     <!-- Mitomycin C Mechanism -->
-    <div class="scene" id="mitomycin-c-mechanism">
-        <h2>Mitomycin C Animation</h2>
-        <div class="mechanism-visualization" style="display: flex; justify-content: center; align-items: center;">
-            <svg id="mc-animation" width="500" height="280" viewBox="0 0 500 280"></svg> <!-- SVG content will be dynamic -->
-        </div>
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background: #007bff;"></div>
-                <span>5'-3' Backbone (Blue)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #dc3545;"></div>
-                <span>3'-5' Backbone (Red)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #F08080;"></div>
-                <span>Adenine (A)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #F5D67D;"></div>
-                <span>Thymine (T)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #58D68D;"></div>
-                <span>Guanine (G)</span>
-            </div>
-             <div class="legend-item">
-                <div class="legend-color" style="background: #5DADE2;"></div>
-                <span>Cytosine (C)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #BDC3C7;"></div>
-                <span>Hydrogen Bonds</span>
-            </div>
-        </div>
-        <div class="explanation-box">
-            <h3>Mitomycin C: Step X</h3> 
-            <p class="explanation-text" id="mc-explanation"></p> 
-            </div>
-            <div class="navigation-buttons">
-            <button id="mc-prev-btn" onclick="navigateTo('previous', 'mitomycin-c')">Previous</button>
-            <button id="mc-next-btn" onclick="navigateTo('next', 'mitomycin-c')">Next</button>
-                <button onclick="navigateTo('restart', 'mitomycin-c')">Restart</button>
-        </div>
+<div class="scene" id="mitomycin-c-mechanism">
+    <h2>Mitomycin C Animation</h2>
+    <div class="mechanism-visualization" style="display: flex; justify-content: center; align-items: center;">
+        <svg id="mc-animation" width="500" height="280" viewBox="0 0 500 280"></svg>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #007bff;"></div><span>5'-3' Backbone (Blue)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #dc3545;"></div><span>3'-5' Backbone (Red)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #F08080;"></div><span>Adenine (A)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #F5D67D;"></div><span>Thymine (T)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #58D68D;"></div><span>Guanine (G)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #5DADE2;"></div><span>Cytosine (C)</span></div>
+        <div class="legend-item"><div class="legend-color" style="background: #BDC3C7;"></div><span>Hydrogen Bonds</span></div>
+    </div>
+    <div class="explanation-box">
+        <h3 id="mc-step-title">Mitomycin C: Step 1</h3>
+        <p class="explanation-text" id="mc-explanation"></p>
+    </div>
+    <div class="navigation-buttons">
+        <button id="mc-prev-btn" onclick="navigateTo('previous', 'mitomycin-c')">Previous</button>
+        <button id="mc-next-btn" onclick="navigateTo('next', 'mitomycin-c')">Next</button>
+        <button onclick="navigateTo('restart', 'mitomycin-c')">Restart</button>
     </div>
 </div>
-</div>
-
 
 <script>
-   document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const navLinks = document.querySelectorAll(".nav-links > li > a"); // Target direct links within list items
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    const subLinks = document.querySelectorAll('.sub-links a');
+const svgNS = "http://www.w3.org/2000/svg";
 
-    // Sidebar toggle logic
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-        });
+// Helper: Clear SVG
+function clearSVG(id) {
+    const svg = document.getElementById(id);
+    if (!svg) return;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+}
 
-        // Restore state
-        if (localStorage.getItem('sidebarExpanded') === 'true') {
-            sidebar.classList.add('active');
+// Helper: Molecule
+function createMolecule(svg, id, x, y, color, label, size = 24) {
+    const g = document.createElementNS(svgNS, "g");
+    g.setAttribute("id", id);
+    const circle = document.createElementNS(svgNS, "circle");
+    circle.setAttribute("cx", x); circle.setAttribute("cy", y); circle.setAttribute("r", size);
+    circle.setAttribute("fill", color);
+    circle.setAttribute("stroke", "#333");
+    circle.setAttribute("stroke-width", "2");
+    g.appendChild(circle);
+    if (label) {
+        const text = document.createElementNS(svgNS, "text");
+        text.setAttribute("x", x);
+        text.setAttribute("y", y + size + 18);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "18");
+        text.setAttribute("fill", "#333");
+        text.setAttribute("font-weight", "bold");
+        text.textContent = label;
+        g.appendChild(text);
+    }
+    svg.appendChild(g);
+    return g;
+}
+
+// Helper: DNA
+function createDetailedDNAStrands(svg, idPrefix, x_center, y_offset, overall_height, numSegments = 10) {
+    // This is a simplified version (you may use your full function if you like)
+    const group = document.createElementNS(svgNS, 'g');
+    group.setAttribute('id', `${idPrefix}-dna-helix`);
+    svg.appendChild(group);
+    const amplitude = 40, frequency = 0.025, segmentStep = 2;
+    const backboneColorBlue = '#007bff', backboneColorRed = '#dc3545';
+    const adenineColor = '#F08080', thymineColor = '#F5D67D', guanineColor = '#58D68D', cytosineColor = '#5DADE2', hBondColor = '#BDC3C7';
+    const backboneWidth = 5, baseRectWidthPurine = 18, baseRectHeightPurine = 10, baseRectWidthPyrimidine = 14, baseRectHeightPyrimidine = 10;
+    const allElements = [];
+    const sequence = ['A', 'T', 'G', 'C', 'G', 'T', 'A', 'C', 'G', 'A'];
+    const numBasePairs = sequence.length;
+    const basePairSpacing = overall_height / (numBasePairs + 1);
+    const strandBlue = document.createElementNS(svgNS, 'path');
+    const strandRed = document.createElementNS(svgNS, 'path');
+    let dBlue = '', dRed = '';
+    const startY = y_offset;
+    const endY = y_offset + overall_height;
+    for (let currentY = startY; currentY <= endY; currentY += segmentStep) {
+        const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY));
+        const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI);
+        if (currentY === startY) {
+            dBlue += `M${xBlue},${currentY}`;
+            dRed += `M${xRed},${currentY}`;
+        } else {
+            dBlue += ` L${xBlue},${currentY}`;
+            dRed += ` L${xRed},${currentY}`;
         }
     }
-
-    // Submenu toggle
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        if (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                item.classList.toggle('active');
+    strandBlue.setAttribute('d', dBlue);
+    strandBlue.setAttribute('stroke', backboneColorBlue);
+    strandBlue.setAttribute('stroke-width', backboneWidth);
+    strandBlue.setAttribute('fill', 'none');
+    group.appendChild(strandBlue);
+    allElements.push(strandBlue);
+    strandRed.setAttribute('d', dRed);
+    strandRed.setAttribute('stroke', backboneColorRed);
+    strandRed.setAttribute('stroke-width', backboneWidth);
+    strandRed.setAttribute('fill', 'none');
+    group.appendChild(strandRed);
+    allElements.push(strandRed);
+    // Base pairs and guanine positions
+    const guanines = [];
+    for (let i = 0; i < numBasePairs; i++) {
+        const currentY = y_offset + (i + 1) * basePairSpacing;
+        const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY));
+        const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI);
+        const baseTypeStrand1 = sequence[i];
+        let baseTypeStrand2, color1, color2, width1, height1, width2, height2, label1, label2;
+        switch (baseTypeStrand1) {
+            case 'A':
+                baseTypeStrand2 = 'T'; color1 = adenineColor; color2 = thymineColor;
+                width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
+                width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
+                label1 = 'A'; label2 = 'T'; break;
+            case 'T':
+                baseTypeStrand2 = 'A'; color1 = thymineColor; color2 = adenineColor;
+                width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
+                width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
+                label1 = 'T'; label2 = 'A'; break;
+            case 'G':
+                baseTypeStrand2 = 'C'; color1 = guanineColor; color2 = cytosineColor;
+                width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
+                width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
+                label1 = 'G'; label2 = 'C'; break;
+            case 'C':
+                baseTypeStrand2 = 'G'; color1 = cytosineColor; color2 = guanineColor;
+                width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
+                width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
+                label1 = 'C'; label2 = 'G'; break;
+        }
+        // Base 1
+        const base1 = document.createElementNS(svgNS, 'rect');
+        base1.setAttribute('x', xBlue - width1/2);
+        base1.setAttribute('y', currentY - height1/2);
+        base1.setAttribute('width', width1);
+        base1.setAttribute('height', height1);
+        base1.setAttribute('fill', color1);
+        group.appendChild(base1);
+        allElements.push(base1);
+        // Base 2
+        const base2 = document.createElementNS(svgNS, 'rect');
+        base2.setAttribute('x', xRed - width2/2);
+        base2.setAttribute('y', currentY - height2/2);
+        base2.setAttribute('width', width2);
+        base2.setAttribute('height', height2);
+        base2.setAttribute('fill', color2);
+        group.appendChild(base2);
+        allElements.push(base2);
+        // Label1
+        const baseLabel1 = document.createElementNS(svgNS, 'text');
+        baseLabel1.setAttribute('x', xBlue); baseLabel1.setAttribute('y', currentY + 3);
+        baseLabel1.setAttribute('text-anchor', 'middle'); baseLabel1.setAttribute('font-size', '9px');
+        baseLabel1.setAttribute('fill', '#fff'); baseLabel1.textContent = label1;
+        group.appendChild(baseLabel1);
+        allElements.push(baseLabel1);
+        // Label2
+        const baseLabel2 = document.createElementNS(svgNS, 'text');
+        baseLabel2.setAttribute('x', xRed); baseLabel2.setAttribute('y', currentY + 3);
+        baseLabel2.setAttribute('text-anchor', 'middle'); baseLabel2.setAttribute('font-size', '9px');
+        baseLabel2.setAttribute('fill', '#fff'); baseLabel2.textContent = label2;
+        group.appendChild(baseLabel2);
+        allElements.push(baseLabel2);
+        // Hydrogen bonds
+        const hBond = document.createElementNS(svgNS, 'line');
+        hBond.setAttribute('x1', xBlue); hBond.setAttribute('y1', currentY);
+        hBond.setAttribute('x2', xRed); hBond.setAttribute('y2', currentY);
+        hBond.setAttribute('stroke', hBondColor);
+        hBond.setAttribute('stroke-width', '2');
+        group.appendChild(hBond);
+        allElements.push(hBond);
+        // Store guanine info for crosslink/covalent animation
+        if (baseTypeStrand1 === 'G') {
+            guanines.push({
+                element: base1,
+                n2: { x: xBlue, y: currentY } // For mitomycin C, N2 alkylation is common
             });
         }
-    });
-
-    // Close sidebar when a submenu link is clicked
-    subLinks.forEach(subLink => {
-        subLink.addEventListener('click', () => {
-            sidebar.classList.remove("active");
-            localStorage.setItem('sidebarExpanded', 'false');
-        });
-    });
-
-    // Close sidebar when a top-level (non-submenu) link is clicked
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            if (!link.parentElement.classList.contains('has-submenu')) { // Check the parent LI
-                sidebar.classList.remove("active");
-                localStorage.setItem('sidebarExpanded', 'false');
-            }
-        });
-    });
-
-    
-
-    const currentStep = {
-            'mitomycin-c': 0
-        };
-
-        function getAgentDisplayName(agentKey) {
-            const names = {
-                'mitomycin-c': 'Mitomycin C'
-            };
-            return names[agentKey] || agentKey;
-        }
-
-        const mechanisms = {
-            'mitomycin-c': {
-                steps: [
-                    `<b>Step 1: Mitomycin C (Prodrug)</b><br>Mitomycin C contains a quinone, an aziridine ring, and a carbamate. It requires enzymatic reduction to become an active DNA alkylator.`,
-                    `<b>Step 2: Enzymatic Reduction (Activation)</b><br>Cellular enzymes (e.g., DT-diaphorase) reduce the quinone moiety of Mitomycin C. This triggers a cascade of chemical changes.`,
-                    `<b>Step 3: Formation of Reactive Species & First DNA Alkylation</b><br>Reduction leads to the spontaneous loss of the methoxy group (if present in analogue) and opening of the aziridine ring. This activated form alkylates DNA, primarily at the N2 position of guanine in the minor groove.`,
-                    `<b>Step 4: Second Alkylation & Interstrand Cross-link</b><br>After the first alkylation, further activation (e.g., elimination of the carbamate group) exposes a second electrophilic site (C10). This site can then alkylate another guanine, often on the complementary DNA strand, forming an interstrand cross-link.`,
-                    `<b>Step 5: Potent DNA Damage</b><br>The interstrand cross-links formed by Mitomycin C are highly cytotoxic, effectively halting DNA replication and leading to cancer cell death. Its activity is often enhanced in hypoxic tumor environments.`
-                ],
-                animations: [
-                    function () { // MC Step 1
-                        clearSVG('mc-animation');
-                        const svg = document.getElementById('mc-animation');
-                        const tl = gsap.timeline();
-                        const mc = createMolecule(svg, 'mc-drug', 250, 140, '#6A1B9A', 'Mitomycin C', 30);
-                        tl.to(mc, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" });
-                        return tl;
-                    },
-                    function () { // MC Step 2
-                        clearSVG('mc-animation');
-                        const svg = document.getElementById('mc-animation');
-                        const tl = gsap.timeline();
-                        const mc = createMolecule(svg, 'mc-s2', 250, 140, '#6A1B9A', 'Mitomycin C', 30);
-                        const enzyme = createMolecule(svg, 'enzyme-mc', 150, 140, '#00ACC1', 'Enzyme', 25);
-                        const electron = createMolecule(svg, 'electron', 180, 110, '#FDD835', 'e-', 8);
-                        tl.to([mc, enzyme], { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1 })
-                            .to(electron, { opacity: 1, scale: 1, duration: 0.2 }, "-=0.1")
-                            .to(electron, { x: 240, y: 130, duration: 0.5, ease: "power1.in" })
-                            .to(mc.querySelector('circle'), { fill: '#8E24AA', duration: 0.3 }, "-=0.2")
-                            .to([electron, enzyme], { opacity: 0, duration: 0.3 });
-                        return tl;
-                    },
-                    function() { // MC Step 3
-                        clearSVG('mc-animation');
-                        const svg = document.getElementById('mc-animation');
-                        const tl = gsap.timeline();
-                        
-                        const activatedMC = createMolecule(svg, 'activated-mc', 150, 100, '#8E24AA', 'Activated MC', 20);
-                        const dna = createDetailedDNAStrands(svg, 'mc-dna-s3', 300, 50, 200);
-                        const guanines = dna.getGuaninePositions();
-                        const targetG = guanines[3];
-                        
-                        const arrow = document.createElementNS(svgNS, 'path');
-                        arrow.setAttribute('d', `M${activatedMC.x+30},${activatedMC.y} L${targetG.n2.x-10},${targetG.n2.y}`);
-                        arrow.setAttribute('marker-end', 'url(#arrowhead)');
-                        arrow.setAttribute('stroke', '#795548');
-                        arrow.setAttribute('stroke-width', 2);
-                        arrow.setAttribute('opacity', 0);
-                        svg.appendChild(arrow);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(activatedMC, { 
-                            x: targetG.n2.x - 25,
-                            y: targetG.n2.y,
-                            duration: 0.7
-                        })
-                        .to(arrow, { opacity: 1, duration: 0.3 }, "-=0.5")
-                        .to(targetG.element, { fill: '#FFC107', duration: 0.3 })
-                        .to(arrow, { opacity: 0, duration: 0.2 }, "+=0.3");
-                        
-                        return tl;
-                    },
-                    function() { // MC Step 4
-                        clearSVG('mc-animation');
-                        const svg = document.getElementById('mc-animation');
-                        const tl = gsap.timeline();
-                        
-                        const dna = createDetailedDNAStrands(svg, 'mc-dna-s4', 250, 40, 200);
-                        const guanines = dna.getGuaninePositions();
-                        const g1 = guanines[2];
-                        const g2 = guanines[5];
-                        
-                        const mcAttached = createMolecule(svg, 'mc-attached', g1.n2.x - 15, g1.n2.y, '#8E24AA', '', 10);
-                        const crosslink = createBond(svg, 'mc-crosslink', 
-                            g1.n2.x, g1.n2.y,
-                            g2.n2.x, g2.n2.y,
-                            '#D32F2F', 4);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(mcAttached, { opacity: 1, duration: 0.3 })
-                        .to([g1.element, g2.element], { fill: '#FFC107', duration: 0.3 })
-                        .to(crosslink, { 
-                            opacity: 1,
-                            duration: 0.8,
-                            ease: "elastic.out(1, 0.5)"
-                        });
-                        
-                        return tl;
-                    },
-                    function() { // MC Step 5
-                        clearSVG('mc-animation');
-                        const svg = document.getElementById('mc-animation');
-                        const tl = gsap.timeline();
-                        
-                        const dna = createDetailedDNAStrands(svg, 'mc-dna-s5', 250, 40, 200);
-                        const guanines = dna.getGuaninePositions();
-                        const crosslink = createBond(svg, 'mc-crosslink-s5', 
-                            guanines[2].n2.x, guanines[2].n2.y,
-                            guanines[5].n2.x, guanines[5].n2.y,
-                            '#D32F2F', 4);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(crosslink, { opacity: 1, duration: 0.5 })
-                        .to([dna.path1, dna.path2], {
-                            attr: { 
-                                d: i => i === 0 ? 
-                                    dna.path1.getAttribute('d').replace(/L/g, 'L') + 'Z' : 
-                                    dna.path2.getAttribute('d').replace(/L/g, 'L') + 'Z'
-                            },
-                            duration: 0.5
-                        })
-                        .to(dna.elements, { 
-                            opacity: 0.5,
-                            duration: 1,
-                            ease: "power1.inOut"
-                        });
-                        
-                        return tl;
-                    }
-                ]
-            }
-        };
-
-        let activeTimelines = {}; 
-
-function updateMechanism(agent) {
-    const stepsData = mechanisms[agent];
-    const stepIndex = currentStep[agent];
-    const vizContainer = document.querySelector(`#${agent}-mechanism .mechanism-visualization`);
-    const explanationParentBox = document.querySelector(`#${agent}-mechanism .explanation-box`);
-    const explanationTitle = explanationParentBox.querySelector(`h3`);
-    const explanationText = explanationParentBox.querySelector(`.explanation-text`);
-    const nextButton = document.querySelector(`#${agent}-mechanism .navigation-buttons button[onclick*='next']`);
-    const prevButton = document.querySelector(`#${agent}-mechanism .navigation-buttons button[onclick*='previous']`);
-
-    if (!stepsData) { console.error("No steps data for", agent); return; }
-    if (!vizContainer || !explanationParentBox || !explanationTitle || !explanationText) { 
-        console.error("HTML elements missing for", agent); return; 
-    }
-
-    explanationTitle.innerHTML = `${getAgentDisplayName(agent)}: Step ${stepIndex + 1}`;
-    explanationText.innerHTML = stepsData.steps[stepIndex];
-
-    gsap.fromTo(explanationParentBox, 
-        { backgroundColor: "rgba(220, 235, 255, 0.5)", y:10, opacity:0.7 }, 
-        { backgroundColor: "transparent", y:0, opacity:1, duration: 0.5, ease:"power1.out" }
-    );
-
-    if (activeTimelines[agent]) {
-        activeTimelines[agent].kill();
-    }
-
-    if (stepsData.animations && typeof stepsData.animations[stepIndex] === 'function') {
-        activeTimelines[agent] = stepsData.animations[stepIndex](); 
-        if (activeTimelines[agent] && typeof activeTimelines[agent].play === 'function') {
-            activeTimelines[agent].play();
-        } else {
-            console.warn(`Animation function for ${agent} step ${stepIndex} did not return a valid GSAP timeline.`);
-            clearSVG(`${agent.substring(0,2)}-animation`); 
-        }
-    } else {
-        console.warn(`Animation missing for ${agent} step ${stepIndex}`);
-        clearSVG(`${agent.substring(0,2)}-animation`);
-    }
-
-    if (stepIndex === stepsData.steps.length - 1) {
-        nextButton.innerText = "Last Step";
-        nextButton.style.backgroundColor = "#cce6ff";
-        nextButton.disabled = true;
-    } else {
-        nextButton.innerText = "Next";
-        nextButton.style.backgroundColor = "";
-        nextButton.disabled = false;
-    }
-}
-
-function navigateTo(action, agent) {
-    const agentMechanisms = mechanisms[agent]; 
-    if (!agentMechanisms) {
-        console.error("Mechanism not found for agent:", agent);
-        return;
-    }
-    let stepIndex = currentStep[agent];
-
-    if (action === 'next' && stepIndex < agentMechanisms.steps.length - 1) {
-        currentStep[agent]++;
-    } else if (action === 'previous' && stepIndex > 0) {
-        currentStep[agent]--;
-    } else if (action === 'restart') {
-        currentStep[agent] = 0;
-    }
-
-    currentStep[agent] = Math.max(0, Math.min(currentStep[agent], agentMechanisms.steps.length - 1));
-    updateMechanism(agent);
-}
-
-// Helper functions
-const svgNS = "http://www.w3.org/2000/svg";
-let animationTooltip;
-
-function showAnimationTooltip(event, text) {
-    if (!animationTooltip) {
-        animationTooltip = document.getElementById('animationTooltip');
-        if (!animationTooltip) return;
-    }
-    animationTooltip.innerHTML = text;
-    animationTooltip.style.display = 'block';
-    const offsetX = 15;
-    const offsetY = 15;
-    let x = event.pageX + offsetX;
-    let y = event.pageY + offsetY;
-
-    if (x + animationTooltip.offsetWidth > window.innerWidth + window.scrollX) {
-        x = event.pageX - animationTooltip.offsetWidth - offsetX;
-    }
-    if (y + animationTooltip.offsetHeight > window.innerHeight + window.scrollY) {
-        y = event.pageY - animationTooltip.offsetHeight - offsetY;
-    }
-
-    animationTooltip.style.left = `${x}px`;
-    animationTooltip.style.top = `${y}px`;
-}
-
-function hideAnimationTooltip() {
-    if (animationTooltip) {
-        animationTooltip.style.display = 'none';
-    }
-}
-
-function addArrowheadDef(svgElement) {
-    if (!svgElement || svgElement.querySelector("defs #arrowhead")) return;
-    const defs = svgElement.querySelector("defs") || document.createElementNS(svgNS, "defs");
-    const marker = document.createElementNS(svgNS, "marker");
-    marker.setAttribute("id", "arrowhead");
-    marker.setAttribute("markerWidth", "10");
-    marker.setAttribute("markerHeight", "7");
-    marker.setAttribute("refX", "9");
-    marker.setAttribute("refY", "3.5");
-    marker.setAttribute("orient", "auto-start-reverse");
-    const arrowheadPolygon = document.createElementNS(svgNS, "polygon");
-    arrowheadPolygon.setAttribute("points", "0 0, 10 3.5, 0 7");
-    arrowheadPolygon.setAttribute("fill", "#555");
-    marker.appendChild(arrowheadPolygon);
-    defs.appendChild(marker);
-    if (!svgElement.querySelector("defs")) {
-        svgElement.insertBefore(defs, svgElement.firstChild);
-    }
-}
-
-function clearSVG(svgId) {
-    const svg = document.getElementById(svgId);
-    if (svg) {
-        while (svg.lastChild && svg.lastChild.tagName !== 'defs') {
-             svg.removeChild(svg.lastChild);
-        }
-        if (!svg.querySelector("defs #arrowhead")){
-            svg.innerHTML = '';
-            addArrowheadDef(svg);
-        } else if (svg.children.length === 1 && svg.firstChild.tagName === 'defs'){
-             // SVG only contains defs, which is fine
-        } else {
-             // Clear children except defs
-            let child = svg.lastChild; 
-            while (child && child.tagName !== 'defs') { 
-                svg.removeChild(child); 
-                child = svg.lastChild; 
-            }
-        }
-         if (!svg.querySelector("defs #arrowhead")) {
-            addArrowheadDef(svg);
+        if (baseTypeStrand2 === 'G') {
+            guanines.push({
+                element: base2,
+                n2: { x: xRed, y: currentY }
+            });
         }
     }
+    return { group, elements: allElements, getGuaninePositions: () => guanines };
 }
 
-function createMolecule(svg, id, x, y, atomColor, labelText, r = 20) {
-    const group = document.createElementNS(svgNS, 'g');
-    group.setAttribute('id', id);
-    group.setAttribute('transform', `translate(${x},${y})`);
-
-    const atom = document.createElementNS(svgNS, 'circle');
-    atom.setAttribute('cx', 0); atom.setAttribute('cy', 0); atom.setAttribute('r', r);
-    atom.setAttribute('fill', atomColor);
-    group.appendChild(atom);
-
-    if (labelText) {
-        const labelEl = document.createElementNS(svgNS, 'text');
-        labelEl.setAttribute('x', 0); labelEl.setAttribute('y', r + 15);
-        labelEl.setAttribute('text-anchor', 'middle'); labelEl.setAttribute('font-size', '12px');
-        labelEl.textContent = labelText;
-        group.appendChild(labelEl);
-        group.addEventListener('mouseenter', (e) => showAnimationTooltip(e, `<b>${labelText}</b>`));
-    } else {
-        group.addEventListener('mouseenter', (e) => showAnimationTooltip(e, `<b>Molecular Component</b>`));
-    }
-    group.addEventListener('mouseleave', hideAnimationTooltip);
-
-    svg.appendChild(group);
-    gsap.set(group, { opacity: 0, scale: 0.5 });
-    return group;
-}
-
-function createBond(svg, id, x1, y1, x2, y2, stroke = '#333', strokeWidth = 2) {
-    const line = document.createElementNS(svgNS, 'line');
-    line.setAttribute('id', id);
-    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-    line.setAttribute('x2', x1); line.setAttribute('y2', y1); 
-    line.setAttribute('stroke', stroke); line.setAttribute('stroke-width', strokeWidth);
-    
-    line.addEventListener('mouseenter', (e) => showAnimationTooltip(e, `<b>Covalent Bond</b>`));
-    line.addEventListener('mouseleave', hideAnimationTooltip);
-
+// Helper: Covalent bond
+function createBond(svg, id, x1, y1, x2, y2, color = "#C0392B", width = 4) {
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("id", id);
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2);
+    line.setAttribute("y2", y2);
+    line.setAttribute("stroke", color);
+    line.setAttribute("stroke-width", width);
+    line.setAttribute("stroke-dasharray", "6,3");
+    line.setAttribute("opacity", "1");
     svg.appendChild(line);
-    gsap.set(line, { opacity: 0 });
     return line;
 }
 
-function createDetailedDNAStrands(svg, idPrefix, x_center, y_offset, overall_height, numSegments = 5) { // Modified parameters
-const group = document.createElementNS(svgNS, 'g');
-group.setAttribute('id', `${idPrefix}-dna-helix`);
-svg.appendChild(group);
+// --- Mitomycin C Mechanism Logic ---
+const mcSteps = [
+    "<b>Step 1: Mitomycin C (Prodrug)</b><br>Mitomycin C contains a quinone, an aziridine ring, and a carbamate. It requires enzymatic reduction to become an active DNA alkylator.",
+    "<b>Step 2: Enzymatic Reduction (Activation)</b><br>Cellular enzymes (e.g., DT-diaphorase) reduce the quinone moiety of Mitomycin C. This triggers a cascade of chemical changes.",
+    "<b>Step 3: Formation of Reactive Species & First DNA Alkylation</b><br>Reduction leads to the spontaneous loss of the methoxy group (if present in analogue) and opening of the aziridine ring. This activated form alkylates DNA, primarily at the N2 position of guanine in the minor groove.",
+    "<b>Step 4: Second Alkylation & Interstrand Cross-link</b><br>After the first alkylation, further activation (e.g., elimination of the carbamate group) exposes a second electrophilic site (C10). This site can then alkylate another guanine, often on the complementary DNA strand, forming an interstrand cross-link.",
+    "<b>Step 5: Potent DNA Damage</b><br>The interstrand cross-links formed by Mitomycin C are highly cytotoxic, effectively halting DNA replication and leading to cancer cell death. Its activity is often enhanced in hypoxic tumor environments."
+];
 
-// Parameters based on the reference image and new vertical orientation
-const amplitude = 40;      // Horizontal spread of the helix
-const frequency = 0.025;   // Waves per unit of height (adjust for twist density)
-const segmentStep = 2;     // Step for drawing path points
+const mcAnimations = [
+    // Step 1: Mitomycin C prodrug
+    function() {
+        clearSVG('mc-animation');
+        const svg = document.getElementById('mc-animation');
+        createMolecule(svg, 'mc-drug', 250, 140, '#6A1B9A', 'Mitomycin C', 30);
+    },
+    // Step 2: Enzymatic Reduction
+    function() {
+        clearSVG('mc-animation');
+        const svg = document.getElementById('mc-animation');
+        createMolecule(svg, 'mc-drug', 250, 140, '#6A1B9A', 'Mitomycin C', 30);
+        createMolecule(svg, 'enzyme', 140, 110, '#00ACC1', 'Enzyme', 20);
+        createMolecule(svg, 'electron', 170, 80, '#FDD835', 'e-', 7);
+        // Optionally, add an arrow from enzyme/electron to MC
+    },
+    // Step 3: First DNA alkylation
+    function() {
+        clearSVG('mc-animation');
+        const svg = document.getElementById('mc-animation');
+        // Activated MC
+        createMolecule(svg, 'mc-active', 120, 120, '#8E24AA', 'Activated MC', 22);
+        // DNA
+        const dna = createDetailedDNAStrands(svg, 'mc-dna-step3', 340, 40, 180, 10);
+        const guanines = dna.getGuaninePositions();
+        if (guanines.length > 0) {
+            // Arrow from MC to N2 of a guanine
+            const gtarget = guanines[3];
+            const arrow = document.createElementNS(svgNS, 'line');
+            arrow.setAttribute('x1', 120); arrow.setAttribute('y1', 120);
+            arrow.setAttribute('x2', gtarget.n2.x); arrow.setAttribute('y2', gtarget.n2.y);
+            arrow.setAttribute('stroke', '#795548'); arrow.setAttribute('stroke-width', '3');
+            arrow.setAttribute('marker-end', 'url(#arrowhead)');
+            svg.appendChild(arrow);
+            // Highlight guanine
+            gtarget.element.setAttribute('fill', '#FFC107');
+        }
+    },
+    // Step 4: Interstrand cross-link
+    function() {
+        clearSVG('mc-animation');
+        const svg = document.getElementById('mc-animation');
+        const dna = createDetailedDNAStrands(svg, 'mc-dna-step4', 250, 40, 180, 10);
+        const guanines = dna.getGuaninePositions();
+        if (guanines.length > 4) {
+            const g1 = guanines[2], g2 = guanines[7];
+            // MC attached
+            createMolecule(svg, 'mc-crosslink', g1.n2.x-10, g1.n2.y, '#8E24AA', '', 10);
+            // Crosslink bond (dashed)
+            createBond(svg, 'mc-crosslink', g1.n2.x, g1.n2.y, g2.n2.x, g2.n2.y, '#D32F2F', 4);
+            g1.element.setAttribute('fill', '#FFC107');
+            g2.element.setAttribute('fill', '#FFC107');
+        }
+    },
+   // Step 5: Potent DNA Damage (Interstrand Cross-link, faded DNA, cell death message)
+   function() {
+    clearSVG('mc-animation');
+    const svg = document.getElementById('mc-animation');
+    // Draw the DNA
+    const dna = createDetailedDNAStrands(svg, 'mc-dna-step5', 250, 40, 180, 10);
+    const guanines = dna.getGuaninePositions();
 
-// Color Palette from reference image
-const backboneColorBlue = '#007bff'; // A clear blue
-const backboneColorRed = '#dc3545';   // A clear red
-const adenineColor = '#F08080';     // Light Coral / Pinkish-Red for A
-const thymineColor = '#F5D67D';       // Yellow/Orange for T
-const guanineColor = '#58D68D';       // Green for G (current is good)
-const cytosineColor = '#5DADE2';      // Light blue for C
-const hBondColor = '#BDC3C7';         // Light grey for H-bonds
-const labelColor = '#333';            // For 5'/3' and base letters
+    // Draw the crosslink (locks DNA)
+    if (guanines.length > 4) {
+        createBond(svg, 'mc-crosslink-final',
+            guanines[2].n2.x, guanines[2].n2.y,
+            guanines[7].n2.x, guanines[7].n2.y,
+            '#D32F2F', 7
+        );
+        guanines[2].element.setAttribute('fill', '#FFC107');
+        guanines[7].element.setAttribute('fill', '#FFC107');
+    }
 
-const backboneWidth = 5;
-const baseRectWidthPurine = 18; // A, G
-const baseRectHeightPurine = 10;
-const baseRectWidthPyrimidine = 14; // C, T
-const baseRectHeightPyrimidine = 10;
-const baseFontSize = "8px";
+    // Draw a "replication fork" (replicase protein) as a blue oval
+    const fork = document.createElementNS(svgNS, "ellipse");
+    fork.setAttribute("cx", 250);
+    fork.setAttribute("cy", 70);
+    fork.setAttribute("rx", 30);
+    fork.setAttribute("ry", 14);
+    fork.setAttribute("fill", "#1565c0");
+    fork.setAttribute("stroke", "#333");
+    fork.setAttribute("stroke-width", "2");
+    svg.appendChild(fork);
+    // Add "DNA Pol" label
+    const forkLabel = document.createElementNS(svgNS, "text");
+    forkLabel.setAttribute("x", 250);
+    forkLabel.setAttribute("y", 75);
+    forkLabel.setAttribute("text-anchor", "middle");
+    forkLabel.setAttribute("font-size", "13");
+    forkLabel.setAttribute("fill", "#fff");
+    forkLabel.setAttribute("font-weight", "bold");
+    forkLabel.textContent = "DNA Pol";
+    svg.appendChild(forkLabel);
 
-const allElements = [];
+    // Crosslink position (between guanines)
+    const haltY = (guanines[2].n2.y + guanines[7].n2.y) / 2;
 
-// Define a sample base sequence for one strand
-const sequence = ['A', 'T', 'G', 'C', 'G', 'T', 'A', 'C', 'G', 'A']; 
-const numBasePairs = sequence.length;
-const basePairSpacing = overall_height / (numBasePairs + 1);
+    // Animate the fork moving towards the crosslink and "bouncing"
+    gsap.to([fork, forkLabel], {
+        duration: 1,
+        y: haltY - 60,
+        onComplete: () => {
+            // Quick "bump" effect
+            gsap.to([fork, forkLabel], {
+                duration: 0.13, y: `+=12`, yoyo: true, repeat: 1, ease: "power2.inOut",
+                onComplete: () => {
+                    // Fade the fork (show it's dead)
+                    gsap.to([fork, forkLabel], { opacity: 0.4, duration: 0.6 });
+                }
+            });
 
-// Create the two backbone strands (Vertical Orientation)
-const strandBlue = document.createElementNS(svgNS, 'path'); // Left strand (5'-3' top to bottom)
-const strandRed = document.createElementNS(svgNS, 'path');   // Right strand (3'-5' top to bottom)
+            // Stop sign and jagged line
+            const stop = document.createElementNS(svgNS, "text");
+            stop.setAttribute("x", 250);
+            stop.setAttribute("y", haltY - 10);
+            stop.setAttribute("text-anchor", "middle");
+            stop.setAttribute("font-size", "28");
+            stop.setAttribute("fill", "#d32f2f");
+            stop.setAttribute("font-weight", "bold");
+            stop.textContent = "⛔";
+            svg.appendChild(stop);
 
-let dBlue = '';
-let dRed = '';
-const startY = y_offset;
-const endY = y_offset + overall_height;
+            // Replication Blocked! text
+            const blockTxt = document.createElementNS(svgNS, "text");
+            blockTxt.setAttribute("x", 250);
+            blockTxt.setAttribute("y", haltY + 32);
+            blockTxt.setAttribute("text-anchor", "middle");
+            blockTxt.setAttribute("font-size", "16");
+            blockTxt.setAttribute("fill", "#d32f2f");
+            blockTxt.setAttribute("font-weight", "bold");
+            blockTxt.textContent = "Replication Blocked!";
+            svg.appendChild(blockTxt);
 
-for (let currentY = startY; currentY <= endY; currentY += segmentStep) {
-    const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY)); // Cosine for side-to-side start
-    const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI); // 180deg phase offset
-    
-    if (currentY === startY) {
-        dBlue += `M${xBlue},${currentY}`;
-        dRed += `M${xRed},${currentY}`;
+            // Jagged "break" line to indicate block
+            const line = document.createElementNS(svgNS, "polyline");
+            line.setAttribute("points", `${250-28},${haltY+4} ${250-16},${haltY+16} ${250},${haltY+8} ${250+16},${haltY+18} ${250+28},${haltY+4}`);
+            line.setAttribute("stroke", "#d32f2f");
+            line.setAttribute("stroke-width", "3");
+            line.setAttribute("fill", "none");
+            svg.appendChild(line);
+
+            // Cell death label
+            const t = document.createElementNS(svgNS, "text");
+            t.setAttribute("x", 400);
+            t.setAttribute("y", 240);
+            t.setAttribute("text-anchor", "middle");
+            t.setAttribute("font-size", "22");
+            t.setAttribute("fill", "#C62828");
+            t.setAttribute("font-weight", "bold");
+            t.textContent = "Cell Death";
+            svg.appendChild(t);
+
+            // Hypoxia label
+            const hypoxia = document.createElementNS(svgNS, "text");
+            hypoxia.setAttribute("x", 90);
+            hypoxia.setAttribute("y", 260);
+            hypoxia.setAttribute("text-anchor", "middle");
+            hypoxia.setAttribute("font-size", "15");
+            hypoxia.setAttribute("fill", "#3949ab");
+            hypoxia.setAttribute("font-weight", "bold");
+            hypoxia.setAttribute("opacity", "0.7");
+            hypoxia.textContent = "Low O₂ (Hypoxia)";
+            svg.appendChild(hypoxia);
+        }
+    });
+}
+];
+
+// Animation navigation logic
+let mcStep = 0;
+function updateMitomycinC() {
+    document.getElementById('mc-step-title').innerHTML = `Mitomycin C: Step ${mcStep + 1}`;
+    document.getElementById('mc-explanation').innerHTML = mcSteps[mcStep];
+    mcAnimations[mcStep]();
+
+    // Previous button state
+    document.getElementById('mc-prev-btn').disabled = mcStep === 0;
+
+    // Next button state, label, and color
+    const nextBtn = document.getElementById('mc-next-btn');
+    if (mcStep === mcSteps.length - 1) {
+        nextBtn.disabled = true;
+        nextBtn.innerText = "Last Step";
+        nextBtn.style.background = "#cce6ff"; // Light blue or any color you like
+        nextBtn.style.color = "#333";         // Optional: change text color for contrast
     } else {
-        dBlue += ` L${xBlue},${currentY}`;
-        dRed += ` L${xRed},${currentY}`;
+        nextBtn.disabled = false;
+        nextBtn.innerText = "Next";
+        nextBtn.style.background = ""; // Resets to CSS default
+        nextBtn.style.color = "";      // Resets to CSS default
     }
 }
-
-strandBlue.setAttribute('d', dBlue);
-strandBlue.setAttribute('stroke', backboneColorBlue);
-strandBlue.setAttribute('stroke-width', backboneWidth);
-strandBlue.setAttribute('fill', 'none');
-strandBlue.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>5\'-3\' DNA Backbone</b><br>(Blue Strand)'));
-strandBlue.addEventListener('mouseleave', hideAnimationTooltip);
-group.appendChild(strandBlue);
-allElements.push(strandBlue);
-
-strandRed.setAttribute('d', dRed);
-strandRed.setAttribute('stroke', backboneColorRed);
-strandRed.setAttribute('stroke-width', backboneWidth);
-strandRed.setAttribute('fill', 'none');
-strandRed.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>3\'-5\' DNA Backbone</b><br>(Red Strand)'));
-strandRed.addEventListener('mouseleave', hideAnimationTooltip);
-group.appendChild(strandRed);
-allElements.push(strandRed);
-
-// Add 5' and 3' labels
-const fivePrimeBlue = createLabel(svg, `${idPrefix}-5pb`, x_center - amplitude - 15, startY, "5'");
-const threePrimeBlue = createLabel(svg, `${idPrefix}-3pb`, x_center - amplitude * Math.cos(frequency * overall_height) - 15, endY + 15, "3'");
-const threePrimeRed = createLabel(svg, `${idPrefix}-3pr`, x_center - amplitude * Math.cos(Math.PI) + 15, startY, "3'");
-const fivePrimeRed = createLabel(svg, `${idPrefix}-5pr`, x_center - amplitude * Math.cos(frequency * overall_height + Math.PI) + 15, endY + 15, "5'");
-gsap.set([fivePrimeBlue, threePrimeBlue, threePrimeRed, fivePrimeRed], {opacity: 1, fill: labelColor, fontSize: "12px", fontWeight:"bold"});
-allElements.push(fivePrimeBlue, threePrimeBlue, threePrimeRed, fivePrimeRed);
-
-// Create base pairs
-for (let i = 0; i < numBasePairs; i++) {
-    const currentY = y_offset + (i + 1) * basePairSpacing;
-    const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY));
-    const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI);
-
-    const baseTypeStrand1 = sequence[i];
-    let baseTypeStrand2, color1, color2, width1, height1, width2, height2, label1, label2;
-    let tooltip1, tooltip2;
-
-    switch (baseTypeStrand1) {
-        case 'A':
-            baseTypeStrand2 = 'T'; color1 = adenineColor; color2 = thymineColor;
-            width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
-            width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
-            label1 = 'A'; label2 = 'T';
-            tooltip1 = '<b>Adenine (A)</b>'; tooltip2 = '<b>Thymine (T)</b>';
-            break;
-        case 'T':
-            baseTypeStrand2 = 'A'; color1 = thymineColor; color2 = adenineColor;
-            width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
-            width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
-            label1 = 'T'; label2 = 'A';
-            tooltip1 = '<b>Thymine (T)</b>'; tooltip2 = '<b>Adenine (A)</b>';
-            break;
-        case 'G':
-            baseTypeStrand2 = 'C'; color1 = guanineColor; color2 = cytosineColor;
-            width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
-            width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
-            label1 = 'G'; label2 = 'C';
-            tooltip1 = '<b>Guanine (G)</b><br>Target for alkylation.'; tooltip2 = '<b>Cytosine (C)</b>';
-            break;
-        case 'C':
-            baseTypeStrand2 = 'G'; color1 = cytosineColor; color2 = guanineColor;
-            width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
-            width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
-            label1 = 'C'; label2 = 'G';
-            tooltip1 = '<b>Cytosine (C)</b>'; tooltip2 = '<b>Guanine (G)</b><br>Target for alkylation.';
-            break;
-    }
-
-    // Base on Blue Strand (Strand 1)
-    const base1 = document.createElementNS(svgNS, 'rect');
-    base1.setAttribute('id', `${idPrefix}-base1-${i}`);
-    base1.setAttribute('x', xBlue - (baseTypeStrand1 === 'A' || baseTypeStrand1 === 'G' ? width1/2 : width1/2)); // Centered on backbone
-    base1.setAttribute('y', currentY - height1/2);
-    base1.setAttribute('width', width1);
-    base1.setAttribute('height', height1);
-    base1.setAttribute('fill', color1);
-    base1.setAttribute('rx', 2); base1.setAttribute('ry', 2);
-    base1.addEventListener('mouseenter', (e) => showAnimationTooltip(e, tooltip1));
-    base1.addEventListener('mouseleave', hideAnimationTooltip);
-    group.appendChild(base1);
-    allElements.push(base1);
-
-    const baseLabel1 = createLabel(svg, `${idPrefix}-b1label-${i}`, xBlue, currentY + baseFontSize/2.5 , label1);
-    gsap.set(baseLabel1, {opacity:1, fill:"white", fontSize: baseFontSize, pointerEvents: 'none'});
-    allElements.push(baseLabel1);
-
-
-    // Base on Red Strand (Strand 2)
-    const base2 = document.createElementNS(svgNS, 'rect');
-    base2.setAttribute('id', `${idPrefix}-base2-${i}`);
-    base2.setAttribute('x', xRed - (baseTypeStrand2 === 'A' || baseTypeStrand2 === 'G' ? width2/2 : width2/2)); // Centered on backbone
-    base2.setAttribute('y', currentY - height2/2);
-    base2.setAttribute('width', width2);
-    base2.setAttribute('height', height2);
-    base2.setAttribute('fill', color2);
-    base2.setAttribute('rx', 2); base2.setAttribute('ry', 2);
-    base2.addEventListener('mouseenter', (e) => showAnimationTooltip(e, tooltip2));
-    base2.addEventListener('mouseleave', hideAnimationTooltip);
-    group.appendChild(base2);
-    allElements.push(base2);
-    
-    const baseLabel2 = createLabel(svg, `${idPrefix}-b2label-${i}`, xRed, currentY + baseFontSize/2.5, label2);
-    gsap.set(baseLabel2, {opacity:1, fill:"white", fontSize: baseFontSize, pointerEvents: 'none'});
-    allElements.push(baseLabel2);
-
-    // Hydrogen Bonds (simplified as single line)
-    const hBond = document.createElementNS(svgNS, 'line');
-    hBond.setAttribute('x1', xBlue);
-    hBond.setAttribute('y1', currentY);
-    hBond.setAttribute('x2', xRed);
-    hBond.setAttribute('y2', currentY);
-    hBond.setAttribute('stroke', hBondColor);
-    hBond.setAttribute('stroke-width', '2');
-    hBond.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Hydrogen Bonds</b>'));
-    hBond.addEventListener('mouseleave', hideAnimationTooltip);
-    group.appendChild(hBond);
-    allElements.push(hBond);
-    
-    // Store guanine N7 positions if it's a guanine for alkylation targeting
-    if (baseTypeStrand1 === 'G') {
-        base1.dataset.n7x = xBlue + (width1 / 2) * 0.6; // Approx N7 on outer edge
-        base1.dataset.n7y = currentY;
-    }
-    if (baseTypeStrand2 === 'G') {
-        base2.dataset.n7x = xRed - (width2 / 2) * 0.6; // Approx N7 on outer edge
-        base2.dataset.n7y = currentY;
+function navigateTo(action, agent) {
+    if (agent === 'mitomycin-c') {
+        if (action === 'next' && mcStep < mcSteps.length - 1) mcStep++;
+        else if (action === 'previous' && mcStep > 0) mcStep--;
+        else if (action === 'restart') mcStep = 0;
+        updateMitomycinC();
     }
 }
+// Initial load
+document.addEventListener('DOMContentLoaded', updateMitomycinC);
 
-gsap.set(allElements, { opacity: 0, scale: 0.9, transformOrigin: "center center" });
-return { group, elements: allElements, path1: strandBlue, path2: strandRed }; 
-}
-
-function createNitrogenMustardMolecule(svg, id, x, y) {
-const group = document.createElementNS(svgNS, 'g');
-group.setAttribute('id', id);
-group.setAttribute('transform', `translate(${x},${y})`);
-svg.appendChild(group);
-
-const atomRadiusN = 8;
-const atomRadiusC = 6; // Slightly smaller for C
-const atomRadiusCl = 7;
-const labelFontSize = "8px";
-const labelColor = "#FFFFFF"; // White labels
-
-const centralN = document.createElementNS(svgNS, 'circle');
-centralN.setAttribute('id', `${id}-N`);
-centralN.setAttribute('cx', 0); centralN.setAttribute('cy', 0); centralN.setAttribute('r', atomRadiusN);
-centralN.setAttribute('fill', '#8E44AD'); // Purple for Nitrogen
-centralN.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Nitrogen Atom (N)</b>'));
-centralN.addEventListener('mouseleave', hideAnimationTooltip);
-group.appendChild(centralN);
-
-const nLabel = document.createElementNS(svgNS, 'text');
-nLabel.setAttribute('x', 0); nLabel.setAttribute('y', 0);
-nLabel.setAttribute('text-anchor', 'middle'); nLabel.setAttribute('dy', '.3em'); // Vertical alignment
-nLabel.setAttribute('font-size', labelFontSize); nLabel.setAttribute('fill', labelColor);
-nLabel.textContent = 'N';
-group.appendChild(nLabel);
-
-const elements = [centralN, nLabel];
-const bondLength = 30;
-const armAngle = 45; // degrees
-
-for (let i = 0; i < 2; i++) { // Two arms
-    const angle = i === 0 ? -armAngle : armAngle;
-    const ethylX1 = bondLength * Math.cos(angle * Math.PI / 180);
-    const ethylY1 = bondLength * Math.sin(angle * Math.PI / 180);
-    const ethylX2 = (bondLength + 20) * Math.cos(angle * Math.PI / 180);
-    const ethylY2 = (bondLength + 20) * Math.sin(angle * Math.PI / 180);
-    const clX = (bondLength + 45) * Math.cos(angle * Math.PI / 180); // Increased length for Cl label
-    const clY = (bondLength + 45) * Math.sin(angle * Math.PI / 180);
-
-    const bond1 = document.createElementNS(svgNS, 'line');
-    bond1.setAttribute('x1', 0); bond1.setAttribute('y1', 0);
-    bond1.setAttribute('x2', ethylX1); bond1.setAttribute('y2', ethylY1);
-    bond1.setAttribute('stroke', '#333'); bond1.setAttribute('stroke-width', 2);
-    group.appendChild(bond1); elements.push(bond1);
-
-    const c1 = document.createElementNS(svgNS, 'circle'); // CH2
-    c1.setAttribute('cx', ethylX1); c1.setAttribute('cy', ethylY1); c1.setAttribute('r', atomRadiusC); c1.setAttribute('fill', '#5D6D7E');
-    group.appendChild(c1); elements.push(c1);
-    const c1Label = document.createElementNS(svgNS, 'text');
-    c1Label.setAttribute('x', ethylX1); c1Label.setAttribute('y', ethylY1);
-    c1Label.setAttribute('text-anchor', 'middle'); c1Label.setAttribute('dy', '.3em');
-    c1Label.setAttribute('font-size', labelFontSize); c1Label.setAttribute('fill', labelColor);
-    c1Label.textContent = 'C';
-    group.appendChild(c1Label); elements.push(c1Label);
-    c1.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the chloroethyl arm.'));
-    c1.addEventListener('mouseleave', hideAnimationTooltip);
-    c1Label.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the chloroethyl arm.'));
-    c1Label.addEventListener('mouseleave', hideAnimationTooltip);
-
-    const bond2 = document.createElementNS(svgNS, 'line');
-    bond2.setAttribute('x1', ethylX1); bond2.setAttribute('y1', ethylY1);
-    bond2.setAttribute('x2', ethylX2); bond2.setAttribute('y2', ethylY2);
-    bond2.setAttribute('stroke', '#333'); bond2.setAttribute('stroke-width', 2);
-    group.appendChild(bond2); elements.push(bond2);
-    
-    const c2 = document.createElementNS(svgNS, 'circle'); // CH2
-    c2.setAttribute('id', `${id}-CH2-${i}`);
-    c2.setAttribute('cx', ethylX2); c2.setAttribute('cy', ethylY2); c2.setAttribute('r', atomRadiusC); c2.setAttribute('fill', '#5D6D7E');
-    group.appendChild(c2); elements.push(c2);
-    const c2Label = document.createElementNS(svgNS, 'text');
-    c2Label.setAttribute('x', ethylX2); c2Label.setAttribute('y', ethylY2);
-    c2Label.setAttribute('text-anchor', 'middle'); c2Label.setAttribute('dy', '.3em');
-    c2Label.setAttribute('font-size', labelFontSize); c2Label.setAttribute('fill', labelColor);
-    c2Label.textContent = 'C';
-    group.appendChild(c2Label); elements.push(c2Label);
-    c2.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the chloroethyl arm.'));
-    c2.addEventListener('mouseleave', hideAnimationTooltip);
-    c2Label.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the chloroethyl arm.'));
-    c2Label.addEventListener('mouseleave', hideAnimationTooltip);
-
-    const bondCl = document.createElementNS(svgNS, 'line');
-    bondCl.setAttribute('id', `${id}-bondCl-${i}`);
-    bondCl.setAttribute('x1', ethylX2); bondCl.setAttribute('y1', ethylY2);
-    bondCl.setAttribute('x2', clX); bondCl.setAttribute('y2', clY);
-    bondCl.setAttribute('stroke', '#333'); bondCl.setAttribute('stroke-width', 2);
-    group.appendChild(bondCl); elements.push(bondCl);
-
-    const chlorine = document.createElementNS(svgNS, 'circle');
-    chlorine.setAttribute('id', `${id}-Cl-${i}`);
-    chlorine.setAttribute('cx', clX); chlorine.setAttribute('cy', clY); chlorine.setAttribute('r', atomRadiusCl);
-    chlorine.setAttribute('fill', '#1ABC9C'); // Teal for Chlorine
-    chlorine.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Chlorine Atom (Cl)</b><br>Leaving group.'));
-    chlorine.addEventListener('mouseleave', hideAnimationTooltip);
-    group.appendChild(chlorine); elements.push(chlorine);
-    const clLabel = document.createElementNS(svgNS, 'text');
-    clLabel.setAttribute('x', clX); clLabel.setAttribute('y', clY);
-    clLabel.setAttribute('text-anchor', 'middle'); clLabel.setAttribute('dy', '.3em');
-    clLabel.setAttribute('font-size', labelFontSize); clLabel.setAttribute('fill', labelColor);
-    clLabel.textContent = 'Cl';
-    group.appendChild(clLabel); elements.push(clLabel);
-    clLabel.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Chlorine Atom (Cl)</b><br>On the remaining arm.'));
-    clLabel.addEventListener('mouseleave', hideAnimationTooltip);
-}
-gsap.set(elements, { opacity: 0, scale: 0.8, transformOrigin: "center center" });
-return { group, elements };
-}
-
-function createAziridiniumIon(svg, id, x, y) {
-const group = document.createElementNS(svgNS, 'g');
-group.setAttribute('id', id);
-group.setAttribute('transform', `translate(${x},${y})`);
-svg.appendChild(group);
-const elements = [];
-
-const atomRadiusN = 8;
-const atomRadiusC = 6;
-const atomRadiusCl = 7;
-const labelFontSize = "8px";
-const labelColor = "#FFFFFF";
-const nPlusLabelColor = "#FFFFFF"; // N+ label
-
-// Simplified aziridinium ring + remaining arm
-const N = document.createElementNS(svgNS, 'circle'); N.setAttribute('cx', 0); N.setAttribute('cy', 0); N.setAttribute('r', atomRadiusN); N.setAttribute('fill', '#E74C3C'); group.appendChild(N); elements.push(N); // Red for reactive N
-N.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Reactive Nitrogen (N+)</b><br>Forms the aziridinium ion.'));
-N.addEventListener('mouseleave', hideAnimationTooltip);
-const nLabel = document.createElementNS(svgNS, 'text');
-nLabel.setAttribute('x', 0); nLabel.setAttribute('y', 0);
-nLabel.setAttribute('text-anchor', 'middle'); nLabel.setAttribute('dy', '.3em');
-nLabel.setAttribute('font-size', labelFontSize); nLabel.setAttribute('fill', nPlusLabelColor);
-nLabel.textContent = 'N+'; // Reactive Nitrogen label
-group.appendChild(nLabel); elements.push(nLabel);
-
-const C1 = document.createElementNS(svgNS, 'circle'); C1.setAttribute('cx', -15); C1.setAttribute('cy', 15); C1.setAttribute('r', atomRadiusC); C1.setAttribute('fill', '#5D6D7E'); group.appendChild(C1); elements.push(C1);
-const c1Label = document.createElementNS(svgNS, 'text');
-c1Label.setAttribute('x', -15); c1Label.setAttribute('y', 15);
-c1Label.setAttribute('text-anchor', 'middle'); c1Label.setAttribute('dy', '.3em');
-c1Label.setAttribute('font-size', labelFontSize); c1Label.setAttribute('fill', labelColor);
-c1Label.textContent = 'C';
-group.appendChild(c1Label); elements.push(c1Label);
-C1.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the aziridinium ring.'));
-C1.addEventListener('mouseleave', hideAnimationTooltip);
-c1Label.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the aziridinium ring.'));
-c1Label.addEventListener('mouseleave', hideAnimationTooltip);
-
-const C2 = document.createElementNS(svgNS, 'circle'); C2.setAttribute('cx', 15); C2.setAttribute('cy', 15); C2.setAttribute('r', atomRadiusC); C2.setAttribute('fill', '#5D6D7E'); group.appendChild(C2); elements.push(C2);
-const c2Label = document.createElementNS(svgNS, 'text');
-c2Label.setAttribute('x', 15); c2Label.setAttribute('y', 15);
-c2Label.setAttribute('text-anchor', 'middle'); c2Label.setAttribute('dy', '.3em');
-c2Label.setAttribute('font-size', labelFontSize); c2Label.setAttribute('fill', labelColor);
-c2Label.textContent = 'C';
-group.appendChild(c2Label); elements.push(c2Label);
-C2.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the aziridinium ring.'));
-C2.addEventListener('mouseleave', hideAnimationTooltip);
-c2Label.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the aziridinium ring.'));
-c2Label.addEventListener('mouseleave', hideAnimationTooltip);
-
-const bondN_C1 = document.createElementNS(svgNS, 'line'); bondN_C1.setAttribute('x1',0); bondN_C1.setAttribute('y1',0); bondN_C1.setAttribute('x2',-15); bondN_C1.setAttribute('y2',15); bondN_C1.setAttribute('stroke','#333'); bondN_C1.setAttribute('stroke-width',2); group.appendChild(bondN_C1); elements.push(bondN_C1);
-const bondN_C2 = document.createElementNS(svgNS, 'line'); bondN_C2.setAttribute('x1',0); bondN_C2.setAttribute('y1',0); bondN_C2.setAttribute('x2',15); bondN_C2.setAttribute('y2',15); bondN_C2.setAttribute('stroke','#333'); bondN_C2.setAttribute('stroke-width',2); group.appendChild(bondN_C2); elements.push(bondN_C2);
-const bondC1_C2 = document.createElementNS(svgNS, 'line'); bondC1_C2.setAttribute('x1',-15); bondC1_C2.setAttribute('y1',15); bondC1_C2.setAttribute('x2',15); bondC1_C2.setAttribute('y2',15); bondC1_C2.setAttribute('stroke','#333'); bondC1_C2.setAttribute('stroke-width',2); group.appendChild(bondC1_C2); elements.push(bondC1_C2);
-
-// Represent remaining arm (simplified)
-const armAttachPointX = 0; const armAttachPointY = 0; // From N
-const armEthylCX = 0; const armEthylCY = -25; // Position for Carbon on remaining arm
-const armClX = 0; const armClY = -45; // Position for Cl on remaining arm
-
-const remainingArmBond1 = document.createElementNS(svgNS, 'line'); 
-remainingArmBond1.setAttribute('id',`${id}-remainingArmBond1`); 
-remainingArmBond1.setAttribute('x1',armAttachPointX); remainingArmBond1.setAttribute('y1',armAttachPointY); 
-remainingArmBond1.setAttribute('x2',armEthylCX); remainingArmBond1.setAttribute('y2',armEthylCY); 
-remainingArmBond1.setAttribute('stroke','#333'); remainingArmBond1.setAttribute('stroke-width',2); 
-group.appendChild(remainingArmBond1); elements.push(remainingArmBond1);
-
-const remainingC = document.createElementNS(svgNS, 'circle'); 
-remainingC.setAttribute('id',`${id}-remainingC`); 
-remainingC.setAttribute('cx',armEthylCX); remainingC.setAttribute('cy',armEthylCY); 
-remainingC.setAttribute('r',atomRadiusC); remainingC.setAttribute('fill','#5D6D7E'); 
-group.appendChild(remainingC); elements.push(remainingC);
-const remainingCLabel = document.createElementNS(svgNS, 'text');
-remainingCLabel.setAttribute('x', armEthylCX); remainingCLabel.setAttribute('y', armEthylCY);
-remainingCLabel.setAttribute('text-anchor', 'middle'); remainingCLabel.setAttribute('dy', '.3em');
-remainingCLabel.setAttribute('font-size', labelFontSize); remainingCLabel.setAttribute('fill', labelColor);
-remainingCLabel.textContent = 'C';
-group.appendChild(remainingCLabel); elements.push(remainingCLabel);
-remainingC.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the remaining arm.'));
-remainingC.addEventListener('mouseleave', hideAnimationTooltip);
-remainingCLabel.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Carbon Atom (C)</b><br>Part of the remaining arm.'));
-remainingCLabel.addEventListener('mouseleave', hideAnimationTooltip);
-
-const remainingArmBond2 = document.createElementNS(svgNS, 'line'); 
-remainingArmBond2.setAttribute('id',`${id}-remainingArmBond2`); 
-remainingArmBond2.setAttribute('x1',armEthylCX); remainingArmBond2.setAttribute('y1',armEthylCY); 
-remainingArmBond2.setAttribute('x2',armClX); remainingArmBond2.setAttribute('y2',armClY); 
-remainingArmBond2.setAttribute('stroke','#333'); remainingArmBond2.setAttribute('stroke-width',2); 
-group.appendChild(remainingArmBond2); elements.push(remainingArmBond2);
-
-const remainingCl = document.createElementNS(svgNS, 'circle'); 
-remainingCl.setAttribute('id',`${id}-remainingCl`); 
-remainingCl.setAttribute('cx',armClX); remainingCl.setAttribute('cy',armClY); 
-remainingCl.setAttribute('r',atomRadiusCl); remainingCl.setAttribute('fill','#1ABC9C'); 
-group.appendChild(remainingCl); elements.push(remainingCl);
-const remainingClLabel = document.createElementNS(svgNS, 'text');
-remainingClLabel.setAttribute('x', armClX); remainingClLabel.setAttribute('y', armClY);
-remainingClLabel.setAttribute('text-anchor', 'middle'); remainingClLabel.setAttribute('dy', '.3em');
-remainingClLabel.setAttribute('font-size', labelFontSize); remainingClLabel.setAttribute('fill', labelColor);
-remainingClLabel.textContent = 'Cl';
-group.appendChild(remainingClLabel); elements.push(remainingClLabel);
-remainingCl.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Chlorine Atom (Cl)</b><br>On the remaining arm.'));
-remainingCl.addEventListener('mouseleave', hideAnimationTooltip);
-remainingClLabel.addEventListener('mouseenter', (e) => showAnimationTooltip(e, '<b>Chlorine Atom (Cl)</b><br>On the remaining arm.'));
-remainingClLabel.addEventListener('mouseleave', hideAnimationTooltip);
-
-
-gsap.set(elements, { opacity: 0, scale: 0.8, transformOrigin: "center center" });
-return { group, elements, nitrogenAtom: N };
-}
-
-function createLabel(svg, id, x, y, textContent) {
-const label = document.createElementNS(svgNS, 'text');
-label.setAttribute('id', id);
-label.setAttribute('x', x);
-label.setAttribute('y', y);
-label.setAttribute('text-anchor', 'middle');
-label.setAttribute('font-size', '14px');
-label.setAttribute('fill', '#333');
-label.textContent = textContent;
-svg.appendChild(label);
-gsap.set(label, { opacity: 0 });
-return label;
-}
-
-// Generic bond for cross-links etc.
-function createGenericBond(svg, id, x1, y1, x2, y2, stroke = '#C0392B', strokeWidth = 3) {
-const line = document.createElementNS(svgNS, 'line');
-line.setAttribute('id', id);
-line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-line.setAttribute('x2', x1); // Start as point, animate to x2
-line.setAttribute('y2', y1); // Start as point, animate to y2
-line.setAttribute('stroke', stroke);
-line.setAttribute('stroke-width', strokeWidth);
-svg.appendChild(line);
-gsap.set(line, { opacity: 0 });
-return line;
-}
-
-});
 </script>
-</body>
-</html>
