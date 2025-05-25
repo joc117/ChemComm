@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogen Mustards</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <title>Nitrosoureas</title>
     <style>
          .sidebar-toggle {
             position: fixed;
@@ -754,51 +752,12 @@
                 <button onclick="navigateTo('restart')">Restart</button>
             </div>
         </div>
-
-        <style>
-        .mechanism-visualization {
-            min-width: 780px;
-            min-height: 400px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
-            border: 1px solid #eee;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 18px;
-        }
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 1px 4px #0001;
-            font-size: 15px;
-            padding: 12px 18px;
-            margin: 0 auto 12px auto;
-            justify-content: center;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-        }
-        .legend-color {
-            width: 19px;
-            height: 19px;
-            border-radius: 4px;
-            margin-right: 7px;
-            border: 1px solid #bbb;
-        }
-        </style>
-
+    
         <script>
+
+console.log("NITROSOUREA SCRIPT LOADED", Date.now());
         const svgNS = "http://www.w3.org/2000/svg";
-        
-        // Arrow marker definition
+    
         function addArrowMarker(svg) {
             let defs = svg.querySelector('defs');
             if (!defs) {
@@ -821,7 +780,6 @@
                 defs.appendChild(marker);
             }
         }
-        // Draw line with arrowhead
         function createArrow(svg, x1, y1, x2, y2, color="#333", width=3, label="", opacity=1) {
             addArrowMarker(svg);
             const line = document.createElementNS(svgNS, "line");
@@ -903,17 +861,17 @@
             const group = document.createElementNS(svgNS, 'g');
             group.setAttribute('id', `${idPrefix}-dna-helix`);
             svg.appendChild(group);
-        
+    
             const amplitude = 40, frequency = 0.025, segmentStep = 2;
             const backboneColorBlue = '#007bff', backboneColorRed = '#dc3545';
             const adenineColor = '#F08080', thymineColor = '#F5D67D', guanineColor = '#58D68D', cytosineColor = '#5DADE2', hBondColor = '#BDC3C7';
-        
+    
             const backboneWidth = 5, baseRectWidthPurine = 18, baseRectHeightPurine = 10, baseRectWidthPyrimidine = 14, baseRectHeightPyrimidine = 10;
             const allElements = [];
             const sequence = ['A', 'T', 'G', 'C', 'G', 'T', 'A', 'C', 'G', 'A'];
             const numBasePairs = sequence.length;
             const basePairSpacing = overall_height / (numBasePairs + 1);
-        
+    
             const strandBlue = document.createElementNS(svgNS, 'path');
             const strandRed = document.createElementNS(svgNS, 'path');
             let dBlue = '', dRed = '';
@@ -936,15 +894,14 @@
             strandBlue.setAttribute('fill', 'none');
             group.appendChild(strandBlue);
             allElements.push(strandBlue);
-        
+    
             strandRed.setAttribute('d', dRed);
             strandRed.setAttribute('stroke', backboneColorRed);
             strandRed.setAttribute('stroke-width', backboneWidth);
             strandRed.setAttribute('fill', 'none');
             group.appendChild(strandRed);
             allElements.push(strandRed);
-        
-            // 5'/3' labels
+    
             function createLabel(id, x, y, text) {
                 const label = document.createElementNS(svgNS, "text");
                 label.setAttribute("id", id);
@@ -962,8 +919,7 @@
             createLabel(`${idPrefix}-3pb`, x_center - amplitude * Math.cos(frequency * overall_height) - 15, endY + 15, "3'");
             createLabel(`${idPrefix}-3pr`, x_center - amplitude * Math.cos(Math.PI) + 15, startY, "3'");
             createLabel(`${idPrefix}-5pr`, x_center - amplitude * Math.cos(frequency * overall_height + Math.PI) + 15, endY + 15, "5'");
-        
-            // Base pairs and guanine positions
+    
             const guanines = [];
             for (let i = 0; i < numBasePairs; i++) {
                 const currentY = y_offset + (i + 1) * basePairSpacing;
@@ -1049,18 +1005,18 @@
             }
             return { group, path1: strandBlue, path2: strandRed, elements: allElements, getGuaninePositions: () => guanines };
         }
-        
+    
         // --- Animation Explanations ---
         const stepExplanations = [
-    "Nitrosoureas (like carmustine) are highly lipophilic, allowing them to cross the blood-brain barrier and enter cells.",
-    "Inside the cell, nitrosoureas decompose to form reactive intermediates: a diazohydroxide and an isocyanate.",
-    "The diazohydroxide forms a highly reactive bifunctional alkylating carbocation, which can attack DNA.",
-    "The carbocation alkylates guanine on one DNA strand and then cross-links to guanine on the opposite strand. <b>(Arrow shows the cation attacking the DNA)</b>",
-    "DNA alkylation occurs at guanine O6 or N7 positions, forming strong DNA adducts. <b>(Arrow shows continuity from previous step)</b>",
-    "The isocyanate byproduct carbamylates proteins, including DNA repair enzymes, further blocking repair.",
-    "DNA cross-linking and impaired repair lead to cell death (apoptosis)."
-];
-        
+            "Nitrosoureas (like carmustine) are highly lipophilic, allowing them to cross the blood-brain barrier and enter cells.",
+            "Inside the cell, nitrosoureas decompose to form reactive intermediates: a diazohydroxide and an isocyanate.",
+            "The diazohydroxide forms a highly reactive bifunctional alkylating carbocation, which can attack DNA.",
+            "The carbocation alkylates guanine on one DNA strand and then cross-links to guanine on the opposite strand. <b>(Arrow shows the cation attacking the DNA)</b>",
+            "DNA alkylation occurs at guanine O6 or N7 positions, forming strong DNA adducts. <b>(Arrow shows continuity from previous step)</b>",
+            "The isocyanate byproduct carbamylates proteins, including DNA repair enzymes, further blocking repair.",
+            "DNA cross-linking and impaired repair lead to cell death (apoptosis)."
+        ];
+    
         const improvedAnimations = [
             // Step 1
             function() {
@@ -1087,24 +1043,23 @@
                 createMolecule(svg, 'cation', 430, 110, '#D84315', 'Bifunctional Alkylating Cation', 24);
                 createArrow(svg, 240, 110, 410, 110, "#D84315", 3, "Rearrange");
             },
-           // Step 4: Show DNA crosslinking and arrow to DNA
-function() {
-    clearSVG('nu-animation');
-    const svg = document.getElementById('nu-animation');
-    createMolecule(svg, 'cation', 160, 180, '#D84315', 'Alkylating Cation', 22);
-    const dna = createDetailedDNAStrands(svg, 'nu-dna', 560, 80, 210, 10);
-    const guanines = dna.getGuaninePositions();
-    if (guanines.length >= 2) {
-        createBond(svg, 'crosslink',
-            guanines[1].n7.x, guanines[1].n7.y,
-            guanines[7].n7.x, guanines[7].n7.y,
-            "#D32F2F", 7,
-            {dash: true, label: "DNA Cross-Link", labelColor: "#D32F2F", labelOffsetX: 12, labelOffsetY: -14}
-        );
-        // THIS IS THE ARROW SHOWING THE CATION ATTACKING THE DNA:
-        createArrow(svg, 182, 180, guanines[1].n7.x-12, guanines[1].n7.y, "#1976D2", 4, "Attacks DNA", 1);
-    }
-},
+            // Step 4: Show DNA crosslinking and arrow to DNA
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                createMolecule(svg, 'cation', 160, 180, '#D84315', 'Alkylating Cation', 22);
+                const dna = createDetailedDNAStrands(svg, 'nu-dna', 560, 80, 210, 10);
+                const guanines = dna.getGuaninePositions();
+                if (guanines.length >= 2) {
+                    createBond(svg, 'crosslink',
+                        guanines[1].n7.x, guanines[1].n7.y,
+                        guanines[7].n7.x, guanines[7].n7.y,
+                        "#D32F2F", 7,
+                        {dash: true, label: "DNA Cross-Link", labelColor: "#D32F2F", labelOffsetX: 12, labelOffsetY: -14}
+                    );
+                    createArrow(svg, 182, 180, guanines[1].n7.x-12, guanines[1].n7.y, "#1976D2", 4, "Attacks DNA", 1);
+                }
+            },
             // Step 5: DNA O6/N7 alkylation, faded arrow to show continuity
             function() {
                 clearSVG('nu-animation');
@@ -1113,60 +1068,51 @@ function() {
                 const guanines = dna.getGuaninePositions();
                 if (guanines.length > 0) {
                     createBond(svg, 'alkyl', guanines[3].o6.x, guanines[3].o6.y, guanines[3].n7.x, guanines[3].n7.y, "#FBC02D", 6, {label: "O6/N7 Alkylation", labelOffsetX: 20});
-                    // Faded arrow from left toward the alkylated guanine
                     createArrow(svg, 140, 180, guanines[3].n7.x-12, guanines[3].n7.y, "#1976D2", 4, "", 0.25);
                 }
             },
             // Step 6: Protein Carbamylation
-            // Step 6: Protein Carbamylation
-function() {
-    clearSVG('nu-animation');
-    const svg = document.getElementById('nu-animation');
-    // Isocyanate molecule (purple)
-    createMolecule(svg, 'isocyanate', 220, 140, '#8e24aa', 'Isocyanate', 28);
-    // Repair enzyme molecule (blue/gray)
-    createMolecule(svg, 'repair-enzyme', 520, 140, '#1976d2', 'Repair Enzyme', 36);
-    // Main green arrow: carbamylation
-    createArrow(svg, 255, 140, 475, 140, "#43A047", 8, "Carbamylation");
-    // Smaller green arrow: inhibit
-    createArrow(svg, 485, 140, 540, 140, "#43A047", 5, "Inhibit");
-    // Optionally: overlay a 'blocked' sign on repair enzyme
-    const block = document.createElementNS(svgNS, "text");
-    block.setAttribute("x", 520);
-    block.setAttribute("y", 150);
-    block.setAttribute("text-anchor", "middle");
-    block.setAttribute("font-size", "30");
-    block.setAttribute("fill", "#C62828");
-    block.setAttribute("font-weight", "bold");
-    block.setAttribute("opacity", "0.7");
-    block.textContent = "✖";
-    svg.appendChild(block);
-},
-// Step 7: DNA cross-linking and cell death
-function() {
-    clearSVG('nu-animation');
-    const svg = document.getElementById('nu-animation');
-    const dna = createDetailedDNAStrands(svg, 'nu-dna', 400, 80, 210, 10);
-    const guanines = dna.getGuaninePositions();
-    if (guanines.length >= 2) {
-        createBond(svg, 'crosslink', guanines[1].n7.x, guanines[1].n7.y, guanines[7].n7.x, guanines[7].n7.y, "#D32F2F", 7, {dash: true});
-    }
-    createMolecule(svg, 'damaged-enzyme', 150, 340, '#78909C', 'Impaired Repair', 28);
-    const t = document.createElementNS(svgNS, "text");
-    t.setAttribute("x", 630);
-    t.setAttribute("y", 370);
-    t.setAttribute("text-anchor", "middle");
-    t.setAttribute("font-size", "24");
-    t.setAttribute("fill", "#C62828");
-    t.setAttribute("font-weight", "bold");
-    t.textContent = "Apoptosis";
-    svg.appendChild(t);
-    // Arrow from DNA to "Apoptosis"
-    createArrow(svg, 470, 180, 630, 350, "#C62828", 5, "Cell Death");
-}
-            
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                createMolecule(svg, 'isocyanate', 220, 140, '#8e24aa', 'Isocyanate', 28);
+                createMolecule(svg, 'repair-enzyme', 520, 140, '#1976d2', 'Repair Enzyme', 36);
+                createArrow(svg, 255, 140, 475, 140, "#43A047", 8, "Carbamylation");
+                createArrow(svg, 485, 140, 540, 140, "#43A047", 5, "Inhibit");
+                const block = document.createElementNS(svgNS, "text");
+                block.setAttribute("x", 520);
+                block.setAttribute("y", 150);
+                block.setAttribute("text-anchor", "middle");
+                block.setAttribute("font-size", "30");
+                block.setAttribute("fill", "#C62828");
+                block.setAttribute("font-weight", "bold");
+                block.setAttribute("opacity", "0.7");
+                block.textContent = "✖";
+                svg.appendChild(block);
+            },
+            // Step 7: DNA cross-linking and cell death
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                const dna = createDetailedDNAStrands(svg, 'nu-dna', 400, 80, 210, 10);
+                const guanines = dna.getGuaninePositions();
+                if (guanines.length >= 2) {
+                    createBond(svg, 'crosslink', guanines[1].n7.x, guanines[1].n7.y, guanines[7].n7.x, guanines[7].n7.y, "#D32F2F", 7, {dash: true});
+                }
+                createMolecule(svg, 'damaged-enzyme', 150, 340, '#78909C', 'Impaired Repair', 28);
+                const t = document.createElementNS(svgNS, "text");
+                t.setAttribute("x", 630);
+                t.setAttribute("y", 370);
+                t.setAttribute("text-anchor", "middle");
+                t.setAttribute("font-size", "24");
+                t.setAttribute("fill", "#C62828");
+                t.setAttribute("font-weight", "bold");
+                t.textContent = "Apoptosis";
+                svg.appendChild(t);
+                createArrow(svg, 470, 180, 630, 350, "#C62828", 5, "Cell Death");
+            }
         ];
-        
+    
         let currentStep = 0;
         function updateExplanation() {
             document.getElementById('nu-explanation').innerHTML = stepExplanations[currentStep];
@@ -1188,3 +1134,5 @@ function() {
             showStep();
         });
         </script>
+    </body>
+    </html>
