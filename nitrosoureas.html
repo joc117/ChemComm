@@ -530,6 +530,93 @@
             opacity: 0.7;
         }
 
+        .mechanism-flex {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        .mechanism-visualization {
+            min-width: 780px;
+            min-height: 400px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .legend {
+            min-width: 190px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 4px #0001;
+            font-size: 15px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+        .legend-color {
+            width: 19px;
+            height: 19px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 1px solid #bbb;
+        }
+        @media (max-width: 900px) {
+            .mechanism-flex { flex-direction: column; align-items: center; gap: 14px; }
+            .mechanism-visualization, .legend { min-width: 0; width: 95vw; max-width: 780px;}
+        }
+        .explanation-box {
+            margin-top: 18px;
+            background: #f7f7fa;
+            border-radius: 10px;
+            padding: 20px 24px;
+            border-left: 5px solid #1976d2;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .navigation-buttons button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+        }
+        .navigation-buttons button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .navigation-buttons button:last-child {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+        .navigation-buttons button:last-child::after {
+            content: '↻';
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
 
     </style>
 </head>
@@ -544,9 +631,9 @@
         <h2>Navigation</h2>
         <ul class="nav-links">
             <li><a href="historical.html">Warhead and Wonder drugs</a></li>
-            <li><a href="mechanism.html">Clean copies</a></li>
+            <li><a href="mechanism.html">Cellular blueprints</a></li>
             <li class="has-submenu">
-                <a href="agents.html">Alkylating Agents</a>
+                <a href="agents.html">Weapons of the cell war</a>
                 <ul class="sub-links">
                   <li><a href="agents.html">Summary</a></li>
                   <li><a href="nitrogen-mustards.html">Nitrogen Mustards</a></li>
@@ -555,7 +642,6 @@
                   <li><a href="mitomycin-c.html">Mitomycin C</a></li>
                 </ul>
               </li>
-
             <li><a href="references.html">References</a></li>
             <li><a href="index.html">Authors</a></li>
         </ul>
@@ -564,7 +650,7 @@
 
     <div class="header">
         <h1>From Mustard Gas to Chemotherapy</h1>
-        <p>The Alchemical Transformation of Chemical Weapons into Life-Saving Medicines</p>
+        <p>From chemical warfare to cancer cure, the alchemical evolution of chemotherapy drugs</p>
     </div>
 
     <div class="scene">
@@ -644,588 +730,461 @@
                 
                 </ul>
         </p>
-    </div>
-
-    <!-- Nitrosourea Mechanism -->
-    <div class="scene" id="nitrosourea-mechanism">
-        <h2>Nitrosourea Animation</h2>
-        <div class="mechanism-visualization" style="display: flex; justify-content: center; align-items: center;">
-             <svg id="nu-animation" width="500" height="280" viewBox="0 0 500 280"></svg>
-        </div>
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background: #007bff;"></div>
-                <span>5'-3' Backbone (Blue)</span>
+        <div class="scene" id="nitrosourea-mechanism">
+            <h2>Nitrosourea Animation</h2>
+            <div class="mechanism-visualization" style="min-width:780px; min-height:400px;">
+                <svg id="nu-animation" width="780" height="400" viewBox="0 0 780 400"></svg>
             </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #dc3545;"></div>
-                <span>3'-5' Backbone (Red)</span>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #007bff;"></div><span>5'-3' Backbone (Blue)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #dc3545;"></div><span>3'-5' Backbone (Red)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #F08080;"></div><span>Adenine (A)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #F5D67D;"></div><span>Thymine (T)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #58D68D;"></div><span>Guanine (G)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #5DADE2;"></div><span>Cytosine (C)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #BDC3C7;"></div><span>Hydrogen Bonds</span></div>
             </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #F08080;"></div>
-                <span>Adenine (A)</span>
+            <div class="explanation-box">
+                <h3 id="nu-step-title">Nitrosourea: Step 1</h3>
+                <p class="explanation-text" id="nu-explanation"></p>
             </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #F5D67D;"></div>
-                <span>Thymine (T)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #58D68D;"></div>
-                <span>Guanine (G)</span>
-            </div>
-             <div class="legend-item">
-                <div class="legend-color" style="background: #5DADE2;"></div>
-                <span>Cytosine (C)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #BDC3C7;"></div>
-                <span>Hydrogen Bonds</span>
+            <div class="navigation-buttons">
+                <button id="nu-prev-btn" onclick="navigateTo('previous')">Previous</button>
+                <button id="nu-next-btn" onclick="navigateTo('next')">Next</button>
+                <button onclick="navigateTo('restart')">Restart</button>
             </div>
         </div>
-        <div class="explanation-box"> 
-            <h3>Nitrosourea: Step X</h3> 
-            <p class="explanation-text" id="nu-explanation"></p> 
-        </div>
-        <div class="navigation-buttons">
-            <button id="nu-prev-btn" onclick="navigateTo('previous', 'nitrosourea')">Previous</button>
-            <button id="nu-next-btn" onclick="navigateTo('next', 'nitrosourea')">Next</button>
-            <button onclick="navigateTo('restart', 'nitrosourea')">Restart</button>
-        </div>
-    </div>
 
-
-<script>
-    document.getElementById('img1').addEventListener('click', function() {
-      document.getElementById('img2').style.display = 'block';
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const navLinks = document.querySelectorAll(".nav-links > li > a"); // Target direct links within list items
-    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
-    const subLinks = document.querySelectorAll('.sub-links a');
-
-    // Sidebar toggle logic
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-            localStorage.setItem('sidebarExpanded', sidebar.classList.contains('active'));
-        });
-
-        // Restore state
-        if (localStorage.getItem('sidebarExpanded') === 'true') {
-            sidebar.classList.add('active');
+        <style>
+        .mechanism-visualization {
+            min-width: 780px;
+            min-height: 400px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
         }
-    }
-
-    // Submenu toggle
-    hasSubmenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        if (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                item.classList.toggle('active');
-            });
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 4px #0001;
+            font-size: 15px;
+            padding: 12px 18px;
+            margin: 0 auto 12px auto;
+            justify-content: center;
         }
-    });
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        .legend-color {
+            width: 19px;
+            height: 19px;
+            border-radius: 4px;
+            margin-right: 7px;
+            border: 1px solid #bbb;
+        }
+        </style>
 
-    // Close sidebar when a submenu link is clicked
-    subLinks.forEach(subLink => {
-        subLink.addEventListener('click', () => {
-            sidebar.classList.remove("active");
-            localStorage.setItem('sidebarExpanded', 'false');
-        });
-    });
-
-    // Close sidebar when a top-level (non-submenu) link is clicked
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            if (!link.parentElement.classList.contains('has-submenu')) { // Check the parent LI
-                sidebar.classList.remove("active");
-                localStorage.setItem('sidebarExpanded', 'false');
+        <script>
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // Arrow marker definition
+        function addArrowMarker(svg) {
+            let defs = svg.querySelector('defs');
+            if (!defs) {
+                defs = document.createElementNS(svgNS, 'defs');
+                svg.appendChild(defs);
             }
-        });
-    });
-});
-
-    function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        // Calculate offset considering fixed header if needed
-        const offset = 100; // Adjust this value based on your header height
-        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - offset;
+            if (!svg.querySelector('#arrowhead')) {
+                const marker = document.createElementNS(svgNS, 'marker');
+                marker.setAttribute('id', 'arrowhead');
+                marker.setAttribute('markerWidth', '10');
+                marker.setAttribute('markerHeight', '7');
+                marker.setAttribute('refX', '10');
+                marker.setAttribute('refY', '3.5');
+                marker.setAttribute('orient', 'auto');
+                marker.setAttribute('markerUnits', 'strokeWidth');
+                const polygon = document.createElementNS(svgNS, 'polygon');
+                polygon.setAttribute('points', '0 0, 10 3.5, 0 7');
+                polygon.setAttribute('fill', '#333');
+                marker.appendChild(polygon);
+                defs.appendChild(marker);
+            }
+        }
+        // Draw line with arrowhead
+        function createArrow(svg, x1, y1, x2, y2, color="#333", width=3, label="", opacity=1) {
+            addArrowMarker(svg);
+            const line = document.createElementNS(svgNS, "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", color);
+            line.setAttribute("stroke-width", width);
+            line.setAttribute("marker-end", "url(#arrowhead)");
+            line.setAttribute("opacity", opacity);
+            svg.appendChild(line);
+            if (label) {
+                const text = document.createElementNS(svgNS, "text");
+                text.setAttribute("x", (x1 + x2) / 2 + 14);
+                text.setAttribute("y", (y1 + y2) / 2 - 8);
+                text.setAttribute("fill", color);
+                text.setAttribute("font-size", "14px");
+                text.setAttribute("font-weight", "bold");
+                text.setAttribute("opacity", opacity);
+                text.textContent = label;
+                svg.appendChild(text);
+            }
+            return line;
+        }
+        function clearSVG(id) {
+            const svg = document.getElementById(id);
+            while (svg.firstChild) svg.removeChild(svg.firstChild);
+        }
+        function createMolecule(svg, id, x, y, color, labelText, size = 24) {
+            const g = document.createElementNS(svgNS, "g");
+            g.setAttribute("id", id);
+            const circle = document.createElementNS(svgNS, "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", size);
+            circle.setAttribute("fill", color);
+            circle.setAttribute("stroke", "#333");
+            circle.setAttribute("stroke-width", "2");
+            g.appendChild(circle);
+            if (labelText) {
+                const text = document.createElementNS(svgNS, "text");
+                text.setAttribute("x", x);
+                text.setAttribute("y", y + size + 18);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("font-size", "18");
+                text.setAttribute("fill", "#333");
+                text.setAttribute("font-weight", "bold");
+                text.textContent = labelText;
+                g.appendChild(text);
+            }
+            svg.appendChild(g);
+            return g;
+        }
+        function createBond(svg, id, x1, y1, x2, y2, color = "#FBC02D", width = 4, options = {}) {
+            const line = document.createElementNS(svgNS, "line");
+            line.setAttribute("id", id);
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", color);
+            line.setAttribute("stroke-width", width);
+            if (options.dash) line.setAttribute("stroke-dasharray", "10,6");
+            svg.appendChild(line);
+            if (options.label) {
+                const text = document.createElementNS(svgNS, "text");
+                text.setAttribute("x", (x1 + x2) / 2 + (options.labelOffsetX || 12));
+                text.setAttribute("y", (y1 + y2) / 2 + (options.labelOffsetY || -12));
+                text.setAttribute("fill", options.labelColor || "#D32F2F");
+                text.setAttribute("font-size", "16px");
+                text.setAttribute("font-weight", "bold");
+                text.textContent = options.label;
+                svg.appendChild(text);
+            }
+            return line;
+        }
+        function createDetailedDNAStrands(svg, idPrefix, x_center, y_offset, overall_height, numSegments = 10) {
+            const group = document.createElementNS(svgNS, 'g');
+            group.setAttribute('id', `${idPrefix}-dna-helix`);
+            svg.appendChild(group);
         
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
+            const amplitude = 40, frequency = 0.025, segmentStep = 2;
+            const backboneColorBlue = '#007bff', backboneColorRed = '#dc3545';
+            const adenineColor = '#F08080', thymineColor = '#F5D67D', guanineColor = '#58D68D', cytosineColor = '#5DADE2', hBondColor = '#BDC3C7';
         
-        // Update URL without jumping
-        history.pushState(null, null, `#${sectionId}`);
-    }
-}
-
-    // Nitrosourea Specific Script
-    const currentStep = {
-            'nitrosourea': 0
-        };
-
-        function getAgentDisplayName(agentKey) {
-            const names = {
-                'nitrosourea': 'Nitrosourea'
-            };
-            return names[agentKey] || agentKey;
+            const backboneWidth = 5, baseRectWidthPurine = 18, baseRectHeightPurine = 10, baseRectWidthPyrimidine = 14, baseRectHeightPyrimidine = 10;
+            const allElements = [];
+            const sequence = ['A', 'T', 'G', 'C', 'G', 'T', 'A', 'C', 'G', 'A'];
+            const numBasePairs = sequence.length;
+            const basePairSpacing = overall_height / (numBasePairs + 1);
+        
+            const strandBlue = document.createElementNS(svgNS, 'path');
+            const strandRed = document.createElementNS(svgNS, 'path');
+            let dBlue = '', dRed = '';
+            const startY = y_offset;
+            const endY = y_offset + overall_height;
+            for (let currentY = startY; currentY <= endY; currentY += segmentStep) {
+                const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY));
+                const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI);
+                if (currentY === startY) {
+                    dBlue += `M${xBlue},${currentY}`;
+                    dRed += `M${xRed},${currentY}`;
+                } else {
+                    dBlue += ` L${xBlue},${currentY}`;
+                    dRed += ` L${xRed},${currentY}`;
+                }
+            }
+            strandBlue.setAttribute('d', dBlue);
+            strandBlue.setAttribute('stroke', backboneColorBlue);
+            strandBlue.setAttribute('stroke-width', backboneWidth);
+            strandBlue.setAttribute('fill', 'none');
+            group.appendChild(strandBlue);
+            allElements.push(strandBlue);
+        
+            strandRed.setAttribute('d', dRed);
+            strandRed.setAttribute('stroke', backboneColorRed);
+            strandRed.setAttribute('stroke-width', backboneWidth);
+            strandRed.setAttribute('fill', 'none');
+            group.appendChild(strandRed);
+            allElements.push(strandRed);
+        
+            // 5'/3' labels
+            function createLabel(id, x, y, text) {
+                const label = document.createElementNS(svgNS, "text");
+                label.setAttribute("id", id);
+                label.setAttribute("x", x);
+                label.setAttribute("y", y);
+                label.setAttribute("text-anchor", "middle");
+                label.setAttribute("font-size", "12px");
+                label.setAttribute("font-weight", "bold");
+                label.setAttribute("fill", "#333");
+                label.textContent = text;
+                svg.appendChild(label);
+                return label;
+            }
+            createLabel(`${idPrefix}-5pb`, x_center - amplitude - 15, startY, "5'");
+            createLabel(`${idPrefix}-3pb`, x_center - amplitude * Math.cos(frequency * overall_height) - 15, endY + 15, "3'");
+            createLabel(`${idPrefix}-3pr`, x_center - amplitude * Math.cos(Math.PI) + 15, startY, "3'");
+            createLabel(`${idPrefix}-5pr`, x_center - amplitude * Math.cos(frequency * overall_height + Math.PI) + 15, endY + 15, "5'");
+        
+            // Base pairs and guanine positions
+            const guanines = [];
+            for (let i = 0; i < numBasePairs; i++) {
+                const currentY = y_offset + (i + 1) * basePairSpacing;
+                const xBlue = x_center - amplitude * Math.cos(frequency * (currentY - startY));
+                const xRed  = x_center - amplitude * Math.cos(frequency * (currentY - startY) + Math.PI);
+                const baseTypeStrand1 = sequence[i];
+                let baseTypeStrand2, color1, color2, width1, height1, width2, height2, label1, label2;
+                switch (baseTypeStrand1) {
+                    case 'A':
+                        baseTypeStrand2 = 'T'; color1 = adenineColor; color2 = thymineColor;
+                        width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
+                        width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
+                        label1 = 'A'; label2 = 'T'; break;
+                    case 'T':
+                        baseTypeStrand2 = 'A'; color1 = thymineColor; color2 = adenineColor;
+                        width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
+                        width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
+                        label1 = 'T'; label2 = 'A'; break;
+                    case 'G':
+                        baseTypeStrand2 = 'C'; color1 = guanineColor; color2 = cytosineColor;
+                        width1 = baseRectWidthPurine; height1 = baseRectHeightPurine;
+                        width2 = baseRectWidthPyrimidine; height2 = baseRectHeightPyrimidine;
+                        label1 = 'G'; label2 = 'C'; break;
+                    case 'C':
+                        baseTypeStrand2 = 'G'; color1 = cytosineColor; color2 = guanineColor;
+                        width1 = baseRectWidthPyrimidine; height1 = baseRectHeightPyrimidine;
+                        width2 = baseRectWidthPurine; height2 = baseRectHeightPurine;
+                        label1 = 'C'; label2 = 'G'; break;
+                }
+                const base1 = document.createElementNS(svgNS, 'rect');
+                base1.setAttribute('x', xBlue - width1/2);
+                base1.setAttribute('y', currentY - height1/2);
+                base1.setAttribute('width', width1);
+                base1.setAttribute('height', height1);
+                base1.setAttribute('fill', color1);
+                group.appendChild(base1);
+                allElements.push(base1);
+                const baseLabel1 = document.createElementNS(svgNS, 'text');
+                baseLabel1.setAttribute('x', xBlue);
+                baseLabel1.setAttribute('y', currentY + 3);
+                baseLabel1.setAttribute('text-anchor', 'middle');
+                baseLabel1.setAttribute('font-size', '9px');
+                baseLabel1.setAttribute('fill', '#fff');
+                baseLabel1.textContent = label1;
+                group.appendChild(baseLabel1);
+                allElements.push(baseLabel1);
+                if (baseTypeStrand1 === 'G') {
+                    base1.dataset.n7x = xBlue + (width1 / 2) * 0.6; base1.dataset.n7y = currentY;
+                    base1.dataset.o6x = xBlue - (width1 / 2) * 0.6; base1.dataset.o6y = currentY;
+                    guanines.push({ element: base1, n7: { x: parseFloat(base1.dataset.n7x), y: parseFloat(base1.dataset.n7y) }, o6: { x: parseFloat(base1.dataset.o6x), y: parseFloat(base1.dataset.o6y) } });
+                }
+                const base2 = document.createElementNS(svgNS, 'rect');
+                base2.setAttribute('x', xRed - width2/2);
+                base2.setAttribute('y', currentY - height2/2);
+                base2.setAttribute('width', width2);
+                base2.setAttribute('height', height2);
+                base2.setAttribute('fill', color2);
+                group.appendChild(base2);
+                allElements.push(base2);
+                const baseLabel2 = document.createElementNS(svgNS, 'text');
+                baseLabel2.setAttribute('x', xRed);
+                baseLabel2.setAttribute('y', currentY + 3);
+                baseLabel2.setAttribute('text-anchor', 'middle');
+                baseLabel2.setAttribute('font-size', '9px');
+                baseLabel2.setAttribute('fill', '#fff');
+                baseLabel2.textContent = label2;
+                group.appendChild(baseLabel2);
+                allElements.push(baseLabel2);
+                if (baseTypeStrand2 === 'G') {
+                    base2.dataset.n7x = xRed + (width2 / 2) * 0.6; base2.dataset.n7y = currentY;
+                    base2.dataset.o6x = xRed - (width2 / 2) * 0.6; base2.dataset.o6y = currentY;
+                    guanines.push({ element: base2, n7: { x: parseFloat(base2.dataset.n7x), y: parseFloat(base2.dataset.n7y) }, o6: { x: parseFloat(base2.dataset.o6x), y: parseFloat(base2.dataset.o6y) } });
+                }
+                const hBond = document.createElementNS(svgNS, 'line');
+                hBond.setAttribute('x1', xBlue);
+                hBond.setAttribute('y1', currentY);
+                hBond.setAttribute('x2', xRed);
+                hBond.setAttribute('y2', currentY);
+                hBond.setAttribute('stroke', hBondColor);
+                hBond.setAttribute('stroke-width', '2');
+                group.appendChild(hBond);
+                allElements.push(hBond);
+            }
+            return { group, path1: strandBlue, path2: strandRed, elements: allElements, getGuaninePositions: () => guanines };
         }
-
-        const mechanisms = {
-            'nitrosourea': {
-                steps: [
-                    `<b>Step 1: Introduction & Lipophilicity</b><br>Nitrosoureas (e.g., Carmustine) are highly lipophilic (fat-soluble). This allows them to easily pass through cell membranes and the blood-brain barrier, making them useful for treating brain tumors.`,
-                    `<b>Step 2: Decomposition to Reactive Intermediates</b><br>Nitrosoureas decompose to form a diazohydroxide and an isocyanate. The diazohydroxide can further decompose to form a *bifunctional* alkylating agent, although less directly than nitrogen mustards.`,
-                    `<b>Step 3: Formation of Bifunctional Alkylating Cation</b><br>The diazohydroxide decomposes to form a highly reactive *bifunctional* diazonium ion, which quickly loses nitrogen gas to form a *bifunctional* alkylating carbocation.`,
-                    `<b>Step 4: Second Alkylation and Cross-linking</b><br>The second reactive site on the carbocation alkylates a guanine on the opposite DNA strand, forming an interstrand cross-link.`,
-                    `<b>Step 5: DNA Alkylation (Guanine O6/N7)</b><br>This reactive carbocation is a powerful electrophile. It rapidly attacks nucleophilic sites on DNA, primarily the O6 or N7 positions of guanine bases, forming a covalent alkyl-DNA adduct.`,
-                    `<b>Step 6: Protein Carbamylation by Isocyanate</b><br>Meanwhile, the isocyanate intermediate (R-N=C=O) can react with amino groups on proteins, such as lysine or arginine residues. This process, called carbamylation, can inactivate important proteins, including DNA repair enzymes.`,
-                    `<b>Step 7: Cytotoxicity & Therapeutic Effect</b><br>The combination of direct DNA alkylation (causing DNA damage and replication stress) and the carbamylation of key cellular proteins (impairing DNA repair and other survival pathways) leads to significant cytotoxicity, ultimately killing the cancer cell.`
-                ],
-                animations: [
-                    function () { // NU Step 1
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        const nuMolecule = createMolecule(svg, 'nu-drug-s1', 250, 100, '#FF6F00', 'Nitrosourea', 30);
-                        const bbb = createBond(svg, 'bbb-s1', 100, 180, 400, 180, '#78909C', 5);
-                        gsap.set(bbb, { opacity: 0.5, strokeDasharray: "10,5" });
-                        tl.to(nuMolecule, { opacity: 1, scale: 1, duration: 0.5 })
-                            .to(bbb, { opacity: 0.5, duration: 0.3 }, "<")
-                            .to(nuMolecule, { y: 200, duration: 1, ease: "power1.inOut" });
-                        return tl;
-                    },
-                    function () { // NU Step 2
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        const nuOrig = createMolecule(svg, 'nu-orig-s2', 180, 140, '#FF6F00', 'Nitrosourea', 25);
-                        const diazo = createMolecule(svg, 'diazo-s2', 320, 100, '#AD1457', 'Diazohydroxide', 20);
-                        const isocyanate = createMolecule(svg, 'iso-s2', 320, 180, '#4527A0', 'Isocyanate', 20);
-                        tl.to(nuOrig, { opacity: 1, scale: 1, duration: 0.4 })
-                            .to(nuOrig, { opacity: 0, scale: 0.7, x: 150, duration: 0.5, ease: "power1.in" }, "+=0.3")
-                            .to([diazo, isocyanate], { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.3");
-                        return tl;
-                    },
-                    function () { // NU Step 3
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        const diazo = createMolecule(svg, 'diazo-s3', 200, 140, '#AD1457', 'Diazohydroxide', 20);
-                        const cation = createMolecule(svg, 'cation-s3', 330, 140, '#D84315', 'Bifunctional Alkylating Cation (+)', 22);
-                        tl.to(diazo, { opacity: 1, scale: 1, duration: 0.4 })
-                            .to(diazo, { opacity: 0, scale: 0.7, x: 170, duration: 0.5, ease: "power1.in" }, "+=0.3")
-                            .to(cation, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, "-=0.3")
-                            .fromTo(cation.querySelector('circle'), { fill: '#D84315' }, { fill: '#FF7043', duration: 0.3, yoyo: true, repeat: 3 });
-                        return tl;
-                    },
-                    function() { // NU Step 4
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        
-                        const cation = createMolecule(svg, 'nu-cation', 150, 120, '#D84315', 'Alkylating Cation', 20);
-                        const dna = createDetailedDNAStrands(svg, 'nu-dna-s4', 300, 50, 200);
-                        const guanines = dna.getGuaninePositions();
-                        const targetG = guanines[1];
-                        
-                        const electronCloud = document.createElementNS(svgNS, 'circle');
-                        electronCloud.setAttribute('cx', targetG.o6.x);
-                        electronCloud.setAttribute('cy', targetG.o6.y);
-                        electronCloud.setAttribute('r', 0);
-                        electronCloud.setAttribute('fill', 'none');
-                        electronCloud.setAttribute('stroke', '#FFEB3B');
-                        electronCloud.setAttribute('stroke-width', 2);
-                        electronCloud.setAttribute('stroke-dasharray', '3,2');
-                        svg.appendChild(electronCloud);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(cation, {
-                            x: targetG.o6.x - 15,
-                            y: targetG.o6.y,
-                            duration: 0.7
-                        })
-                        .to(electronCloud, {
-                            attr: { r: 15 },
-                            opacity: 1,
-                            duration: 0.4
-                        }, "-=0.3")
-                        .to(targetG.element, { fill: '#FF9800', duration: 0.3 })
-                        .to(electronCloud, {
-                            attr: { r: 0 },
-                            opacity: 0,
-                            duration: 0.3
-                        })
-                        .call(() => {
-                            // Create crosslink to second guanine
-                            const targetG2 = guanines[4]; // Opposite strand guanine
-                            const crosslink = createBond(svg, 'nu-crosslink', 
-                                targetG.o6.x, targetG.o6.y,
-                                targetG2.o6.x, targetG2.o6.y,
-                                '#D32F2F', 4);
-                            gsap.to(crosslink, {
-                                opacity: 1,
-                                duration: 0.8,
-                                ease: "elastic.out(1, 0.5)"
-                            });
-                            gsap.to(targetG2.element, { fill: '#FF9800', duration: 0.3 });
-                        });
-
-                        return tl;
-                    },
-                    function() { // NU Step 5
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        
-                        const dna = createDetailedDNAStrands(svg, 'nu-dna-s5', 250, 40, 200);
-                        const guanines = dna.getGuaninePositions();
-                        
-                        // Show alkylation at both O6 and N7 positions
-                        const targetG1 = guanines[1];
-                        const targetG2 = guanines[4];
-                        
-                        const cation1 = createMolecule(svg, 'nu-cation1', targetG1.o6.x - 15, targetG1.o6.y, '#D84315', '', 10);
-                        const cation2 = createMolecule(svg, 'nu-cation2', targetG2.n7.x + 15, targetG2.n7.y, '#D84315', '', 10);
-                        
-                        const bond1 = createBond(svg, 'nu-bond1', 
-                            targetG1.o6.x - 10, targetG1.o6.y,
-                            targetG1.o6.x, targetG1.o6.y,
-                            '#7B1FA2', 2);
-                        
-                        const bond2 = createBond(svg, 'nu-bond2', 
-                            targetG2.n7.x + 10, targetG2.n7.y,
-                            targetG2.n7.x, targetG2.n7.y,
-                            '#7B1FA2', 2);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to([cation1, cation2], { opacity: 1, duration: 0.3 })
-                        .to([targetG1.element, targetG2.element], { fill: '#FF9800', duration: 0.3 })
-                        .to([bond1, bond2], { opacity: 1, duration: 0.5 })
-                        .to([dna.path1, dna.path2], {
-                            attr: { 
-                                d: i => i === 0 ? 
-                                    dna.path1.getAttribute('d').replace(/L/g, 'L') + 'Z' : 
-                                    dna.path2.getAttribute('d').replace(/L/g, 'L') + 'Z'
-                            },
-                            duration: 0.5
-                        });
-                        
-                        return tl;
-                    },
-                    function() { // NU Step 6
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        
-                        const isocyanate = createMolecule(svg, 'nu-iso', 150, 120, '#4527A0', 'Isocyanate', 20);
-                        const protein = createMolecule(svg, 'nu-protein', 300, 120, '#00695C', 'Repair Enzyme', 30);
-                        
-                        // Create amino acid target
-                        const lysine = document.createElementNS(svgNS, 'g');
-                        lysine.setAttribute('id', 'nu-lysine');
-                        const lysRect = document.createElementNS(svgNS, 'rect');
-                        lysRect.setAttribute('x', 280);
-                        lysRect.setAttribute('y', 115);
-                        lysRect.setAttribute('width', 40);
-                        lysRect.setAttribute('height', 20);
-                        lysRect.setAttribute('rx', 3);
-                        lysRect.setAttribute('fill', '#00897B');
-                        const lysText = document.createElementNS(svgNS, 'text');
-                        lysText.setAttribute('x', 300);
-                        lysText.setAttribute('y', 130);
-                        lysText.setAttribute('text-anchor', 'middle');
-                        lysText.setAttribute('fill', 'white');
-                        lysText.textContent = 'Lys';
-                        lysine.appendChild(lysRect);
-                        lysine.appendChild(lysText);
-                        svg.appendChild(lysine);
-                        
-                        // Create carbamylated product
-                        const carbamyl = document.createElementNS(svgNS, 'g');
-                        carbamyl.setAttribute('id', 'nu-carbamyl');
-                        carbamyl.setAttribute('opacity', 0);
-                        const carbRect = lysRect.cloneNode();
-                        carbRect.setAttribute('fill', '#004D40');
-                        const carbText = document.createElementNS(svgNS, 'text');
-                        carbText.setAttribute('x', 300);
-                        carbText.setAttribute('y', 130);
-                        carbText.setAttribute('text-anchor', 'middle');
-                        carbText.setAttribute('fill', 'white');
-                        carbText.textContent = 'Lys-CO';
-                        carbamyl.appendChild(carbRect);
-                        carbamyl.appendChild(carbText);
-                        svg.appendChild(carbamyl);
-                        
-                        tl.to(dna.elements, { opacity: 0.3, duration: 0.5 })
-                        .to([isocyanate, protein], { opacity: 1, duration: 0.5 })
-                        .to(lysine, { opacity: 1, duration: 0.3 })
-                        .to(isocyanate, {
-                            x: 280,
-                            y: 120,
-                            duration: 0.7,
-                            ease: "power1.inOut"
-                        })
-                        .to(lysine, { opacity: 0, duration: 0.3 })
-                        .to(carbamyl, { opacity: 1, duration: 0.3 })
-                        .to(protein.querySelector('circle'), { fill: '#78909C', duration: 0.3 });
-                        
-                        return tl;
-                    },
-                    function() { // NU Step 7
-                        clearSVG('nu-animation');
-                        const svg = document.getElementById('nu-animation');
-                        const tl = gsap.timeline();
-                        
-                        // Show DNA damage and impaired repair
-                        const dna = createDetailedDNAStrands(svg, 'nu-dna-s7', 200, 40, 180);
-                        const guanines = dna.getGuaninePositions();
-                        const crosslink = createBond(svg, 'nu-crosslink-s7', 
-                            guanines[1].o6.x, guanines[1].o6.y,
-                            guanines[4].n7.x, guanines[4].n7.y,
-                            '#D32F2F', 4);
-                        
-                        const damagedProtein = createMolecule(svg, 'nu-damaged-protein', 350, 120, '#78909C', 'Impaired Enzyme', 30);
-                        
-                        // Create cell death indicators
-                        const apoptosis = document.createElementNS(svgNS, 'text');
-                        apoptosis.setAttribute('x', 250);
-                        apoptosis.setAttribute('y', 250);
-                        apoptosis.setAttribute('text-anchor', 'middle');
-                        apoptosis.setAttribute('font-size', '20');
-                        apoptosis.setAttribute('fill', '#C62828');
-                        apoptosis.textContent = 'Apoptosis';
-                        apoptosis.setAttribute('opacity', 0);
-                        svg.appendChild(apoptosis);
-                        
-                        tl.to(dna.elements, { opacity: 1, duration: 0.5 })
-                        .to(crosslink, { opacity: 1, duration: 0.5 })
-                        .to([guanines[1].element, guanines[4].element], { fill: '#FF9800', duration: 0.3 })
-                        .to(damagedProtein, { opacity: 1, duration: 0.5 })
-                        .to([dna.path1, dna.path2], {
-                            attr: { 
-                                d: i => i === 0 ? 
-                                    dna.path1.getAttribute('d').replace(/L/g, 'L') + 'Z' : 
-                                    dna.path2.getAttribute('d').replace(/L/g, 'L') + 'Z'
-                            },
-                            duration: 0.5
-                        })
-                        .to(apoptosis, { opacity: 1, y: 230, duration: 0.5, ease: "back.out(1.7)" })
-                        .to([dna.elements, crosslink, damagedProtein], { 
-                            opacity: 0.5,
-                            duration: 1,
-                            ease: "power1.inOut"
-                        });
-                        
-                        return tl;
-                    }
-        ]
+        
+        // --- Animation Explanations ---
+        const stepExplanations = [
+    "Nitrosoureas (like carmustine) are highly lipophilic, allowing them to cross the blood-brain barrier and enter cells.",
+    "Inside the cell, nitrosoureas decompose to form reactive intermediates: a diazohydroxide and an isocyanate.",
+    "The diazohydroxide forms a highly reactive bifunctional alkylating carbocation, which can attack DNA.",
+    "The carbocation alkylates guanine on one DNA strand and then cross-links to guanine on the opposite strand. <b>(Arrow shows the cation attacking the DNA)</b>",
+    "DNA alkylation occurs at guanine O6 or N7 positions, forming strong DNA adducts. <b>(Arrow shows continuity from previous step)</b>",
+    "The isocyanate byproduct carbamylates proteins, including DNA repair enzymes, further blocking repair.",
+    "DNA cross-linking and impaired repair lead to cell death (apoptosis)."
+];
+        
+        const improvedAnimations = [
+            // Step 1
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                createMolecule(svg, 'nu-molecule', 170, 110, '#FF6F00', 'Nitrosourea', 30);
+                createBond(svg, 'bbb', 350, 60, 350, 340, '#78909C', 8, {dash: true, label: "Blood-Brain Barrier", labelColor: '#78909C', labelOffsetX: 10, labelOffsetY: -30});
+            },
+            // Step 2: Show decomposition with arrows
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                createMolecule(svg, 'nu-molecule', 160, 110, '#FF6F00', 'Nitrosourea', 30);
+                createMolecule(svg, 'diazo', 350, 110, '#AD1457', 'Diazohydroxide', 20);
+                createMolecule(svg, 'isocyanate', 350, 240, '#4527A0', 'Isocyanate', 20);
+                createArrow(svg, 190, 110, 330, 110, "#222", 3, "Decompose");
+                createArrow(svg, 190, 110, 330, 240, "#222", 3, "Decompose");
+            },
+            // Step 3: Arrow from diazohydroxide to cation
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                createMolecule(svg, 'diazo', 220, 110, '#AD1457', 'Diazohydroxide', 20);
+                createMolecule(svg, 'cation', 430, 110, '#D84315', 'Bifunctional Alkylating Cation', 24);
+                createArrow(svg, 240, 110, 410, 110, "#D84315", 3, "Rearrange");
+            },
+           // Step 4: Show DNA crosslinking and arrow to DNA
+function() {
+    clearSVG('nu-animation');
+    const svg = document.getElementById('nu-animation');
+    createMolecule(svg, 'cation', 160, 180, '#D84315', 'Alkylating Cation', 22);
+    const dna = createDetailedDNAStrands(svg, 'nu-dna', 560, 80, 210, 10);
+    const guanines = dna.getGuaninePositions();
+    if (guanines.length >= 2) {
+        createBond(svg, 'crosslink',
+            guanines[1].n7.x, guanines[1].n7.y,
+            guanines[7].n7.x, guanines[7].n7.y,
+            "#D32F2F", 7,
+            {dash: true, label: "DNA Cross-Link", labelColor: "#D32F2F", labelOffsetX: 12, labelOffsetY: -14}
+        );
+        // THIS IS THE ARROW SHOWING THE CATION ATTACKING THE DNA:
+        createArrow(svg, 182, 180, guanines[1].n7.x-12, guanines[1].n7.y, "#1976D2", 4, "Attacks DNA", 1);
     }
-};
-
-let activeTimelines = {};
-
-function updateMechanism(agent) {
-    const stepsData = mechanisms[agent];
-    const stepIndex = currentStep[agent];
-    const vizContainer = document.querySelector(`#${agent}-mechanism .mechanism-visualization`);
-    const explanationBox = document.querySelector(`#${agent}-mechanism .explanation-box`);
-    const explanationText = document.querySelector(`#${agent}-mechanism .explanation-text`);
-    const prevButton = document.querySelector(`#${agent}-prev-btn`);
-    const nextButton = document.querySelector(`#${agent}-next-btn`);
-
-    if (!stepsData || !explanationText) {
-        console.error(`Mechanism data or explanation element not found for ${agent}`);
-        return;
+},
+            // Step 5: DNA O6/N7 alkylation, faded arrow to show continuity
+            function() {
+                clearSVG('nu-animation');
+                const svg = document.getElementById('nu-animation');
+                const dna = createDetailedDNAStrands(svg, 'nu-dna', 400, 80, 210, 10);
+                const guanines = dna.getGuaninePositions();
+                if (guanines.length > 0) {
+                    createBond(svg, 'alkyl', guanines[3].o6.x, guanines[3].o6.y, guanines[3].n7.x, guanines[3].n7.y, "#FBC02D", 6, {label: "O6/N7 Alkylation", labelOffsetX: 20});
+                    // Faded arrow from left toward the alkylated guanine
+                    createArrow(svg, 140, 180, guanines[3].n7.x-12, guanines[3].n7.y, "#1976D2", 4, "", 0.25);
+                }
+            },
+            // Step 6: Protein Carbamylation
+            // Step 6: Protein Carbamylation
+function() {
+    clearSVG('nu-animation');
+    const svg = document.getElementById('nu-animation');
+    // Isocyanate molecule (purple)
+    createMolecule(svg, 'isocyanate', 220, 140, '#8e24aa', 'Isocyanate', 28);
+    // Repair enzyme molecule (blue/gray)
+    createMolecule(svg, 'repair-enzyme', 520, 140, '#1976d2', 'Repair Enzyme', 36);
+    // Main green arrow: carbamylation
+    createArrow(svg, 255, 140, 475, 140, "#43A047", 8, "Carbamylation");
+    // Smaller green arrow: inhibit
+    createArrow(svg, 485, 140, 540, 140, "#43A047", 5, "Inhibit");
+    // Optionally: overlay a 'blocked' sign on repair enzyme
+    const block = document.createElementNS(svgNS, "text");
+    block.setAttribute("x", 520);
+    block.setAttribute("y", 150);
+    block.setAttribute("text-anchor", "middle");
+    block.setAttribute("font-size", "30");
+    block.setAttribute("fill", "#C62828");
+    block.setAttribute("font-weight", "bold");
+    block.setAttribute("opacity", "0.7");
+    block.textContent = "✖";
+    svg.appendChild(block);
+},
+// Step 7: DNA cross-linking and cell death
+function() {
+    clearSVG('nu-animation');
+    const svg = document.getElementById('nu-animation');
+    const dna = createDetailedDNAStrands(svg, 'nu-dna', 400, 80, 210, 10);
+    const guanines = dna.getGuaninePositions();
+    if (guanines.length >= 2) {
+        createBond(svg, 'crosslink', guanines[1].n7.x, guanines[1].n7.y, guanines[7].n7.x, guanines[7].n7.y, "#D32F2F", 7, {dash: true});
     }
-
-    explanationBox.querySelector('h3').textContent = `${getAgentDisplayName(agent)}: Step ${stepIndex + 1}`;
-    explanationText.innerHTML = stepsData.steps[stepIndex];
-
-    if (prevButton) prevButton.disabled = stepIndex === 0;
-    if (nextButton) nextButton.disabled = stepIndex === stepsData.steps.length - 1;
-
-    // Handle animations
-    if (stepsData.animations && stepsData.animations[stepIndex]) {
-        if (activeTimelines[agent]) {
-            activeTimelines[agent].pause().kill();
+    createMolecule(svg, 'damaged-enzyme', 150, 340, '#78909C', 'Impaired Repair', 28);
+    const t = document.createElementNS(svgNS, "text");
+    t.setAttribute("x", 630);
+    t.setAttribute("y", 370);
+    t.setAttribute("text-anchor", "middle");
+    t.setAttribute("font-size", "24");
+    t.setAttribute("fill", "#C62828");
+    t.setAttribute("font-weight", "bold");
+    t.textContent = "Apoptosis";
+    svg.appendChild(t);
+    // Arrow from DNA to "Apoptosis"
+    createArrow(svg, 470, 180, 630, 350, "#C62828", 5, "Cell Death");
+}
+            
+        ];
+        
+        let currentStep = 0;
+        function updateExplanation() {
+            document.getElementById('nu-explanation').innerHTML = stepExplanations[currentStep];
+            document.getElementById('nu-step-title').innerText = "Nitrosourea: Step " + (currentStep + 1);
         }
-        activeTimelines[agent] = stepsData.animations[stepIndex]();
-    } else {
-        clearSVG('nu-animation'); // Clear if no animation for this step
-    }
-}
-
-function navigateTo(direction, agent) {
-    const steps = mechanisms[agent].steps;
-    if (direction === 'next' && currentStep[agent] < steps.length - 1) {
-        currentStep[agent]++;
-    } else if (direction === 'previous' && currentStep[agent] > 0) {
-        currentStep[agent]--;
-    } else if (direction === 'restart') {
-        currentStep[agent] = 0;
-    }
-    updateMechanism(agent);
-}
-
-function clearSVG(svgId) {
-    const svg = document.getElementById(svgId);
-    if (svg) {
-        while (svg.firstChild) {
-            svg.removeChild(svg.firstChild);
+        function showStep() {
+            improvedAnimations[currentStep]();
+            updateExplanation();
+            document.getElementById('nu-prev-btn').disabled = currentStep === 0;
+            document.getElementById('nu-next-btn').disabled = currentStep === improvedAnimations.length-1;
         }
-    }
-}
-
-// --- SVG Helper Functions ---
-const svgNS = "http://www.w3.org/2000/svg";
-
-function createCircle(parent, id, cx, cy, r, fill, stroke = 'none', strokeWidth = 0) {
-    const circle = document.createElementNS(svgNS, 'circle');
-    circle.setAttribute('id', id);
-    circle.setAttribute('cx', cx);
-    circle.setAttribute('cy', cy);
-    circle.setAttribute('r', r);
-    circle.setAttribute('fill', fill);
-    circle.setAttribute('stroke', stroke);
-    circle.setAttribute('stroke-width', strokeWidth);
-    parent.appendChild(circle);
-    return circle;
-}
-
-function createLine(parent, id, x1, y1, x2, y2, stroke = '#333', strokeWidth = 2) {
-    const line = document.createElementNS(svgNS, 'line');
-    line.setAttribute('id', id);
-    line.setAttribute('x1', x1);
-    line.setAttribute('y1', y1);
-    line.setAttribute('x2', x2);
-    line.setAttribute('y2', y2);
-    line.setAttribute('stroke', stroke);
-    line.setAttribute('stroke-width', strokeWidth);
-    parent.appendChild(line);
-    return line;
-}
-
-function createText(parent, id, x, y, text, fill = '#333', fontSize = '14px', textAnchor = 'middle') {
-    const textElem = document.createElementNS(svgNS, 'text');
-    textElem.setAttribute('id', id);
-    textElem.setAttribute('x', x);
-    textElem.setAttribute('y', y);
-    textElem.setAttribute('fill', fill);
-    textElem.setAttribute('font-size', fontSize);
-    textElem.setAttribute('text-anchor', textAnchor);
-    textElem.textContent = text;
-    parent.appendChild(textElem);
-    return textElem;
-}
-
-function createMolecule(parent, id, x, y, color, labelText, size = 20) {
-    const group = document.createElementNS(svgNS, 'g');
-    group.setAttribute('id', id);
-    gsap.set(group, { opacity: 0, scale: 0.8 });
-    const circle = createCircle(group, `${id}-circle`, 0, 0, size, color);
-    const text = createText(group, `${id}-text`, 0, size / 3, labelText, '#fff', `${size / 2}px`);
-    gsap.set(group, { x: x, y: y });
-    parent.appendChild(group);
-    return group;
-}
-
-function createBond(parent, id, x1, y1, x2, y2, color = '#333', strokeWidth = 3) {
-    return createLine(parent, id, x1, y1, x2, y2, color, strokeWidth);
-}
-
-function createDetailedDNAStrands(svgParent, idPrefix, centerX, centerY, width, segments = 8) {
-    const group = document.createElementNS(svgNS, 'g');
-    group.setAttribute('id', `${idPrefix}-dna`);
-    svgParent.appendChild(group);
-
-    const strand1Path = document.createElementNS(svgNS, 'path');
-    strand1Path.setAttribute('id', `${idPrefix}-strand1`);
-    strand1Path.setAttribute('fill', 'none');
-    strand1Path.setAttribute('stroke', '#007bff');
-    strand1Path.setAttribute('stroke-width', 4);
-    group.appendChild(strand1Path);
-
-    const strand2Path = document.createElementNS(svgNS, 'path');
-    strand2Path.setAttribute('id', `${idPrefix}-strand2`);
-    strand2Path.setAttribute('fill', 'none');
-    strand2Path.setAttribute('stroke', '#dc3545');
-    strand2Path.setAttribute('stroke-width', 4);
-    group.appendChild(strand2Path);
-
-    const basesGroup = document.createElementNS(svgNS, 'g');
-    basesGroup.setAttribute('id', `${idPrefix}-bases`);
-    group.appendChild(basesGroup);
-
-    const segmentWidth = width / (segments - 1);
-    const amplitude = 20;
-    const frequency = 0.5;
-
-    let path1 = `M ${centerX - width / 2} ${centerY}`;
-    let path2 = `M ${centerX - width / 2} ${centerY + 30}`;
-    const elements = [];
-    const guaninePositions = [];
-
-    const basePairs = ['AT', 'GC', 'TA', 'CG', 'AT', 'GC', 'TA', 'CG'].slice(0, segments);
-    const baseColors = { 'A': '#F08080', 'T': '#F5D67D', 'G': '#58D68D', 'C': '#5DADE2' };
-
-    for (let i = 0; i < segments; i++) {
-        const x = centerX - width / 2 + i * segmentWidth;
-        const y1 = centerY + amplitude * Math.sin(i * frequency);
-        const y2 = centerY + 30 - amplitude * Math.sin(i * frequency);
-        path1 += ` L ${x} ${y1}`;
-        path2 += ` L ${x} ${y2}`;
-
-        const basePair = basePairs[i];
-        const base1 = basePair[0];
-        const base2 = basePair[1];
-        const baseRadius = 8;
-
-        const base1Circle = createCircle(basesGroup, `${idPrefix}-base1-${i}`, x, y1, baseRadius, baseColors[base1]);
-        const base1Text = createText(basesGroup, `${idPrefix}-base1-text-${i}`, x, y1 + 3, base1, '#fff', '10px');
-        elements.push(base1Circle, base1Text);
-        if (base1 === 'G') {
-            base1Circle.dataset.n7x = x - baseRadius * 0.6;
-            base1Circle.dataset.n7y = y1 - baseRadius * 0.7;
-            base1Circle.dataset.o6x = x + baseRadius * 0.6;
-            base1Circle.dataset.o6y = y1 - baseRadius * 0.7;
-            guaninePositions.push({ base: base1Circle, n7: { x: parseFloat(base1Circle.dataset.n7x), y: parseFloat(base1Circle.dataset.n7y) }, o6: { x: parseFloat(base1Circle.dataset.o6x), y: parseFloat(base1Circle.dataset.o6y) }, element: base1Circle, strand: 1 });
+        function navigateTo(action) {
+            if (action === "next" && currentStep < improvedAnimations.length-1) currentStep++;
+            else if (action === "previous" && currentStep > 0) currentStep--;
+            else if (action === "restart") currentStep = 0;
+            showStep();
         }
-
-        const base2Circle = createCircle(basesGroup, `${idPrefix}-base2-${i}`, x, y2, baseRadius, baseColors[base2]);
-        const base2Text = createText(basesGroup, `${idPrefix}-base2-text-${i}`, x, y2 + 3, base2, '#fff', '10px');
-        elements.push(base2Circle, base2Text);
-        if (base2 === 'G') {
-            base2Circle.dataset.n7x = x - baseRadius * 0.6;
-            base2Circle.dataset.n7y = y2 - baseRadius * 0.7;
-            base2Circle.dataset.o6x = x + baseRadius * 0.6;
-            base2Circle.dataset.o6y = y2 - baseRadius * 0.7;
-            guaninePositions.push({ base: base2Circle, n7: { x: parseFloat(base2Circle.dataset.n7x), y: parseFloat(base2Circle.dataset.n7y) }, o6: { x: parseFloat(base2Circle.dataset.o6x), y: parseFloat(base2Circle.dataset.o6y) }, element: base2Circle, strand: 2 });
-        }
-
-        const hydrogenBonds = (base1 === 'A' && base2 === 'T') || (base1 === 'T' && base2 === 'A') ? 2 : 3;
-        for (let j = 0; j < hydrogenBonds; j++) {
-            const bondY = y1 + (y2 - y1) * (j + 1) / (hydrogenBonds + 1);
-            const bond = createLine(basesGroup, `${idPrefix}-hbond-${i}-${j}`, x - 5, bondY, x + 5, bondY, '#BDC3C7', 1);
-            elements.push(bond);
-        }
-    }
-
-    strand1Path.setAttribute('d', path1);
-    strand2Path.setAttribute('d', path2);
-
-    return { group: group, path1: strand1Path, path2: strand2Path, elements: elements, getGuaninePositions: () => guaninePositions };
-}
-
-// Initialize the first step of the Nitrosourea mechanism
-updateMechanism('nitrosourea');
-</script>
-</body>
-</html>
+        window.addEventListener('DOMContentLoaded', () => {
+            showStep();
+        });
+        </script>
