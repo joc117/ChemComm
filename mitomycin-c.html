@@ -641,7 +641,7 @@
 <div class="scene" id="mitomycin-c-mechanism">
     <h2>Mitomycin C Animation</h2>
     <div class="mechanism-visualization" style="display: flex; justify-content: center; align-items: center;">
-        <svg id="mc-animation" width="500" height="280" viewBox="0 0 500 280"></svg>
+        <svg id="mc-animation" width="500" height="300" viewBox="0 0 500 280"></svg>
     </div>
     <div class="legend">
         <div class="legend-item"><div class="legend-color" style="background: #007bff;"></div><span>5'-3' Backbone (Blue)</span></div>
@@ -907,25 +907,42 @@ const mcAnimations = [
         }
     },
    // Step 5: Potent DNA Damage (Interstrand Cross-link, faded DNA, cell death message)
-   function() {
+  // Step 5: Potent DNA Damage (Interstrand Cross-link, faded DNA, cell death message)
+function() {
     clearSVG('mc-animation');
     const svg = document.getElementById('mc-animation');
     // Draw the DNA
     const dna = createDetailedDNAStrands(svg, 'mc-dna-step5', 250, 40, 180, 10);
     const guanines = dna.getGuaninePositions();
+    console.log('Guanines (Step 5):', guanines.length, guanines);
 
-    // Draw the crosslink (locks DNA)
-    if (guanines.length > 4) {
-        createBond(svg, 'mc-crosslink-final',
-            guanines[2].n2.x, guanines[2].n2.y,
-            guanines[7].n2.x, guanines[7].n2.y,
-            '#D32F2F', 7
-        );
-        guanines[2].element.setAttribute('fill', '#FFC107');
-        guanines[7].element.setAttribute('fill', '#FFC107');
+    // Use first and last guanine if <8, otherwise use 3rd and 8th for crosslink
+    let g1 = guanines[2] || guanines[0];
+    let g2 = guanines[7] || guanines[guanines.length - 1];
+
+    if (!g1 || !g2) {
+        // Show a message in the SVG
+        const errorText = document.createElementNS(svgNS, "text");
+        errorText.setAttribute("x", 250);
+        errorText.setAttribute("y", 100);
+        errorText.setAttribute("text-anchor", "middle");
+        errorText.setAttribute("font-size", "20");
+        errorText.setAttribute("fill", "#d32f2f");
+        errorText.textContent = "Not enough guanines for crosslink!";
+        svg.appendChild(errorText);
+        return;
     }
 
-    // Draw a "replication fork" (replicase protein) as a blue oval
+    // Draw the crosslink (locks DNA)
+    createBond(svg, 'mc-crosslink-final',
+        g1.n2.x, g1.n2.y,
+        g2.n2.x, g2.n2.y,
+        '#D32F2F', 7
+    );
+    g1.element.setAttribute('fill', '#FFC107');
+    g2.element.setAttribute('fill', '#FFC107');
+
+    // Replication fork as a blue oval
     const fork = document.createElementNS(svgNS, "ellipse");
     fork.setAttribute("cx", 250);
     fork.setAttribute("cy", 70);
@@ -935,7 +952,8 @@ const mcAnimations = [
     fork.setAttribute("stroke", "#333");
     fork.setAttribute("stroke-width", "2");
     svg.appendChild(fork);
-    // Add "DNA Pol" label
+
+    // DNA Pol label
     const forkLabel = document.createElementNS(svgNS, "text");
     forkLabel.setAttribute("x", 250);
     forkLabel.setAttribute("y", 75);
@@ -947,78 +965,156 @@ const mcAnimations = [
     svg.appendChild(forkLabel);
 
     // Crosslink position (between guanines)
-    const haltY = (guanines[2].n2.y + guanines[7].n2.y) / 2;
+    const haltY = (g1.n2.y + g2.n2.y) / 2;
 
     // Animate the fork moving towards the crosslink and "bouncing"
-    gsap.to([fork, forkLabel], {
+    gsap.to(fork, {
         duration: 1,
-        y: haltY - 60,
+        attr: { cy: haltY - 60 },
         onComplete: () => {
-            // Quick "bump" effect
-            gsap.to([fork, forkLabel], {
-                duration: 0.13, y: `+=12`, yoyo: true, repeat: 1, ease: "power2.inOut",
+            gsap.to(fork, {
+                duration: 0.13,
+                attr: { cy: haltY - 48 }, // "bump" down by 12 units
+                yoyo: true,
+                repeat: 1,
+                ease: "power2.inOut",
                 onComplete: () => {
-                    // Fade the fork (show it's dead)
-                    gsap.to([fork, forkLabel], { opacity: 0.4, duration: 0.6 });
+                    gsap.to(fork, { opacity: 0.4, duration: 0.6 });
                 }
             });
-
-            // Stop sign and jagged line
-            const stop = document.createElementNS(svgNS, "text");
-            stop.setAttribute("x", 250);
-            stop.setAttribute("y", haltY - 10);
-            stop.setAttribute("text-anchor", "middle");
-            stop.setAttribute("font-size", "28");
-            stop.setAttribute("fill", "#d32f2f");
-            stop.setAttribute("font-weight", "bold");
-            stop.textContent = "⛔";
-            svg.appendChild(stop);
-
-            // Replication Blocked! text
-            const blockTxt = document.createElementNS(svgNS, "text");
-            blockTxt.setAttribute("x", 250);
-            blockTxt.setAttribute("y", haltY + 32);
-            blockTxt.setAttribute("text-anchor", "middle");
-            blockTxt.setAttribute("font-size", "16");
-            blockTxt.setAttribute("fill", "#d32f2f");
-            blockTxt.setAttribute("font-weight", "bold");
-            blockTxt.textContent = "Replication Blocked!";
-            svg.appendChild(blockTxt);
-
-            // Jagged "break" line to indicate block
-            const line = document.createElementNS(svgNS, "polyline");
-            line.setAttribute("points", `${250-28},${haltY+4} ${250-16},${haltY+16} ${250},${haltY+8} ${250+16},${haltY+18} ${250+28},${haltY+4}`);
-            line.setAttribute("stroke", "#d32f2f");
-            line.setAttribute("stroke-width", "3");
-            line.setAttribute("fill", "none");
-            svg.appendChild(line);
-
-            // Cell death label
-            const t = document.createElementNS(svgNS, "text");
-            t.setAttribute("x", 400);
-            t.setAttribute("y", 240);
-            t.setAttribute("text-anchor", "middle");
-            t.setAttribute("font-size", "22");
-            t.setAttribute("fill", "#C62828");
-            t.setAttribute("font-weight", "bold");
-            t.textContent = "Cell Death";
-            svg.appendChild(t);
-
-            // Hypoxia label
-            const hypoxia = document.createElementNS(svgNS, "text");
-            hypoxia.setAttribute("x", 90);
-            hypoxia.setAttribute("y", 260);
-            hypoxia.setAttribute("text-anchor", "middle");
-            hypoxia.setAttribute("font-size", "15");
-            hypoxia.setAttribute("fill", "#3949ab");
-            hypoxia.setAttribute("font-weight", "bold");
-            hypoxia.setAttribute("opacity", "0.7");
-            hypoxia.textContent = "Low O₂ (Hypoxia)";
-            svg.appendChild(hypoxia);
         }
     });
-}
-];
+    gsap.to(forkLabel, {
+        duration: 1,
+        attr: { y: haltY - 55 },
+        onComplete: () => {
+            gsap.to(forkLabel, {
+                duration: 0.13,
+                attr: { y: haltY - 43 }, // match the ellipse "bump"
+                yoyo: true,
+                repeat: 1,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    gsap.to(forkLabel, { opacity: 0.4, duration: 0.6 });
+                }
+            });
+        }
+    });
+
+    // Stop sign and jagged line after the fork animation starts
+    setTimeout(() => {
+        // Stop sign
+        const stop = document.createElementNS(svgNS, "text");
+        stop.setAttribute("x", 250);
+        stop.setAttribute("y", haltY - 10);
+        stop.setAttribute("text-anchor", "middle");
+        stop.setAttribute("font-size", "28");
+        stop.setAttribute("fill", "#d32f2f");
+        stop.setAttribute("font-weight", "bold");
+        stop.textContent = "⛔";
+        svg.appendChild(stop);
+
+        // Replication Blocked! text
+        const blockTxt = document.createElementNS(svgNS, "text");
+        blockTxt.setAttribute("x", 250);
+        blockTxt.setAttribute("y", haltY + 32);
+        blockTxt.setAttribute("text-anchor", "middle");
+        blockTxt.setAttribute("font-size", "16");
+        blockTxt.setAttribute("fill", "#d32f2f");
+        blockTxt.setAttribute("font-weight", "bold");
+        blockTxt.textContent = "Replication Blocked!";
+        svg.appendChild(blockTxt);
+
+        // Jagged "break" line
+        const line = document.createElementNS(svgNS, "polyline");
+        line.setAttribute("points", `${250-28},${haltY+4} ${250-16},${haltY+16} ${250},${haltY+8} ${250+16},${haltY+18} ${250+28},${haltY+4}`);
+        line.setAttribute("stroke", "#d32f2f");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("fill", "none");
+        svg.appendChild(line);
+
+        // Cell death label
+        const t = document.createElementNS(svgNS, "text");
+        t.setAttribute("x", 400);
+        t.setAttribute("y", 240);
+        t.setAttribute("text-anchor", "middle");
+        t.setAttribute("font-size", "22");
+        t.setAttribute("fill", "#C62828");
+        t.setAttribute("font-weight", "bold");
+        t.textContent = "Cell Death";
+        svg.appendChild(t);
+
+        // Hypoxia label
+        const hypoxia = document.createElementNS(svgNS, "text");
+        hypoxia.setAttribute("x", 90);
+        hypoxia.setAttribute("y", 260);
+        hypoxia.setAttribute("text-anchor", "middle");
+        hypoxia.setAttribute("font-size", "15");
+        hypoxia.setAttribute("fill", "#3949ab");
+        hypoxia.setAttribute("font-weight", "bold");
+        hypoxia.setAttribute("opacity", "0.7");
+        hypoxia.textContent = "Low O₂ (Hypoxia)";
+        svg.appendChild(hypoxia);
+
+    }, 1200); // show after the fork animation starts
+}];
+
+    // Stop sign and jagged line after the fork animation starts
+    setTimeout(() => {
+        // Stop sign
+        const stop = document.createElementNS(svgNS, "text");
+        stop.setAttribute("x", 250);
+        stop.setAttribute("y", haltY - 10);
+        stop.setAttribute("text-anchor", "middle");
+        stop.setAttribute("font-size", "28");
+        stop.setAttribute("fill", "#d32f2f");
+        stop.setAttribute("font-weight", "bold");
+        stop.textContent = "⛔";
+        svg.appendChild(stop);
+
+        // Replication Blocked! text
+        const blockTxt = document.createElementNS(svgNS, "text");
+        blockTxt.setAttribute("x", 250);
+        blockTxt.setAttribute("y", haltY + 32);
+        blockTxt.setAttribute("text-anchor", "middle");
+        blockTxt.setAttribute("font-size", "16");
+        blockTxt.setAttribute("fill", "#d32f2f");
+        blockTxt.setAttribute("font-weight", "bold");
+        blockTxt.textContent = "Replication Blocked!";
+        svg.appendChild(blockTxt);
+
+        // Jagged "break" line
+        const line = document.createElementNS(svgNS, "polyline");
+        line.setAttribute("points", `${250-28},${haltY+4} ${250-16},${haltY+16} ${250},${haltY+8} ${250+16},${haltY+18} ${250+28},${haltY+4}`);
+        line.setAttribute("stroke", "#d32f2f");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("fill", "none");
+        svg.appendChild(line);
+
+        // Cell death label
+        const t = document.createElementNS(svgNS, "text");
+        t.setAttribute("x", 400);
+        t.setAttribute("y", 240);
+        t.setAttribute("text-anchor", "middle");
+        t.setAttribute("font-size", "22");
+        t.setAttribute("fill", "#C62828");
+        t.setAttribute("font-weight", "bold");
+        t.textContent = "Cell Death";
+        svg.appendChild(t);
+
+        // Hypoxia label
+        const hypoxia = document.createElementNS(svgNS, "text");
+        hypoxia.setAttribute("x", 90);
+        hypoxia.setAttribute("y", 260);
+        hypoxia.setAttribute("text-anchor", "middle");
+        hypoxia.setAttribute("font-size", "15");
+        hypoxia.setAttribute("fill", "#3949ab");
+        hypoxia.setAttribute("font-weight", "bold");
+        hypoxia.setAttribute("opacity", "0.7");
+        hypoxia.textContent = "Low O₂ (Hypoxia)";
+        svg.appendChild(hypoxia);
+
+    }, 1200); // show after the fork animation starts
 
 // Animation navigation logic
 let mcStep = 0;
@@ -1056,3 +1152,5 @@ function navigateTo(action, agent) {
 document.addEventListener('DOMContentLoaded', updateMitomycinC);
 
 </script>
+</body>
+</html>
